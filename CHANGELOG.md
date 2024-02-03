@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Upstream development has been stalled for about two years. I, ([@jevinskie](https://github.com/jevinskie)), want to revive
  development - to vigorously collaborate, review and accept PRs and to make regular releases for improvements like new features, bug fixes, support for new Python versions, and tracking new dependency releases. As part of this effort, Python 2 support is drooped and there will be an initial focus of getting CI/CD working smoothly to enable fixing of any longstanding issues and then future improvements.
 - Now called "PyFilesystem3" (its PyPi home is [pyfilesystem3](https://pypi.org/project/pyfilesystem3/) and is installable via `pip3 install pyfilesystem3`) while the package/namespace is renamed to `fs3` from `fs` to avoid clashing. Please note that there is a [`fs3` PyPi package](https://pypi.org/project/fs3/) that also uses the `fs3` namespace but this is just an empty skeleton project with only one 0.0.1 release.
-- The new repository lives at [jevinksie/pyfilesystem3](https://github.com/jevinskie/pyfilesystem3).
+- The new repository lives at [PyFilesystem3/pyfilesystem3](https://github.com/PyFilesystem3/pyfilesystem3).
  The old repo can be found at [PyFilesystem/pyfilesystem2](https://github.com/PyFilesystem/pyfilesystem2).
 - Dropped compatibility for EoL CPython 2.7, 3.5, 3.6, and 3.7, Python 3.8 due to typing improvements in 3.9, and PyPy 2.7, 3.6 (EoL), and 3.7 (EoL).
 - Added support for CPython 3.11, and 3.12 and PyPy 3.9 and 3.10.

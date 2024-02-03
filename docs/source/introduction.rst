@@ -25,6 +25,6 @@ PyFilesystem3 is also available on conda_::
     conda install fs3 -c conda-forge
 
 Alternatively, if you would like to install from source, you can check
-out `the code from Github <https://github.com/jevinskie/pyfilesystem3>`_.
+out `the code from Github <https://github.com/PyFilesystem3/pyfilesystem3>`_.
 
 .. _conda: https://conda.io/docs/

@@ -5,16 +5,17 @@ Python's Filesystem abstraction layer.
 [![PyPI version](https://img.shields.io/pypi/v/pyfilesystem3)](https://pypi.org/project/pyfilesystem3/)
 [![PyPI](https://img.shields.io/pypi/pyversions/pyfilesystem3.svg)](https://pypi.org/project/pyfilesystem3/)
 [![Downloads](https://pepy.tech/badge/pyfilesystem3/month)](https://pepy.tech/project/pyfilesystem3/)
-[![Build Status](https://img.shields.io/github/workflow/status/jevinskie/pyfilesystem3/Test/main?logo=github&cacheSeconds=600)](https://github.com/jevinskie/pyfilesystem3/actions?query=branch%3Amain)
-[![Windows Build Status](https://img.shields.io/appveyor/build/jevinskie/pyfilesystem3/main?logo=appveyor&cacheSeconds=600)](https://ci.appveyor.com/project/jevinskie/pyfilesystem3)
-[![Coverage Status](https://img.shields.io/coveralls/github/jevinskie/pyfilesystem3/main?cacheSeconds=600)](https://coveralls.io/github/jevinskie/pyfilesystem3)
-[![Codacy Badge](https://img.shields.io/codacy/grade/30ad6445427349218425d93886ade9ee/main?logo=codacy)](https://www.codacy.com/app/jevinskie/pyfilesystem3?utm_source=github.com&utm_medium=referral&utm_content=jevinskie/pyfilesystem3&utm_campaign=Badge_Grade)
+[![Build Status](https://img.shields.io/github/workflow/status/PyFilesystem3/pyfilesystem3/Test/main?logo=github&cacheSeconds=600)](https://github.com/PyFilesystem3/pyfilesystem3/actions?query=branch%3Amain)
+[![Windows Build Status](https://img.shields.io/appveyor/build/PyFilesystem3/pyfilesystem3/main?logo=appveyor&cacheSeconds=600)](https://ci.appveyor.com/project/PyFilesystem3/pyfilesystem3)
+[![Coverage Status](https://img.shields.io/coveralls/github/PyFilesystem3/pyfilesystem3/main?cacheSeconds=600)](https://coveralls.io/github/PyFilesystem3/pyfilesystem3)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/91377f74f43447408537459734dde074)](https://app.codacy.com/gh/PyFilesystem3/pyfilesystem3/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Docs](https://img.shields.io/readthedocs/pyfilesystem3?maxAge=3600)](https://pyfilesystem3.readthedocs.io/en/latest/?badge=latest)
 
 ## Documentation
 
 - [API Documentation](https://docs.pyfilesystem.org/)
-- [GitHub Repository](https://github.com/jevinskie/pyfilesystem3)
+- [GitHub Repository](https://github.com/PyFilesystem3/pyfilesystem3)
+- [Wiki](https://github.com/PyFilesystem3/pyfilesystem3/wiki)
 - [Blog](https://www.willmcgugan.com/tag/fs/)
 
 ## Introduction
@@ -97,7 +98,7 @@ The following developers have contributed code and their time to this projects:
 - [Geoff Jukes](https://github.com/geoffjukes)
 - [Jevin Sweval (@jevinskie)](https://github.com/jevinskie)
 
-See [CONTRIBUTORS.md](https://github.com/jevinskie/pyfilesystem3/blob/main/CONTRIBUTORS.md)
+See [CONTRIBUTORS.md](https://github.com/PyFilesystem3/pyfilesystem3/blob/main/CONTRIBUTORS.md)
 for a full list of contributors.
 
 PyFilesystem2, and thus PyFilesystem3, owes a massive debt of gratitude to the following

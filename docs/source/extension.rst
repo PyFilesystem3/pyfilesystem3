@@ -111,10 +111,10 @@ Keep track of your achievements! Add the following values to your ``__init__.py`
 Let us Know
 -----------
 
-Contact us to add your filesystem to the `PyFilesystem3 wiki <https://github.com/jevinskie/pyfilesystem3/wiki/Index-of-Filesystems>`_.
+Contact us to add your filesystem to the `PyFilesystem3 wiki <https://github.com/PyFilesystem3/pyfilesystem3/wiki/Index-of-Filesystems>`_.
 
 
 Live Example
 ------------
 
-See `fs.sshfs <https://github.com/althonos/fs.sshfs>`_ for a functioning PyFilesystem2 extension implementing a PyFilesystem2 filesystem over SSH. TODO: Update for PyFilesystem3.
+See `fs3.sshfs <https://github.com/PyFilesystem3/fs3.sshfs>`_ for a functioning PyFilesystem3 extension implementing a PyFilesystem3 filesystem over SSH.
