@@ -28,8 +28,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Update pip
       run: python3 -m pip install -U pip wheel setuptools
-    - name: Install tox and pytest
-      run: python3 -m pip install tox tox-gh-actions pytest
+    - name: Install tox
+      run: python3 -m pip install tox tox-gh-actions
     - name: Test with tox
       run: python3 -m tox
     - name: Store partial coverage reports
@@ -49,7 +49,7 @@ jobs:
       with:
         python-version: '3.11'
     - name: Install coverage package
-      run: python3 -m pip install -U coverage
+      run: python3 -m pip install -U 'coverage~=6.5'
     - name: Download partial coverage reports
       uses: actions/download-artifact@v4
       with:
@@ -78,10 +78,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Setup Python 3.9
+    - name: Setup Python 3.11
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.11'
     - name: Update pip
       run: python3 -m pip install -U pip wheel setuptools
     - name: Install tox

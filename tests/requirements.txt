@@ -7,7 +7,7 @@ pyftpdlib ~=1.5
 # these are optional dependencies for pyftpdlib that
 # are not explicitly listed, we need to install these
 # ourselves
-psutil ~=5.0
+psutil ~=5.9
 
 # parametrized to prevent code duplication in tests.
-parameterized ~=0.8
+parameterized ~=0.9
