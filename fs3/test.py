@@ -1769,7 +1769,7 @@ class FSTestCases:
         self.fs.makedir("foo").writetext("test.txt", text)
         self.assert_text("foo/test.txt", text)
 
-        fs.move.move_file(self.fs, "foo/test.txt", self.fs, "foo/test2.txt")
+        fs3.move.move_file(self.fs, "foo/test.txt", self.fs, "foo/test2.txt")
         self.assert_not_exists("foo/test.txt")
         self.assert_text("foo/test2.txt", text)
 
@@ -1784,11 +1784,11 @@ class FSTestCases:
         self.assert_text("foo/test.txt", text)
 
         with self.assertRaises(errors.ResourceNotFound):
-            fs.move.move_file(self.fs, "foo/test.txt", other_fs, "foo/test2.txt")
+            fs3.move.move_file(self.fs, "foo/test.txt", other_fs, "foo/test2.txt")
 
         other_fs.makedir("foo")
 
-        fs.move.move_file(self.fs, "foo/test.txt", other_fs, "foo/test2.txt")
+        fs3.move.move_file(self.fs, "foo/test.txt", other_fs, "foo/test2.txt")
 
         self.assertEqual(other_fs.readtext("foo/test2.txt"), text)
 

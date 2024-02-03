@@ -686,7 +686,6 @@ class FS:
             contents = read_file.read()
         return contents
 
-    gettext = _new_name(readtext, "gettext")
 
     def getmodified(self, path):
         # type: (str) -> Optional[datetime]
@@ -1517,8 +1516,6 @@ class FS:
             )
         ) as write_file:
             write_file.write(contents)
-
-    settext = _new_name(writetext, "settext")
 
     def touch(self, path):
         # type: (str) -> None

@@ -81,7 +81,7 @@ class _ConvertOSErrors:
             if _errno == errno.EACCES and sys.platform == "win32":
                 if getattr(exc_value, "args", None) == 32:  # pragma: no cover
                     fserror = errors.ResourceLocked
-            raise fserror(fserror, fserror(self._path, exc=exc_value), traceback)
+            raise fserror(self._path, exc=exc_value).with_traceback(traceback)
 
 
 # Stops linter complaining about invalid class name

@@ -161,7 +161,7 @@ class TestMove(unittest.TestCase):
             self.assertFalse(src.exists("target.txt"))
             self.assertFalse(dst.exists("file.txt"))
             self.assertTrue(dst.exists("target.txt"))
-            self.assertEquals(dst.readtext("target.txt"), "source content")
+            self.assertEqual(dst.readtext("target.txt"), "source content")
 
     @parameterized.expand([("temp", "temp://"), ("mem", "mem://")])
     def test_move_file_overwrite_itself(self, _, fs_url):
@@ -171,7 +171,7 @@ class TestMove(unittest.TestCase):
             tmp.writetext("file.txt", "content")
             fs3.move.move_file(tmp, "file.txt", tmp, "file.txt")
             self.assertTrue(tmp.exists("file.txt"))
-            self.assertEquals(tmp.readtext("file.txt"), "content")
+            self.assertEqual(tmp.readtext("file.txt"), "content")
 
     @parameterized.expand([("temp", "temp://"), ("mem", "mem://")])
     def test_move_file_overwrite_itself_relpath(self, _, fs_url):
@@ -182,7 +182,7 @@ class TestMove(unittest.TestCase):
             new_dir.writetext("file.txt", "content")
             fs3.move.move_file(tmp, "dir/../dir/file.txt", tmp, "dir/file.txt")
             self.assertTrue(tmp.exists("dir/file.txt"))
-            self.assertEquals(tmp.readtext("dir/file.txt"), "content")
+            self.assertEqual(tmp.readtext("dir/file.txt"), "content")
 
     @parameterized.expand([(True,), (False,)])
     def test_move_file_cleanup_on_error(self, cleanup):

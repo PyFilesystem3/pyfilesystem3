@@ -51,29 +51,6 @@ def copy_fs(
     )
 
 
-def copy_fs_if_newer(
-    src_fs,  # type: Union[FS, str]
-    dst_fs,  # type: Union[FS, str]
-    walker=None,  # type: Optional[Walker]
-    on_copy=None,  # type: Optional[_OnCopy]
-    workers=0,  # type: int
-    preserve_time=False,  # type: bool
-):
-    # type: (...) -> None
-    """Copy the contents of one filesystem to another, checking times.
-
-    .. deprecated:: 2.5.0
-       Use `~fs3.copy.copy_fs_if` with ``condition="newer"`` instead.
-
-    """
-    warnings.warn(
-        "copy_fs_if_newer is deprecated. Use copy_fs_if instead.", DeprecationWarning
-    )
-    return copy_fs_if(
-        src_fs, dst_fs, "newer", walker, on_copy, workers, preserve_time=preserve_time
-    )
-
-
 def copy_fs_if(
     src_fs,  # type: Union[FS, str]
     dst_fs,  # type: Union[FS, str]
@@ -142,29 +119,6 @@ def copy_file(
     """
     copy_file_if(
         src_fs, src_path, dst_fs, dst_path, "always", preserve_time=preserve_time
-    )
-
-
-def copy_file_if_newer(
-    src_fs,  # type: Union[FS, str]
-    src_path,  # type: str
-    dst_fs,  # type: Union[FS, str]
-    dst_path,  # type: str
-    preserve_time=False,  # type: bool
-):
-    # type: (...) -> bool
-    """Copy a file from one filesystem to another, checking times.
-
-    .. deprecated:: 2.5.0
-       Use `~fs3.copy.copy_file_if` with ``condition="newer"`` instead.
-
-    """
-    warnings.warn(
-        "copy_file_if_newer is deprecated. Use copy_file_if instead.",
-        DeprecationWarning,
-    )
-    return copy_file_if(
-        src_fs, src_path, dst_fs, dst_path, "newer", preserve_time=preserve_time
     )
 
 

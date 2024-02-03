@@ -100,7 +100,7 @@ class Walker:
         else:
             on_error = self._ignore_errors if ignore_errors else self._raise_errors
         if not callable(on_error):
-            raise typeError("on_error must be callable")
+            raise TypeError("on_error must be callable")
 
         self.on_error = on_error
         self.search = search

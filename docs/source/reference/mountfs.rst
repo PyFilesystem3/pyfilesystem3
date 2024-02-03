@@ -40,7 +40,7 @@ This will create a filesystem where paths under ``config/`` map to
 
 Now both filesystems may be accessed with the same path structure::
 
-    print(combined_fs.gettext('/config/defaults.cfg'))
+    print(combined_fs.readtext('/config/defaults.cfg'))
     read_jpg(combined_fs.open('/resources/images/logo.jpg', 'rb')
 
 .. autoclass:: fs3.mountfs.MountFS

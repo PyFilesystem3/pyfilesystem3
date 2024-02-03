@@ -61,14 +61,14 @@ def _my_fs(module):
         my_fs.touch("file.txt")
     elif module == "fs3.info":
         my_fs.touch("foo.tar.gz")
-        my_fs.settext("foo.py", "print('Hello, world!')")
+        my_fs.writetext("foo.py", "print('Hello, world!')")
         my_fs.makedir("bar")
     elif module in {"fs3.walk", "fs3.glob"}:
         my_fs.makedir("dir1")
         my_fs.makedir("dir2")
-        my_fs.settext("foo.py", "print('Hello, world!')")
+        my_fs.writetext("foo.py", "print('Hello, world!')")
         my_fs.touch("foo.pyc")
-        my_fs.settext("bar.py", "print('ok')\n\n# this is a comment\n")
+        my_fs.writetext("bar.py", "print('ok')\n\n# this is a comment\n")
         my_fs.touch("bar.pyc")
     return my_fs
 

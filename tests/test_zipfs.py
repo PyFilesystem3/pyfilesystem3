@@ -176,7 +176,7 @@ class TestReadZipFS(ArchiveTestCases, unittest.TestCase):
 
     def test_geturl_for_fs_but_file_is_binaryio(self):
         self.fs._file = io.BytesIO()
-        self.assertRaises(NoURL, self.fs.geturl, "test", "fs")
+        self.assertRaises(NoURL, self.fs.geturl, "test", "fs3")
 
     def test_geturl_for_download(self):
         test_file = "foo/bar/egg/foofoo"
