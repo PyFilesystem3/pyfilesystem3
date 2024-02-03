@@ -46,7 +46,7 @@ class CustomFS(MemoryFS):
     subfs_class = CustomSubFS
 
     def __init__(self):
-        super(CustomFS, self).__init__()
+        super().__init__()
         self.custom_path = None
 
     def custom_function(self, custom_path):

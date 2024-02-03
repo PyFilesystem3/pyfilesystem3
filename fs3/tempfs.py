@@ -37,12 +37,12 @@ class TempFS(OSFS):
         Or via an FS URL::
 
             >>> import fs3
-            >>> tmp_fs = fs.open_fs("temp://")
+            >>> tmp_fs = fs3.open_fs("temp://")
 
         Use a specific identifier for the temporary folder to better
         illustrate its purpose::
 
-            >>> named_tmp_fs = fs.open_fs("temp://local_copy")
+            >>> named_tmp_fs = fs3.open_fs("temp://local_copy")
             >>> named_tmp_fs = TempFS(identifier="local_copy")
 
     """
@@ -77,7 +77,7 @@ class TempFS(OSFS):
         self.identifier = identifier.replace("/", "-")
 
         self._temp_dir = tempfile.mkdtemp(identifier or "fsTempFS", dir=temp_dir)
-        super(TempFS, self).__init__(self._temp_dir)
+        super().__init__(self._temp_dir)
 
     def __repr__(self):
         # type: () -> str
@@ -113,7 +113,7 @@ class TempFS(OSFS):
         """
         if self._auto_clean:
             self.clean()
-        super(TempFS, self).close()
+        super().close()
 
     def clean(self):
         # type: () -> None

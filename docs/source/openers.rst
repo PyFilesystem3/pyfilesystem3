@@ -76,5 +76,5 @@ the registry::
     import fs3.opener
     from fs_s3fs.opener import S3FSOpener
 
-    fs.opener.registry.install(S3FSOpener)
-    # fs.open_fs("s3fs://...") should now work
+    fs3.opener.registry.install(S3FSOpener)
+    # fs3.open_fs("s3fs://...") should now work

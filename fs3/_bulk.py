@@ -27,7 +27,7 @@ class _Worker(threading.Thread):
     def __init__(self, copier):
         # type (Copier) -> None
         self.copier = copier
-        super(_Worker, self).__init__()
+        super().__init__()
         self.daemon = True
 
     def run(self):

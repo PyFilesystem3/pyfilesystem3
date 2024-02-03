@@ -92,7 +92,7 @@ class TestReadZipFS(ArchiveTestCases, unittest.TestCase):
             self.assertEqual(f.read1(50000), b"a" * 50000)
 
     def test_getinfo(self):
-        super(TestReadZipFS, self).test_getinfo()
+        super().test_getinfo()
         top = self.fs.getinfo("top.txt", ["zip"])
         if sys.platform in ("linux", "darwin"):
             self.assertEqual(top.get("zip", "create_system"), 3)

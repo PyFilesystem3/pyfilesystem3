@@ -1,14 +1,10 @@
 import os
+from unittest import mock
 
 from fs3 import errors
 from fs3.tempfs import TempFS
 
 from .test_osfs import TestOSFS
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 
 class TestTempFS(TestOSFS):

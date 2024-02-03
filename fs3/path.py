@@ -58,7 +58,7 @@ def normpath(path):
         >>> normpath("foo/../../bar")
         Traceback (most recent call last):
             ...
-        fs.errors.IllegalBackReference: path 'foo/../../bar' contains back-references outside of filesystem
+        fs3.errors.IllegalBackReference: path 'foo/../../bar' contains back-references outside of filesystem
 
     """  # noqa: E501
     if path in "/":

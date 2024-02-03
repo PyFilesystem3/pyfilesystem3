@@ -141,10 +141,10 @@ class FS:
                 info, whatever the value of `namespaces` may be.
 
         Returns:
-            ~fs.info.Info: resource information object.
+            ~fs3.info.Info: resource information object.
 
         Raises:
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
 
         For more information regarding resource information, see :ref:`info`.
 
@@ -166,8 +166,8 @@ class FS:
             list: list of names, relative to ``path``.
 
         Raises:
-            fs.errors.DirectoryExpected: If ``path`` is not a directory.
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.DirectoryExpected: If ``path`` is not a directory.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
 
         """
 
@@ -183,17 +183,17 @@ class FS:
 
         Arguments:
             path (str): Path to directory from root.
-            permissions (~fs.permissions.Permissions, optional): a
+            permissions (~fs3.permissions.Permissions, optional): a
                 `Permissions` instance, or `None` to use default.
             recreate (bool): Set to `True` to avoid raising an error if
                 the directory already exists (defaults to `False`).
 
         Returns:
-            ~fs.subfs.SubFS: a filesystem whose root is the new directory.
+            ~fs3.subfs.SubFS: a filesystem whose root is the new directory.
 
         Raises:
-            fs.errors.DirectoryExists: If the path already exists.
-            fs.errors.ResourceNotFound: If the path is not found.
+            ~fs3.errors.DirectoryExists: If the path already exists.
+            ~fs3.errors.ResourceNotFound: If the path is not found.
 
         """
 
@@ -223,10 +223,10 @@ class FS:
             io.IOBase: a *file-like* object.
 
         Raises:
-            fs.errors.FileExpected: If ``path`` exists and is not a file.
-            fs.errors.FileExists: If the ``path`` exists, and
+            ~fs3.errors.FileExpected: If ``path`` exists and is not a file.
+            ~fs3.errors.FileExists: If the ``path`` exists, and
                 *exclusive mode* is specified (``x`` in the mode).
-            fs.errors.ResourceNotFound: If ``path`` does not exist and
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist and
                 ``mode`` does not imply creating the file, or if any
                 ancestor of ``path`` does not exist.
 
@@ -241,8 +241,8 @@ class FS:
             path (str): Path of the file to remove.
 
         Raises:
-            fs.errors.FileExpected: If the path is a directory.
-            fs.errors.ResourceNotFound: If the path does not exist.
+           ~fs3.errors.FileExpected: If the path is a directory.
+           ~fs3.errors.ResourceNotFound: If the path does not exist.
 
         """
 
@@ -255,14 +255,14 @@ class FS:
             path (str): Path of the directory to remove.
 
         Raises:
-            fs.errors.DirectoryNotEmpty: If the directory is not empty (
+           ~fs3.errors.DirectoryNotEmpty: If the directory is not empty (
                 see `~fs3.base.FS.removetree` for a way to remove the
                 directory contents).
-            fs.errors.DirectoryExpected: If the path does not refer to
+           ~fs3.errors.DirectoryExpected: If the path does not refer to
                 a directory.
-            fs.errors.ResourceNotFound: If no resource exists at the
+           ~fs3.errors.ResourceNotFound: If no resource exists at the
                 given path.
-            fs.errors.RemoveRootError: If an attempt is made to remove
+           ~fs3.errors.RemoveRootError: If an attempt is made to remove
                 the root directory (i.e. ``'/'``)
 
         """
@@ -280,7 +280,7 @@ class FS:
             info (dict): dictionary of resource info.
 
         Raises:
-            fs.errors.ResourceNotFound: If ``path`` does not exist
+           ~fs3.errors.ResourceNotFound: If ``path`` does not exist
                 on the filesystem
 
         The ``info`` dict should be in the same format as the raw
@@ -310,7 +310,7 @@ class FS:
 
         Raises:
             TypeError: If ``data`` is not a `bytes` instance.
-            fs.errors.ResourceNotFound: If a parent directory of
+            ~fs3.errors.ResourceNotFound: If a parent directory of
                 ``path`` does not exist.
 
         """
@@ -341,7 +341,7 @@ class FS:
 
         Raises:
             TypeError: if ``text`` is not an unicode string.
-            fs.errors.ResourceNotFound: if a parent directory of
+            ~fs3.errors.ResourceNotFound: if a parent directory of
                 ``path`` does not exist.
 
         """
@@ -396,11 +396,11 @@ class FS:
                 resource (defaults to `False`).
 
         Raises:
-            fs.errors.DestinationExists: If ``dst_path`` exists,
+            ~fs3.errors.DestinationExists: If ``dst_path`` exists,
                 and ``overwrite`` is `False`.
-            fs.errors.ResourceNotFound: If a parent directory of
+            ~fs3.errors.ResourceNotFound: If a parent directory of
                 ``dst_path`` does not exist.
-            fs.errors.FileExpected: If ``src_path`` is not a file.
+            ~fs3.errors.FileExpected: If ``src_path`` is not a file.
 
         """
         with self._lock:
@@ -435,9 +435,9 @@ class FS:
                 resource (defaults to `False`).
 
         Raises:
-            fs.errors.ResourceNotFound: If the ``dst_path``
+            ~fs3.errors.ResourceNotFound: If the ``dst_path``
                 does not exist, and ``create`` is not `True`.
-            fs.errors.DirectoryExpected: If ``src_path`` is not a
+            ~fs3.errors.DirectoryExpected: If ``src_path`` is not a
                 directory.
 
         """
@@ -487,7 +487,7 @@ class FS:
             str: a short description of the path.
 
         Raises:
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
 
         """
         if not self.exists(path):
@@ -609,8 +609,8 @@ class FS:
             bytes: the file contents.
 
         Raises:
-            fs.errors.FileExpected: if ``path`` exists but is not a file.
-            fs.errors.ResourceNotFound: if ``path`` does not exist.
+            ~fs3.errors.FileExpected: if ``path`` exists but is not a file.
+            ~fs3.errors.ResourceNotFound: if ``path`` does not exist.
 
         """
         with closing(self.open(path, mode="rb")) as read_file:
@@ -645,7 +645,7 @@ class FS:
             ...     my_fs.download('/Videos/starwars.mov', write_file)
 
         Raises:
-            fs.errors.ResourceNotFound: if ``path`` does not exist.
+            ~fs3.errors.ResourceNotFound: if ``path`` does not exist.
 
         """
         with self._lock:
@@ -675,7 +675,7 @@ class FS:
             str: file contents.
 
         Raises:
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
 
         """
         with closing(
@@ -770,7 +770,7 @@ class FS:
             int: the *size* of the resource.
 
         Raises:
-            fs.errors.ResourceNotFound: if ``path`` does not exist.
+            ~fs3.errors.ResourceNotFound: if ``path`` does not exist.
 
         The *size* of a file is the total number of readable bytes,
         which may not reflect the exact number of bytes of reserved
@@ -794,7 +794,7 @@ class FS:
             str: the *system path* of the resource, if any.
 
         Raises:
-            fs.errors.NoSysPath: If there is no corresponding system path.
+            ~fs3.errors.NoSysPath: If there is no corresponding system path.
 
         A system path is one recognized by the OS, that may be used
         outside of PyFilesystem (in an application or a shell for
@@ -831,13 +831,11 @@ class FS:
             str: the *system path* of the resource, if any.
 
         Raises:
-            fs.errors.NoSysPath: If there is no corresponding system path.
+            ~fs3.errors.NoSysPath: If there is no corresponding system path.
 
         This method takes the output of `~getsyspath` and encodes it to
         the filesystem's prefered encoding. In Python3 this step is
-        not required, as the `os` module will do it automatically. In
-        Python2.7, the encoding step is required to support filenames
-        on the filesystem that don't encode correctly.
+        not required, as the `os` module will do it automatically.
 
         Note:
             If you want your code to work in Python2.7 and Python3 then
@@ -857,10 +855,10 @@ class FS:
             path (str): A path on the filesystem.
 
         Returns:
-            ~fs.enums.ResourceType: the type of the resource.
+            ~fs3.enums.ResourceType: the type of the resource.
 
         Raises:
-            fs.errors.ResourceNotFound: if ``path`` does not exist.
+            ~fs3.errors.ResourceNotFound: if ``path`` does not exist.
 
         A type of a resource is an integer that identifies the what
         the resource references. The standard type integers may be one
@@ -907,7 +905,7 @@ class FS:
             str: a URL.
 
         Raises:
-            fs.errors.NoURL: If the path does not map to a URL.
+            ~fs3.errors.NoURL: If the path does not map to a URL.
 
         """
         raise errors.NoURL(path, purpose)
@@ -1067,9 +1065,9 @@ class FS:
                 resources (defaults to `False`).
 
         Raises:
-            fs.errors.ResourceNotFound: if ``dst_path`` does not exist,
+            ~fs3.errors.ResourceNotFound: if ``dst_path`` does not exist,
                 and ``create`` is `False`.
-            fs.errors.DirectoryExpected: if ``src_path`` or one of its
+            ~fs3.errors.DirectoryExpected: if ``src_path`` or one of its
                 ancestors is not a directory.
 
         """
@@ -1097,19 +1095,19 @@ class FS:
 
         Arguments:
             path (str): Path to directory from root.
-            permissions (~fs.permissions.Permissions, optional): Initial
+            permissions (~fs3.permissions.Permissions, optional): Initial
                 permissions, or `None` to use defaults.
             recreate (bool):  If `False` (the default), attempting to
                 create an existing directory will raise an error. Set
                 to `True` to ignore existing directories.
 
         Returns:
-            ~fs.subfs.SubFS: A sub-directory filesystem.
+            ~fs3.subfs.SubFS: A sub-directory filesystem.
 
         Raises:
-            fs.errors.DirectoryExists: if the path is already
+            ~fs3.errors.DirectoryExists: if the path is already
                 a directory, and ``recreate`` is `False`.
-            fs.errors.DirectoryExpected: if one of the ancestors
+            ~fs3.errors.DirectoryExpected: if one of the ancestors
                 in the path is not a directory.
 
         """
@@ -1143,11 +1141,11 @@ class FS:
                 resources (defaults to `False`).
 
         Raises:
-            fs.errors.FileExpected: If ``src_path`` maps to a
+            ~fs3.errors.FileExpected: If ``src_path`` maps to a
                 directory instead of a file.
-            fs.errors.DestinationExists: If ``dst_path`` exists,
+            ~fs3.errors.DestinationExists: If ``dst_path`` exists,
                 and ``overwrite`` is `False`.
-            fs.errors.ResourceNotFound: If a parent directory of
+            ~fs3.errors.ResourceNotFound: If a parent directory of
                 ``dst_path`` does not exist.
 
         """
@@ -1216,10 +1214,10 @@ class FS:
             io.IOBase: a *file-like* object.
 
         Raises:
-            fs.errors.FileExpected: If the path is not a file.
-            fs.errors.FileExists: If the file exists, and *exclusive mode*
+            ~fs3.errors.FileExpected: If the path is not a file.
+            ~fs3.errors.FileExists: If the file exists, and *exclusive mode*
                 is specified (``x`` in the mode).
-            fs.errors.ResourceNotFound: If the path does not exist.
+            ~fs3.errors.ResourceNotFound: If the path does not exist.
 
         """
         validate_open_mode(mode)
@@ -1254,11 +1252,11 @@ class FS:
                 is supplied then `~fs3.subfs_class` will be used.
 
         Returns:
-            ~fs.subfs.SubFS: A filesystem representing a sub-directory.
+            ~fs3.subfs.SubFS: A filesystem representing a sub-directory.
 
         Raises:
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
-            fs.errors.DirectoryExpected: If ``path`` is not a directory.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.DirectoryExpected: If ``path`` is not a directory.
 
         """
         from .subfs import SubFS
@@ -1280,8 +1278,8 @@ class FS:
             dir_path (str): Path to a directory on the filesystem.
 
         Raises:
-            fs.errors.ResourceNotFound: If ``dir_path`` does not exist.
-            fs.errors.DirectoryExpected: If ``dir_path`` is not a directory.
+            ~fs3.errors.ResourceNotFound: If ``dir_path`` does not exist.
+            ~fs3.errors.DirectoryExpected: If ``dir_path`` is not a directory.
 
         Caution:
             A filesystem should never delete its root folder, so
@@ -1289,7 +1287,7 @@ class FS:
             contents of the root folder will be deleted, but the
             root will be untouched::
 
-                >>> home_fs = fs.open_fs("~")
+                >>> home_fs = fs3.open_fs("~")
                 >>> home_fs.removetree("/")
                 >>> home_fs.exists("/")
                 True
@@ -1300,7 +1298,7 @@ class FS:
             to clear a directory without removing the directory
             itself::
 
-                >>> home_fs = fs.open_fs("~")
+                >>> home_fs = fs3.open_fs("~")
                 >>> home_fs.opendir("/Videos").removetree("/")
                 >>> home_fs.exists("/Videos")
                 True
@@ -1343,8 +1341,8 @@ class FS:
             ~collections.abc.Iterator: an iterator of `Info` objects.
 
         Raises:
-            fs.errors.DirectoryExpected: If ``path`` is not a directory.
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.DirectoryExpected: If ``path`` is not a directory.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
 
         """
         namespaces = namespaces or ()
@@ -1399,7 +1397,7 @@ class FS:
                 the source file.
 
         Raises:
-            fs.errors.ResourceNotFound: If a parent directory of
+            ~fs3.errors.ResourceNotFound: If a parent directory of
                 ``path`` does not exist.
 
         Note that the file object ``file`` will *not* be closed by this
@@ -1557,9 +1555,9 @@ class FS:
             str: A normalized, absolute path.
 
         Raises:
-            fs.errors.InvalidPath: If the path is invalid.
-            fs.errors.FilesystemClosed: if the filesystem is closed.
-            fs.errors.InvalidCharsInPath: If the path contains
+            ~fs3.errors.InvalidPath: If the path is invalid.
+            ~fs3.errors.FilesystemClosed: if the filesystem is closed.
+            ~fs3.errors.InvalidCharsInPath: If the path contains
                 invalid characters.
 
         """
@@ -1600,13 +1598,13 @@ class FS:
 
         This method is shorthand for the following::
 
-            fs.getinfo(path, namespaces=['basic'])
+            fs3.getinfo(path, namespaces=['basic'])
 
         Arguments:
             path (str): A path on the filesystem.
 
         Returns:
-            ~fs.info.Info: Resource information object for ``path``.
+            ~fs3.info.Info: Resource information object for ``path``.
 
         Note:
             .. deprecated:: 2.4.13
@@ -1632,7 +1630,7 @@ class FS:
             path (str): A path on the filesystem.
 
         Returns:
-            ~fs.info.Info: Resource information object for ``path``.
+            ~fs3.info.Info: Resource information object for ``path``.
 
         """
         return self.getinfo(path, namespaces=["details"])
@@ -1642,7 +1640,7 @@ class FS:
         """Check if a filesystem may be used.
 
         Raises:
-            fs.errors.FilesystemClosed: if the filesystem is closed.
+            ~fs3.errors.FilesystemClosed: if the filesystem is closed.
 
         """
         if self.isclosed():
@@ -1790,9 +1788,9 @@ class FS:
             str: The hex digest of the hash.
 
         Raises:
-            fs.errors.UnsupportedHash: If the requested hash is not supported.
-            fs.errors.ResourceNotFound: If ``path`` does not exist.
-            fs.errors.FileExpected: If ``path`` exists but is not a file.
+            ~fs3.errors.UnsupportedHash: If the requested hash is not supported.
+            ~fs3.errors.ResourceNotFound: If ``path`` does not exist.
+            ~fs3.errors.FileExpected: If ``path`` exists but is not a file.
 
         """
         self.validatepath(path)

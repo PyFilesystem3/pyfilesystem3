@@ -177,7 +177,7 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self._temp_path)
         os.mkdir(self._temp_path)
-        super(TestFTPFS, self).tearDown()
+        super().tearDown()
 
     def test_ftp_url(self):
         self.assertEqual(
@@ -310,7 +310,7 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
 
 class TestFTPFSNoMLSD(TestFTPFS):
     def make_fs(self):
-        ftp_fs = super(TestFTPFSNoMLSD, self).make_fs()
+        ftp_fs = super().make_fs()
         ftp_fs.features
         del ftp_fs.features["MLST"]
         return ftp_fs
@@ -360,7 +360,7 @@ class TestAnonFTPFS(FSTestCases, unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self._temp_path)
         os.mkdir(self._temp_path)
-        super(TestAnonFTPFS, self).tearDown()
+        super().tearDown()
 
     def test_ftp_url(self):
         self.assertEqual(

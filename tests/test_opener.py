@@ -5,6 +5,7 @@ import pkg_resources
 import shutil
 import tempfile
 import unittest
+from unittest import mock
 
 from fs3 import open_fs, opener
 from fs3.appfs import UserDataFS
@@ -13,11 +14,6 @@ from fs3.opener import errors, registry
 from fs3.opener.parse import ParseResult
 from fs3.opener.registry import Registry
 from fs3.osfs import OSFS
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 
 class TestParse(unittest.TestCase):
@@ -215,7 +211,7 @@ class TestOpeners(unittest.TestCase):
 
     def test_repr(self):
         # Check __repr__ works
-        for entry_point in pkg_resources.iter_entry_points("fs.opener"):
+        for entry_point in pkg_resources.iter_entry_points("fs3.opener"):
             _opener = entry_point.load()
             repr(_opener())
 
@@ -295,7 +291,7 @@ class TestOpeners(unittest.TestCase):
         user_data_fs_foo_dir = open_fs("userdata://fstest:willmcgugan:1.0/foo/")
         self.assertEqual(user_data_fs_foo_dir.readtext("bar.txt"), "baz")
 
-    @mock.patch("fs.ftpfs.FTPFS")
+    @mock.patch("fs3.ftpfs.FTPFS")
     def test_open_ftp(self, mock_FTPFS):
         open_fs("ftp://foo:bar@ftp.example.org")
         mock_FTPFS.assert_called_once_with(
@@ -308,7 +304,7 @@ class TestOpeners(unittest.TestCase):
             tls=False,
         )
 
-    @mock.patch("fs.ftpfs.FTPFS")
+    @mock.patch("fs3.ftpfs.FTPFS")
     def test_open_ftps(self, mock_FTPFS):
         open_fs("ftps://foo:bar@ftp.example.org")
         mock_FTPFS.assert_called_once_with(
@@ -321,7 +317,7 @@ class TestOpeners(unittest.TestCase):
             tls=True,
         )
 
-    @mock.patch("fs.ftpfs.FTPFS")
+    @mock.patch("fs3.ftpfs.FTPFS")
     def test_open_ftp_proxy(self, mock_FTPFS):
         open_fs("ftp://foo:bar@ftp.example.org?proxy=ftp.proxy.org")
         mock_FTPFS.assert_called_once_with(

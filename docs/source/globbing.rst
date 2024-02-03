@@ -54,7 +54,7 @@ Calling ``.glob`` with a pattern will return an iterator of
 :class:`~fs3.glob.GlobMatch` named tuples for each matching file or
 directory. A  glob match contains two attributes; ``path`` which is the
 full path in the filesystem, and ``info`` which is an
-:class:`fs3.info.Info` info object for the matched resource.
+:class:`~fs3.info.Info` info object for the matched resource.
 
 
 Batch Methods

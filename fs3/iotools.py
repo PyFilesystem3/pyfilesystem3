@@ -189,7 +189,7 @@ def make_stream(
             )
 
     if not binary:
-        io_object = io.strIOWrapper(
+        io_object = io.TextIOWrapper(
             io_object,
             encoding=encoding,
             errors=errors,

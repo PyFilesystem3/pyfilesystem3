@@ -116,7 +116,7 @@ class Info:
         """Check if the given namespace is present in the info.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the given namespace is not
+            ~fs3.errors.MissingInfoNamespace: if the given namespace is not
                 present in the info.
 
         """
@@ -280,7 +280,7 @@ class Info:
         Requires the ``"details"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the 'details'
+            ~fs3.errors.MissingInfoNamespace: if the 'details'
                 namespace is not in the Info.
 
         """
@@ -295,7 +295,7 @@ class Info:
         Requires the ``"details"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"details"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"details"``
                 namespace is not in the Info.
 
         """
@@ -311,7 +311,7 @@ class Info:
         Requires the ``"details"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"details"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"details"``
                 namespace is not in the Info.
 
         """
@@ -327,7 +327,7 @@ class Info:
         Requires the ``"details"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"details"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"details"``
                 namespace is not in the Info.
 
         """
@@ -343,7 +343,7 @@ class Info:
         Requires the ``"details"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"details"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"details"``
                 namespace is not in the Info.
 
         """
@@ -359,7 +359,7 @@ class Info:
         Requires the ``"access"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"access"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"access"``
                 namespace is not in the Info.
 
         """
@@ -378,7 +378,7 @@ class Info:
         Requires the ``"details"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"details"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"details"``
                 namespace is not in the Info.
 
         """
@@ -393,7 +393,7 @@ class Info:
         Requires the ``"access"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"access"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"access"``
                 namespace is not in the Info.
 
         """
@@ -408,7 +408,7 @@ class Info:
         Requires the ``"access"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"access"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"access"``
                 namespace is not in the Info.
 
         """
@@ -423,7 +423,7 @@ class Info:
         Requires the ``"access"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"access"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"access"``
                 namespace is not in the Info.
 
         """
@@ -438,7 +438,7 @@ class Info:
         Requires the ``"access"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"access"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"access"``
                 namespace is not in the Info.
 
         """
@@ -453,7 +453,7 @@ class Info:
         Requires the ``"link"`` namespace.
 
         Raises:
-            ~fs.errors.MissingInfoNamespace: if the ``"link"``
+            ~fs3.errors.MissingInfoNamespace: if the ``"link"``
                 namespace is not in the Info.
 
         """

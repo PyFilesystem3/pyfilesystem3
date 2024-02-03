@@ -42,7 +42,7 @@ class _ZipExtFile(RawWrapper):
         self._zip = _zip = fs._zip
         self._end = _zip.getinfo(name).file_size
         self._pos = 0
-        super(_ZipExtFile, self).__init__(_zip.open(name), "r", name)
+        super().__init__(_zip.open(name), "r", name)
 
     # NOTE(@althonos): Starting from Python 3.7, files inside a Zip archive are
     #                  seekable provided they were opened from a seekable file
@@ -262,7 +262,7 @@ class WriteZipFS(WrapFS):
         self._temp_fs_url = temp_fs
         self._temp_fs = open_fs(temp_fs)
         self._meta = dict(self._temp_fs.getmeta())  # type: ignore
-        super(WriteZipFS, self).__init__(self._temp_fs)
+        super().__init__(self._temp_fs)
 
     def __repr__(self):
         # type: () -> str
@@ -288,7 +288,7 @@ class WriteZipFS(WrapFS):
                 self.write_zip()
             finally:
                 self._temp_fs.close()
-        super(WriteZipFS, self).close()
+        super().close()
 
     def write_zip(
         self,
@@ -337,7 +337,7 @@ class ReadZipFS(FS):
     @errors.CreateFailed.catch_all
     def __init__(self, file, encoding="utf-8"):  # noqa: D107
         # type: (Union[BinaryIO, str], str) -> None
-        super(ReadZipFS, self).__init__()
+        super().__init__()
         self._file = file
         self.encoding = encoding
         self._zip = zipfile.ZipFile(file, "r")
@@ -474,7 +474,7 @@ class ReadZipFS(FS):
 
     def close(self):
         # type: () -> None
-        super(ReadZipFS, self).close()
+        super().close()
         if hasattr(self, "_zip"):
             self._zip.close()
 

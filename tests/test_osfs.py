@@ -179,7 +179,7 @@ class TestOSFS(FSTestCases, unittest.TestCase):
     def test_validatepath(self):
         """Check validatepath detects bad encodings."""
 
-        with mock.patch("fs.osfs.fsencode") as fsencode:
+        with mock.patch("fs3.osfs.fsencode") as fsencode:
             fsencode.side_effect = lambda error: "–".encode("ascii")
             with self.assertRaises(errors.InvalidCharsInPath):
                 with self.fs.open("13 – Marked Register.pdf", "wb") as fh:

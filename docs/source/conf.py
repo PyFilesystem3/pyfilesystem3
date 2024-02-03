@@ -45,7 +45,7 @@ templates_path = ['_templates']
 
 # intersphinx domain mapping
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.8', None)
+    'python': ('https://docs.python.org/3.9', None)
 }
 
 # The suffix(es) of source filenames.

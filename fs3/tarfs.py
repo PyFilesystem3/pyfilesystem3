@@ -157,7 +157,7 @@ class WriteTarFS(WrapFS):
         self._temp_fs_url = temp_fs
         self._temp_fs = open_fs(temp_fs)
         self._meta = dict(self._temp_fs.getmeta())  # type: ignore
-        super(WriteTarFS, self).__init__(self._temp_fs)
+        super().__init__(self._temp_fs)
 
     def __repr__(self):
         # type: () -> str
@@ -183,7 +183,7 @@ class WriteTarFS(WrapFS):
                 self.write_tar()
             finally:
                 self._temp_fs.close()
-        super(WriteTarFS, self).close()
+        super().close()
 
     def write_tar(
         self,
@@ -244,7 +244,7 @@ class ReadTarFS(FS):
     @errors.CreateFailed.catch_all
     def __init__(self, file, encoding="utf-8"):  # noqa: D107
         # type: (Union[str, BinaryIO], str) -> None
-        super(ReadTarFS, self).__init__()
+        super().__init__()
         self._file = file
         self.encoding = encoding
         if isinstance(file, (str, bytes)):
@@ -419,7 +419,7 @@ class ReadTarFS(FS):
 
     def close(self):
         # type: () -> None
-        super(ReadTarFS, self).close()
+        super().close()
         if hasattr(self, "_tar"):
             self._tar.close()
 

@@ -186,7 +186,7 @@ class TestReadTarFS(ArchiveTestCases, unittest.TestCase):
             self.fail("Strange exception in closing fs")
 
     def test_getinfo(self):
-        super(TestReadTarFS, self).test_getinfo()
+        super().test_getinfo()
         top = self.fs.getinfo("top.txt", ["tar"])
         self.assertTrue(top.get("tar", "is_file"))
 

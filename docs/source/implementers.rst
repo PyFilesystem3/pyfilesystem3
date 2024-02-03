@@ -52,7 +52,7 @@ Here's the simplest possible example to test a filesystem class called ``MyFS``:
 
 You may also want to override some of the methods in the test suite for more targeted testing:
 
-.. autoclass:: fs.test.FSTestCases
+.. autoclass:: fs3.test.FSTestCases
     :members:
 
 .. note::

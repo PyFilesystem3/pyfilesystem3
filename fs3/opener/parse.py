@@ -61,10 +61,10 @@ def parse_fs_url(fs_url):
         fs_url (str): A filesystem URL.
 
     Returns:
-        ~fs.opener.parse.ParseResult: a parse result instance.
+        ~fs3.opener.parse.ParseResult: a parse result instance.
 
     Raises:
-        ~fs.errors.ParseError: if the FS URL is not valid.
+        ~fs3.errors.ParseError: if the FS URL is not valid.
 
     """
     match = _RE_FS_URL.match(fs_url)

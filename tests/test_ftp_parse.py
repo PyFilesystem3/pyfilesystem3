@@ -1,13 +1,9 @@
 import textwrap
 import time
 import unittest
+from unittest import mock
 
 from fs3 import _ftp_parse as ftp_parse
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
 time2017 = time.struct_time([2017, 11, 28, 1, 1, 1, 1, 332, 0])
 

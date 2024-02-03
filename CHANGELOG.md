@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Now called "PyFilesystem3" (its PyPi home is [pyfilesystem3](https://pypi.org/project/pyfilesystem3/) and is installable via `pip3 install pyfilesystem3`) while the package/namespace is renamed to `fs3` from `fs` to avoid clashing. Please note that there is a [`fs3` PyPi package](https://pypi.org/project/fs3/) that also uses the `fs3` namespace but this is just an empty skeleton project with only one 0.0.1 release.
 - The new repository lives at [jevinksie/pyfilesystem3](https://github.com/jevinskie/pyfilesystem3).
  The old repo can be found at [PyFilesystem/pyfilesystem2](https://github.com/PyFilesystem/pyfilesystem2).
-- Dropped compatibility for EoL CPython 2.7, 3.5, 3.6, and 3.7 and PyPy 2.7, 3.6 (EoL), and 3.7 (EoL).
+- Dropped compatibility for EoL CPython 2.7, 3.5, 3.6, and 3.7, Python 3.8 due to typing improvements in 3.9, and PyPy 2.7, 3.6 (EoL), and 3.7 (EoL).
 - Added support for CPython 3.11, and 3.12 and PyPy 3.9 and 3.10.
 - Many thanks to the original authors and maintainers [Will McGugan (@willmcgugan)](https://github.com/willmcgugan), [Martin Larralde (@althonos)](https://github.com/althonos), [Thomas Feldmann (@tfeldmann)](https://github.com/tfeldmann), and all the other various contributers.
 - This is intended to be a friendly fork. If upstream PyFilesystem2 wishes to resume development and releases, I, (@jevinskie), am more than happy to work with them to upstream the changes here and let `fs` be the canonical "Python Virtual Filesystem library" once again.

@@ -52,4 +52,4 @@ class ClosingSubFS(SubFS[_F], typing.Generic[_F]):
     def close(self):
         # type: () -> None
         self.delegate_fs().close()
-        super(ClosingSubFS, self).close()
+        super().close()

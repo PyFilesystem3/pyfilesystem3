@@ -78,7 +78,7 @@ class _AppFS(OSFS):
         """
         self.app_dirs = AppDirs(appname, author, version, roaming)
         self._create = create
-        super(_AppFS, self).__init__(
+        super().__init__(
             getattr(self.app_dirs, self.app_dir), create=create
         )
 

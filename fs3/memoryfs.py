@@ -35,7 +35,7 @@ if typing.TYPE_CHECKING:
 class _MemoryFile(io.RawIOBase):
     def __init__(self, path, memory_fs, mode, dir_entry):
         # type: (str, MemoryFS, str, _DirEntry) -> None
-        super(_MemoryFile, self).__init__()
+        super().__init__()
         self._path = path
         self._memory_fs = memory_fs
         self._mode = Mode(mode)
@@ -116,7 +116,7 @@ class _MemoryFile(io.RawIOBase):
         if not self.closed:
             with self._dir_entry.lock:
                 self._dir_entry.remove_open_file(self)
-                super(_MemoryFile, self).close()
+                super().close()
 
     def read(self, size=None):
         # type: (Optional[int]) -> bytes
@@ -315,7 +315,7 @@ class MemoryFS(FS):
         Or via an FS URL::
 
             >>> import fs3
-            >>> mem_fs = fs.open_fs('mem://')
+            >>> mem_fs = fs3.open_fs('mem://')
 
     """
 
@@ -334,7 +334,7 @@ class MemoryFS(FS):
         """Create an in-memory filesystem."""
         self._meta = self._meta.copy()
         self.root = self._make_dir_entry(ResourceType.directory, "")
-        super(MemoryFS, self).__init__()
+        super().__init__()
 
     def __repr__(self):
         # type: () -> str
@@ -366,7 +366,7 @@ class MemoryFS(FS):
         # type: () -> None
         if not self._closed:
             del self.root
-        return super(MemoryFS, self).close()
+        return super().close()
 
     def getinfo(self, path, namespaces=None):
         # type: (str, Optional[Collection[str]]) -> Info

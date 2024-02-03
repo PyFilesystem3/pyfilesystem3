@@ -52,7 +52,7 @@ class WrapFS(FS, typing.Generic[_F]):
     def __init__(self, wrap_fs):  # noqa: D107
         # type: (_F) -> None
         self._wrap_fs = wrap_fs
-        super(WrapFS, self).__init__()
+        super().__init__()
 
     def __repr__(self):
         # type: () -> str

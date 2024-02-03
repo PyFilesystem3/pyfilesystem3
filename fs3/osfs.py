@@ -41,7 +41,7 @@ if typing.TYPE_CHECKING:
     _O = typing.TypeVar("_O", bound="OSFS")
 
 
-log = logging.getLogger("fs.osfs")
+log = logging.getLogger("fs3.osfs")
 
 
 _WINDOWS_PLATFORM = platform.system() == "Windows"
@@ -80,11 +80,11 @@ class OSFS(FS):
                 of the form ``~``, ``$name`` or ``${name}`` will be expanded.
 
         Raises:
-            `fs3.errors.CreateFailed`: If ``root_path`` does not
+            `~fs3.errors.CreateFailed`: If ``root_path`` does not
                 exist, or could not be created.
 
         """
-        super(OSFS, self).__init__()
+        super().__init__()
         if isinstance(root_path, bytes):
             root_path = fsdecode(root_path)
         self.root_path = root_path
@@ -651,4 +651,4 @@ class OSFS(FS):
                 msg="path '{path}' could not be encoded for the filesystem (check LANG"
                 " env var); {error}".format(path=path, error=error),
             )
-        return super(OSFS, self).validatepath(path)
+        return super().validatepath(path)

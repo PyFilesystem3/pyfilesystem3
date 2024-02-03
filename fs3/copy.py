@@ -34,7 +34,7 @@ def copy_fs(
     Arguments:
         src_fs (FS or str): Source filesystem (URL or instance).
         dst_fs (FS or str): Destination filesystem (URL or instance).
-        walker (~fs.walk.Walker, optional): A walker object that will be
+        walker (~fs3.walk.Walker, optional): A walker object that will be
             used to scan for files in ``src_fs``. Set this if you only want
             to consider a sub-set of the resources in ``src_fs``.
         on_copy (callable): A function callback called after a single file copy

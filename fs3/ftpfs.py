@@ -118,7 +118,7 @@ def _decode(st, _):
 class FTPFile(io.RawIOBase):
     def __init__(self, ftpfs, path, mode):
         # type: (FTPFS, str, str) -> None
-        super(FTPFile, self).__init__()
+        super().__init__()
         self.fs = ftpfs
         self.path = path
         self.mode = Mode(mode)
@@ -180,7 +180,7 @@ class FTPFile(io.RawIOBase):
                     except error_temp:  # pragma: no cover
                         pass
                 finally:
-                    super(FTPFile, self).close()
+                    super().close()
 
     def tell(self):
         # type: () -> int
@@ -339,23 +339,23 @@ class FTPFS(FS):
 
         Or via an FS URL::
 
-            >>> ftp_fs = fs.open_fs('ftp://test.rebex.net')
+            >>> ftp_fs = fs3.open_fs('ftp://test.rebex.net')
 
         Or via an FS URL, using TLS::
 
-            >>> ftp_fs = fs.open_fs('ftps://demo.wftpserver.com')
+            >>> ftp_fs = fs3.open_fs('ftps://demo.wftpserver.com')
 
         You can also use a non-anonymous username, and optionally a
         password, even within a FS URL::
 
             >>> ftp_fs = FTPFS("test.rebex.net", user="demo", passwd="password")
-            >>> ftp_fs = fs.open_fs('ftp://demo:password@test.rebex.net')
+            >>> ftp_fs = fs3.open_fs('ftp://demo:password@test.rebex.net')
 
         Connecting via a proxy is supported. If using a FS URL, the proxy
         URL will need to be added as a URL parameter::
 
             >>> ftp_fs = FTPFS("ftp.ebi.ac.uk", proxy="test.rebex.net")
-            >>> ftp_fs = fs.open_fs('ftp://ftp.ebi.ac.uk/?proxy=test.rebex.net')
+            >>> ftp_fs = fs3.open_fs('ftp://ftp.ebi.ac.uk/?proxy=test.rebex.net')
 
     """
 
@@ -395,7 +395,7 @@ class FTPFS(FS):
             tls (bool): Attempt to use FTP over TLS (FTPS) (default: False)
 
         """
-        super(FTPFS, self).__init__()
+        super().__init__()
         self._host = host
         self._user = user
         self.passwd = passwd
@@ -683,7 +683,7 @@ class FTPFS(FS):
                     response = self.ftp.sendcmd(cmd)
                     mtime = self._parse_ftp_time(response.split()[1])
                     return epoch_to_datetime(mtime)
-        return super(FTPFS, self).getmodified(path)
+        return super().getmodified(path)
 
     def listdir(self, path):
         # type: (str) -> list[str]
@@ -882,4 +882,4 @@ class FTPFS(FS):
             except Exception:  # pragma: no cover
                 pass
             self._ftp = None
-        super(FTPFS, self).close()
+        super().close()

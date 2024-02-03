@@ -2,12 +2,12 @@
 
 Here's an example that opens a filesystem then makes it *read only*::
 
-    >>> home_fs = fs.open_fs('~')
-    >>> read_only_home_fs = fs.wrap.read_only(home_fs)
+    >>> home_fs = fs3.open_fs('~')
+    >>> read_only_home_fs = fs3.wrap.read_only(home_fs)
     >>> read_only_home_fs.removedir('Desktop')
     Traceback (most recent call last):
       ...
-    fs.errors.ResourceReadOnly: resource 'Desktop' is read only
+    fs3.errors.ResourceReadOnly: resource 'Desktop' is read only
 
 """
 import typing
@@ -104,7 +104,7 @@ class WrapCachedDir(WrapFS[_F], typing.Generic[_F]):
 
     def __init__(self, wrap_fs):  # noqa: D107
         # type: (_F) -> None
-        super(WrapCachedDir, self).__init__(wrap_fs)
+        super().__init__(wrap_fs)
         self._cache = {}  # type: dict[tuple[str, frozenset], dict[str, Info]]
 
     def scandir(

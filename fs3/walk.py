@@ -111,7 +111,7 @@ class Walker:
         self.filter_glob = filter_glob
         self.exclude_glob = exclude_glob
         self.max_depth = max_depth
-        super(Walker, self).__init__()
+        super().__init__()
 
     @classmethod
     def _ignore_errors(cls, path, error):
@@ -527,7 +527,7 @@ class BoundWalker(typing.Generic[_F]):
     `BoundWalker` object.
 
     Example:
-        >>> tmp_fs = fs.tempfs.TempFS()
+        >>> tmp_fs = fs3.tempfs.TempFS()
         >>> tmp_fs.walk
         BoundWalker(TempFS())
 
@@ -755,7 +755,7 @@ class BoundWalker(typing.Generic[_F]):
 
 # Allow access to default walker from the module
 # For example:
-#     fs.walk.walk_files()
+#     fs3.walk.walk_files()
 
 default_walker = Walker()
 walk = default_walker.walk

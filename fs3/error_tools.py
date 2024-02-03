@@ -91,7 +91,7 @@ convert_os_errors = _ConvertOSErrors
 @contextmanager
 def unwrap_errors(path_replace):
     # type: (Union[str, Mapping[str, str]]) -> Iterator[None]
-    """Get a context to map OS errors to their `fs3.errors` counterpart.
+    """Get a context to map OS errors to their `~fs3.errors` counterpart.
 
     The context will re-write the paths in resource exceptions to be
     in the same context as the wrapped filesystem.

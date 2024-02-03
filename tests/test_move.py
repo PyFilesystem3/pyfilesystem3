@@ -1,9 +1,5 @@
 import unittest
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 from parameterized import parameterized, parameterized_class
 
@@ -30,7 +26,7 @@ class TestMoveCheckTime(unittest.TestCase):
         dst_fs.create("test.txt")
         dst_fs.setinfo("test.txt", {"details": {"modified": 1000000}})
 
-        fs.move.move_fs(src_fs, dst_fs, preserve_time=self.preserve_time)
+        fs3.move.move_fs(src_fs, dst_fs, preserve_time=self.preserve_time)
 
         self.assertTrue(src_fs.isempty("/"))
         self.assertTrue(dst_fs.isdir("foo/bar"))
@@ -48,7 +44,7 @@ class TestMoveCheckTime(unittest.TestCase):
         with open_fs("mem://") as src_fs, open_fs("mem://") as dst_fs:
             src_fs.writetext("source.txt", "Source")
             src_fs_file_info = src_fs.getinfo("source.txt", namespaces)
-            fs.move.move_file(
+            fs3.move.move_file(
                 src_fs,
                 "source.txt",
                 dst_fs,
@@ -75,7 +71,7 @@ class TestMoveCheckTime(unittest.TestCase):
         dst_fs.create("test.txt")
         dst_fs.setinfo("test.txt", {"details": {"modified": 1000000}})
 
-        fs.move.move_dir(src_fs, "/foo", dst_fs, "/", preserve_time=self.preserve_time)
+        fs3.move.move_dir(src_fs, "/foo", dst_fs, "/", preserve_time=self.preserve_time)
 
         self.assertFalse(src_fs.exists("foo"))
         self.assertTrue(src_fs.isfile("test.txt"))
@@ -93,7 +89,7 @@ class TestMove(unittest.TestCase):
             src_dir = src.makedir("Some subfolder")
             src_dir.writetext("file.txt", "Content")
             dst_dir = dst.makedir("dest dir")
-            fs.move.move_file(src_dir, "file.txt", dst_dir, "target.txt")
+            fs3.move.move_file(src_dir, "file.txt", dst_dir, "target.txt")
             self.assertFalse(src.exists("Some subfolder/file.txt"))
             self.assertEqual(dst.readtext("dest dir/target.txt"), "Content")
 
@@ -104,7 +100,7 @@ class TestMove(unittest.TestCase):
             tmp.makedir("subdir_src")
             tmp.writetext("subdir_src/file.txt", "Content")
             tmp.makedir("subdir_dst")
-            fs.move.move_file(
+            fs3.move.move_file(
                 "osfs://" + join(path, "subdir_src"),
                 "file.txt",
                 "osfs://" + join(path, "subdir_dst"),
@@ -120,7 +116,7 @@ class TestMove(unittest.TestCase):
             src = read_only(open_fs(path))
             dst = tmp.makedir("sub")
             with self.assertRaises(ResourceReadOnly):
-                fs.move.move_file(src, "file.txt", dst, "target_file.txt")
+                fs3.move.move_file(src, "file.txt", dst, "target_file.txt")
             self.assertTrue(src.exists("file.txt"))
             self.assertFalse(
                 dst.exists("target_file.txt"), "file should not have been copied over"
@@ -132,7 +128,7 @@ class TestMove(unittest.TestCase):
             dst_sub = dst.makedir("sub")
             src_ro = read_only(src)
             with self.assertRaises(ResourceReadOnly):
-                fs.move.move_file(src_ro, "file.txt", dst_sub, "target.txt")
+                fs3.move.move_file(src_ro, "file.txt", dst_sub, "target.txt")
             self.assertTrue(src.exists("file.txt"))
             self.assertFalse(
                 dst_sub.exists("target.txt"), "file should not have been copied over"
@@ -143,7 +139,7 @@ class TestMove(unittest.TestCase):
             src.writetext("file.txt", "Content")
             dst_ro = read_only(dst)
             with self.assertRaises(ResourceReadOnly):
-                fs.move.move_file(src, "file.txt", dst_ro, "target.txt")
+                fs3.move.move_file(src, "file.txt", dst_ro, "target.txt")
             self.assertTrue(src.exists("file.txt"))
             self.assertFalse(
                 dst_ro.exists("target.txt"), "file should not have been copied over"
@@ -160,7 +156,7 @@ class TestMove(unittest.TestCase):
             self.assertFalse(src.exists("target.txt"))
             self.assertFalse(dst.exists("file.txt"))
             self.assertTrue(dst.exists("target.txt"))
-            fs.move.move_file(src, "file.txt", dst, "target.txt")
+            fs3.move.move_file(src, "file.txt", dst, "target.txt")
             self.assertFalse(src.exists("file.txt"))
             self.assertFalse(src.exists("target.txt"))
             self.assertFalse(dst.exists("file.txt"))
@@ -173,7 +169,7 @@ class TestMove(unittest.TestCase):
         # behaves like the regular one (TempFS tests the optmized code path).
         with open_fs(fs_url) as tmp:
             tmp.writetext("file.txt", "content")
-            fs.move.move_file(tmp, "file.txt", tmp, "file.txt")
+            fs3.move.move_file(tmp, "file.txt", tmp, "file.txt")
             self.assertTrue(tmp.exists("file.txt"))
             self.assertEquals(tmp.readtext("file.txt"), "content")
 
@@ -184,7 +180,7 @@ class TestMove(unittest.TestCase):
         with open_fs(fs_url) as tmp:
             new_dir = tmp.makedir("dir")
             new_dir.writetext("file.txt", "content")
-            fs.move.move_file(tmp, "dir/../dir/file.txt", tmp, "dir/file.txt")
+            fs3.move.move_file(tmp, "dir/../dir/file.txt", tmp, "dir/file.txt")
             self.assertTrue(tmp.exists("dir/file.txt"))
             self.assertEquals(tmp.readtext("dir/file.txt"), "content")
 
@@ -195,7 +191,7 @@ class TestMove(unittest.TestCase):
             with mock.patch.object(src, "remove") as mck:
                 mck.side_effect = FSError
                 with self.assertRaises(FSError):
-                    fs.move.move_file(
+                    fs3.move.move_file(
                         src,
                         "file.txt",
                         dst,

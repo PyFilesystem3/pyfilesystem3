@@ -1241,14 +1241,14 @@ class FSTestCases:
             self.fs.copy("dir", "folder")
 
     def _test_upload(self, workers):
-        """Test fs.copy with varying number of worker threads."""
+        """Test fs3.copy with varying number of worker threads."""
         with open_fs("temp://") as src_fs:
             src_fs.writebytes("foo", self.data1)
             src_fs.writebytes("bar", self.data2)
             src_fs.makedir("dir1").writebytes("baz", self.data3)
             src_fs.makedirs("dir2/dir3").writebytes("egg", self.data4)
             dst_fs = self.fs
-            fs.copy.copy_fs(src_fs, dst_fs, workers=workers)
+            fs3.copy.copy_fs(src_fs, dst_fs, workers=workers)
             self.assertEqual(dst_fs.readbytes("foo"), self.data1)
             self.assertEqual(dst_fs.readbytes("bar"), self.data2)
             self.assertEqual(dst_fs.readbytes("dir1/baz"), self.data3)
@@ -1267,14 +1267,14 @@ class FSTestCases:
         self._test_upload(4)
 
     def _test_download(self, workers):
-        """Test fs.copy with varying number of worker threads."""
+        """Test fs3.copy with varying number of worker threads."""
         src_fs = self.fs
         with open_fs("temp://") as dst_fs:
             src_fs.writebytes("foo", self.data1)
             src_fs.writebytes("bar", self.data2)
             src_fs.makedir("dir1").writebytes("baz", self.data3)
             src_fs.makedirs("dir2/dir3").writebytes("egg", self.data4)
-            fs.copy.copy_fs(src_fs, dst_fs, workers=workers)
+            fs3.copy.copy_fs(src_fs, dst_fs, workers=workers)
             self.assertEqual(dst_fs.readbytes("foo"), self.data1)
             self.assertEqual(dst_fs.readbytes("bar"), self.data2)
             self.assertEqual(dst_fs.readbytes("dir1/baz"), self.data3)
@@ -1645,15 +1645,15 @@ class FSTestCases:
                 f.read(2)
 
     def test_copy_file(self):
-        # Test fs.copy.copy_file
+        # Test fs3.copy.copy_file
         bytes_test = b"Hello, World"
         self.fs.writebytes("foo.txt", bytes_test)
-        fs.copy.copy_file(self.fs, "foo.txt", self.fs, "bar.txt")
+        fs3.copy.copy_file(self.fs, "foo.txt", self.fs, "bar.txt")
         self.assert_bytes("bar.txt", bytes_test)
 
         mem_fs = open_fs("mem://")
 
-        fs.copy.copy_file(self.fs, "foo.txt", mem_fs, "bar.txt")
+        fs3.copy.copy_file(self.fs, "foo.txt", mem_fs, "bar.txt")
         self.assertEqual(mem_fs.readbytes("bar.txt"), bytes_test)
 
     def test_copy_structure(self):
@@ -1661,7 +1661,7 @@ class FSTestCases:
         self.fs.makedirs("foo/bar/baz")
         self.fs.makedir("egg")
 
-        fs.copy.copy_structure(self.fs, mem_fs)
+        fs3.copy.copy_structure(self.fs, mem_fs)
         expected = {"/egg", "/foo", "/foo/bar", "/foo/bar/baz"}
         self.assertEqual(set(walk.walk_dirs(mem_fs)), expected)
 
@@ -1675,7 +1675,7 @@ class FSTestCases:
         self.fs.writetext("top.txt", "Hello, World")
         self.fs.writetext("/foo/bar/baz/test.txt", "Goodbye, World")
 
-        fs.copy.copy_dir(self.fs, "/", other_fs, "/")
+        fs3.copy.copy_dir(self.fs, "/", other_fs, "/")
         expected = {"/egg", "/foo", "/foo/bar", "/foo/bar/baz"}
         self.assertEqual(set(walk.walk_dirs(other_fs)), expected)
         self.assert_text("top.txt", "Hello, World")
@@ -1683,13 +1683,13 @@ class FSTestCases:
 
         # Test copying a sub dir
         other_fs = open_fs("mem://")
-        fs.copy.copy_dir(self.fs, "/foo", other_fs, "/")
+        fs3.copy.copy_dir(self.fs, "/foo", other_fs, "/")
         self.assertEqual(list(walk.walk_files(other_fs)), ["/bar/baz/test.txt"])
 
         print("BEFORE")
         self.fs.tree()
         other_fs.tree()
-        fs.copy.copy_dir(self.fs, "/foo", other_fs, "/egg")
+        fs3.copy.copy_dir(self.fs, "/foo", other_fs, "/egg")
 
         print("FS")
         self.fs.tree()
@@ -1708,7 +1708,7 @@ class FSTestCases:
         other_fs.makedir("egg")
         other_fs.writetext("top.txt", "Hello, World")
         other_fs.writetext("/foo/bar/baz/test.txt", "Goodbye, World")
-        fs.copy.copy_dir(other_fs, "/", self.fs, "/")
+        fs3.copy.copy_dir(other_fs, "/", self.fs, "/")
         expected = {"/egg", "/foo", "/foo/bar", "/foo/bar/baz"}
         self.assertEqual(set(walk.walk_dirs(self.fs)), expected)
         self.assert_text("top.txt", "Hello, World")
@@ -1730,7 +1730,7 @@ class FSTestCases:
         self.fs.writetext("top.txt", "Hello, World")
         self.fs.writetext("/foo/bar/baz/test.txt", "Goodbye, World")
 
-        fs.move.move_dir(self.fs, "foo", self.fs, "foo2")
+        fs3.move.move_dir(self.fs, "foo", self.fs, "foo2")
 
         expected = {"/egg", "/foo2", "/foo2/bar", "/foo2/bar/baz"}
         self.assertEqual(set(walk.walk_dirs(self.fs)), expected)
@@ -1750,7 +1750,7 @@ class FSTestCases:
         other_fs.writetext("top.txt", "Hello, World")
         other_fs.writetext("/foo/bar/baz/test.txt", "Goodbye, World")
 
-        fs.move.move_dir(other_fs, "/", self.fs, "/")
+        fs3.move.move_dir(other_fs, "/", self.fs, "/")
 
         expected = {"/egg", "/foo", "/foo/bar", "/foo/bar/baz"}
         self.assertEqual(other_fs.listdir("/"), [])

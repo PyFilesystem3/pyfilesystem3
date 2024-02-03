@@ -39,7 +39,7 @@ def _open_fs(path):
     """A mock `open_fs` that avoids side effects when running doctests."""
     if "://" not in path:
         path = "osfs://{}".format(path)
-    parse_result = fs.opener.parse(path)
+    parse_result = fs3.opener.parse(path)
     if parse_result.protocol == "osfs" and parse_result.resource == "~":
         home_fs = _home_fs()
         if parse_result.path is not None:
@@ -54,16 +54,16 @@ def _open_fs(path):
 def _my_fs(module):
     """Create a mock filesystem to be used in examples."""
     my_fs = MemoryFS()
-    if module == "fs.base":
+    if module == "fs3.base":
         my_fs.makedir("Desktop")
         my_fs.makedir("Videos")
         my_fs.touch("Videos/starwars.mov")
         my_fs.touch("file.txt")
-    elif module == "fs.info":
+    elif module == "fs3.info":
         my_fs.touch("foo.tar.gz")
         my_fs.settext("foo.py", "print('Hello, world!')")
         my_fs.makedir("bar")
-    elif module in {"fs.walk", "fs.glob"}:
+    elif module in {"fs3.walk", "fs3.glob"}:
         my_fs.makedir("dir1")
         my_fs.makedir("dir2")
         my_fs.settext("foo.py", "print('Hello, world!')")

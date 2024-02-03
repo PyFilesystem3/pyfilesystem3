@@ -44,7 +44,7 @@ class MountFS(FS):
                 filesystems will be closed when `MountFS` is closed.
 
         """
-        super(MountFS, self).__init__()
+        super().__init__()
         self.auto_close = auto_close
         self.default_fs = MemoryFS()  # type: FS
         self.mounts = []  # type: MutableSequence[tuple[str, FS]]
@@ -115,7 +115,7 @@ class MountFS(FS):
                 fs.close()
             del self.mounts[:]
         self.default_fs.close()
-        super(MountFS, self).close()
+        super().close()
 
     def desc(self, path):
         # type: (str) -> str

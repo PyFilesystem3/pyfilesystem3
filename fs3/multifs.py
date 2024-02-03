@@ -346,7 +346,7 @@ class MultiFS(FS):
         if self.write_fs is not None:
             self.write_fs.validatepath(path)
         else:
-            super(MultiFS, self).validatepath(path)
+            super().validatepath(path)
         path = abspath(normpath(path))
         return path
 

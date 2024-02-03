@@ -17,7 +17,7 @@ Here's an example of retrieving file information::
 
     >>> from fs3.osfs import OSFS
     >>> fs = OSFS('.')
-    >>> fs3.writetext('example.txt', 'Hello, World!')
+    >>> fs.writetext('example.txt', 'Hello, World!')
     >>> info = fs.getinfo('example.txt', namespaces=['details'])
     >>> info.name
     'example.txt'
@@ -124,7 +124,7 @@ Stat Namespace
 ~~~~~~~~~~~~~~
 
 The ``stat`` namespace contains information reported by a call to
-`os.stat <https://docs.python.org/3.5/library/stat.html>`_. This
+`os.stat <https://docs.python.org/3.9/library/stat.html>`_. This
 namespace is supported by :class:`~fs3.osfs.OSFS` and potentially other
 filesystems which map directly to the OS filesystem. Most other
 filesystems will not support this namespace.

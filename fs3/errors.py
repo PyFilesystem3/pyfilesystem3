@@ -59,7 +59,7 @@ class MissingInfoNamespace(AttributeError):
         # type: (str) -> None
         self.namespace = namespace
         msg = "namespace '{}' is required for this attribute"
-        super(MissingInfoNamespace, self).__init__(msg.format(namespace))
+        super().__init__(msg.format(namespace))
 
     def __reduce__(self):
         return type(self), (self.namespace,)
@@ -73,7 +73,7 @@ class FSError(Exception):
     def __init__(self, msg=None):  # noqa: D107
         # type: (Optional[str]) -> None
         self._msg = msg or self.default_message
-        super(FSError, self).__init__()
+        super().__init__()
 
     def __str__(self):
         # type: () -> str
@@ -100,7 +100,7 @@ class BulkCopyFailed(FSError):
 
     def __init__(self, errors):  # noqa: D107
         self.errors = errors
-        super(BulkCopyFailed, self).__init__()
+        super().__init__()
 
 
 class CreateFailed(FSError):
@@ -140,7 +140,7 @@ class PathError(FSError):
         # type: (str, Optional[str], Optional[Exception]) -> None
         self.path = path
         self.exc = exc
-        super(PathError, self).__init__(msg=msg)
+        super().__init__(msg=msg)
 
     def __reduce__(self):
         return type(self), (self.path, self._msg, self.exc)
@@ -160,7 +160,7 @@ class NoURL(PathError):
     def __init__(self, path, purpose, msg=None):  # noqa: D107
         # type: (str, str, Optional[str]) -> None
         self.purpose = purpose
-        super(NoURL, self).__init__(path, msg=msg)
+        super().__init__(path, msg=msg)
 
     def __reduce__(self):
         return type(self), (self.path, self.purpose, self._msg)
@@ -194,7 +194,7 @@ class OperationFailed(FSError):
         self.exc = exc
         self.details = "" if exc is None else str(exc)
         self.errno = getattr(exc, "errno", None)
-        super(OperationFailed, self).__init__(msg=msg)
+        super().__init__(msg=msg)
 
     def __reduce__(self):
         return type(self), (self.path, self.exc, self._msg)
@@ -255,7 +255,7 @@ class ResourceError(FSError):
         # type: (str, Optional[Exception], Optional[str]) -> None
         self.path = path
         self.exc = exc
-        super(ResourceError, self).__init__(msg=msg)
+        super().__init__(msg=msg)
 
     def __reduce__(self):
         return type(self), (self.path, self.exc, self._msg)
@@ -340,7 +340,7 @@ class IllegalBackReference(ValueError):
         msg = ("path '{path}' contains back-references outside of filesystem").format(
             path=path
         )
-        super(IllegalBackReference, self).__init__(msg)
+        super().__init__(msg)
 
     def __reduce__(self):
         return type(self), (self.path,)
@@ -365,7 +365,7 @@ class PatternError(ValueError):
         self.pattern = pattern
         self.position = position
         self.exc = exc
-        super(ValueError, self).__init__()
+        super().__init__()
 
     def __reduce__(self):
         return type(self), (self.path, self.position, self.exc, self._msg)

@@ -39,7 +39,7 @@ class Opener:
 
         Arguments:
             fs_url (str): A filesystem URL.
-            parse_result (~fs.opener.parse.ParseResult): A parsed
+            parse_result (~fs3.opener.parse.ParseResult): A parsed
                 filesystem URL.
             writeable (bool): `True` if the filesystem must be writable.
             create (bool): `True` if the filesystem should be created
@@ -48,7 +48,7 @@ class Opener:
                 relevant for OS filesystems).
 
         Raises:
-            fs.opener.errors.OpenerError: If a filesystem could not
+            ~fs3.opener.errors.OpenerError: If a filesystem could not
                 be opened for any reason.
 
         Returns:

@@ -74,9 +74,9 @@ class Registry:
         if self.load_extern:
             _protocols.extend(
                 entry_point.name
-                for entry_point in pkg_resources.iter_entry_points("fs.opener")
+                for entry_point in pkg_resources.iter_entry_points("fs3.opener")
             )
-            _protocols = list(collections.Ordereddict.fromkeys(_protocols))
+            _protocols = list(collections.OrderedDict.fromkeys(_protocols))
         return _protocols
 
     def get_opener(self, protocol):
@@ -90,7 +90,7 @@ class Registry:
             Opener: an opener instance.
 
         Raises:
-            ~fs.opener.errors.UnsupportedProtocol: If no opener
+            ~fs3.opener.errors.UnsupportedProtocol: If no opener
                 could be found for the given protocol.
             EntryPointLoadingError: If the returned entry point
                 is not an `Opener` subclass or could not be loaded
@@ -101,7 +101,7 @@ class Registry:
 
         if self.load_extern:
             entry_point = next(
-                pkg_resources.iter_entry_points("fs.opener", protocol), None
+                pkg_resources.iter_entry_points("fs3.opener", protocol), None
             )
         else:
             entry_point = None

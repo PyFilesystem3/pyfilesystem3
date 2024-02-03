@@ -2,13 +2,13 @@
 """Open filesystems from a URL.
 """
 
-# Declare fs.opener as a namespace package
+# Declare fs3.opener as a namespace package
 __import__("pkg_resources").declare_namespace(__name__)  # type: ignore
 
 # Import opener modules so that `registry.install` if called on each opener
 from . import appfs, ftpfs, memoryfs, osfs, tarfs, tempfs, zipfs
 
-# Import objects into fs.opener namespace
+# Import objects into fs3.opener namespace
 from .base import Opener
 from .parse import parse_fs_url as parse
 from .registry import registry
