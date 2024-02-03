@@ -11,14 +11,12 @@ from contextlib import contextmanager
 from . import errors
 
 if typing.TYPE_CHECKING:
-    from typing import Iterator, Optional, Text, Type, Union
+    from collections.abc import Iterator
+    from typing import Optional, Union
 
     from types import TracebackType
 
-try:
-    from collections.abc import Mapping
-except ImportError:
-    from collections import Mapping  # noqa: E811
+from collections.abc import Mapping
 
 
 _WINDOWS_PLATFORM = platform.system() == "Windows"
@@ -60,7 +58,7 @@ class _ConvertOSErrors:
         FILE_ERRORS[13] = errors.FileExpected
 
     def __init__(self, opname, path, directory=False):
-        # type: (Text, Text, bool) -> None
+        # type: (str, str, bool) -> None
         self._opname = opname
         self._path = path
         self._directory = directory
@@ -71,7 +69,7 @@ class _ConvertOSErrors:
 
     def __exit__(
         self,
-        exc_type,  # type: Optional[Type[BaseException]]
+        exc_type,  # type: Optional[type[BaseException]]
         exc_value,  # type: Optional[BaseException]
         traceback,  # type: Optional[TracebackType]
     ):
@@ -92,7 +90,7 @@ convert_os_errors = _ConvertOSErrors
 
 @contextmanager
 def unwrap_errors(path_replace):
-    # type: (Union[Text, Mapping[Text, Text]]) -> Iterator[None]
+    # type: (Union[str, Mapping[str, str]]) -> Iterator[None]
     """Get a context to map OS errors to their `fs3.errors` counterpart.
 
     The context will re-write the paths in resource exceptions to be

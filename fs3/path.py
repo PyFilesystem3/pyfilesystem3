@@ -7,14 +7,9 @@ separated by forward slashes and with an optional leading slash).
 See :ref:`paths` for an explanation of PyFilesystem paths.
 
 """
-import typing
-
 import re
 
 from .errors import IllegalBackReference
-
-if typing.TYPE_CHECKING:
-    from typing import List, Text, Tuple
 
 
 __all__ = [
@@ -45,7 +40,7 @@ _requires_normalization = re.compile(r"(^|/)\.\.?($|/)|//", re.UNICODE).search
 
 
 def normpath(path):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Normalize a path.
 
     This function simplifies a path by collapsing back-references
@@ -74,7 +69,7 @@ def normpath(path):
         return path.rstrip("/")
 
     prefix = "/" if path.startswith("/") else ""
-    components = []  # type: List[Text]
+    components = []  # type: list[str]
     try:
         for component in path.split("/"):
             if component in "..":  # True for '..', '.', and ''
@@ -89,7 +84,7 @@ def normpath(path):
 
 
 def iteratepath(path):
-    # type: (Text) -> List[Text]
+    # type: (str) -> list[str]
     """Iterate over the individual components of a path.
 
     Arguments:
@@ -110,7 +105,7 @@ def iteratepath(path):
 
 
 def recursepath(path, reverse=False):
-    # type: (Text, bool) -> List[Text]
+    # type: (str, bool) -> list[str]
     """Get intermediate paths from the root to the given path.
 
     Arguments:
@@ -148,7 +143,7 @@ def recursepath(path, reverse=False):
 
 
 def isabs(path):
-    # type: (Text) -> bool
+    # type: (str) -> bool
     """Check if a path is an absolute path.
 
     Arguments:
@@ -163,7 +158,7 @@ def isabs(path):
 
 
 def abspath(path):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Convert the given path to an absolute path.
 
     Since FS objects have no concept of a *current directory*, this
@@ -183,7 +178,7 @@ def abspath(path):
 
 
 def relpath(path):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Convert the given path to a relative path.
 
     This is the inverse of `abspath`, stripping a leading ``'/'`` from
@@ -204,7 +199,7 @@ def relpath(path):
 
 
 def join(*paths):
-    # type: (*Text) -> Text
+    # type: (*str) -> str
     """Join any number of paths together.
 
     Arguments:
@@ -223,7 +218,7 @@ def join(*paths):
 
     """
     absolute = False
-    relpaths = []  # type: List[Text]
+    relpaths = []  # type: list[str]
     for p in paths:
         if p:
             if p[0] == "/":
@@ -238,7 +233,7 @@ def join(*paths):
 
 
 def combine(path1, path2):
-    # type: (Text, Text) -> Text
+    # type: (str, str) -> str
     """Join two paths together.
 
     This is faster than :func:`~fs3.path.join`, but only works when the
@@ -263,14 +258,14 @@ def combine(path1, path2):
 
 
 def parts(path):
-    # type: (Text) -> List[Text]
+    # type: (str) -> list[str]
     """Split a path in to its component parts.
 
     Arguments:
         path (str): Path to split in to parts.
 
     Returns:
-        list: List of components
+        list: list of components
 
     Example:
         >>> parts('/foo/bar/baz')
@@ -287,7 +282,7 @@ def parts(path):
 
 
 def split(path):
-    # type: (Text) -> Tuple[Text, Text]
+    # type: (str) -> tuple[str, str]
     """Split a path into (head, tail) pair.
 
     This function splits a path into a pair (head, tail) where 'tail' is
@@ -315,7 +310,7 @@ def split(path):
 
 
 def splitext(path):
-    # type: (Text) -> Tuple[Text, Text]
+    # type: (str) -> tuple[str, str]
     """Split the extension from the path.
 
     Arguments:
@@ -344,7 +339,7 @@ def splitext(path):
 
 
 def isdotfile(path):
-    # type: (Text) -> bool
+    # type: (str) -> bool
     """Detect if a path references a dot file.
 
     Arguments:
@@ -366,7 +361,7 @@ def isdotfile(path):
 
 
 def dirname(path):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Return the parent directory of a path.
 
     This is always equivalent to the 'head' component of the value
@@ -391,7 +386,7 @@ def dirname(path):
 
 
 def basename(path):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Return the basename of the resource referenced by a path.
 
     This is always equivalent to the 'tail' component of the value
@@ -416,7 +411,7 @@ def basename(path):
 
 
 def issamedir(path1, path2):
-    # type: (Text, Text) -> bool
+    # type: (str, str) -> bool
     """Check if two paths reference a resource in the same directory.
 
     Arguments:
@@ -437,7 +432,7 @@ def issamedir(path1, path2):
 
 
 def isbase(path1, path2):
-    # type: (Text, Text) -> bool
+    # type: (str, str) -> bool
     """Check if ``path1`` is a base of ``path2``.
 
     Arguments:
@@ -458,7 +453,7 @@ def isbase(path1, path2):
 
 
 def isparent(path1, path2):
-    # type: (Text, Text) -> bool
+    # type: (str, str) -> bool
     """Check if ``path1`` is a parent directory of ``path2``.
 
     Arguments:
@@ -492,7 +487,7 @@ def isparent(path1, path2):
 
 
 def forcedir(path):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Ensure the path ends with a trailing forward slash.
 
     Arguments:
@@ -516,7 +511,7 @@ def forcedir(path):
 
 
 def frombase(path1, path2):
-    # type: (Text, Text) -> Text
+    # type: (str, str) -> str
     """Get the final path of ``path2`` that isn't in ``path1``.
 
     Arguments:
@@ -537,7 +532,7 @@ def frombase(path1, path2):
 
 
 def relativefrom(base, path):
-    # type: (Text, Text) -> Text
+    # type: (str, str) -> str
     """Return a path relative from a given base path.
 
     Insert backrefs as appropriate to reach the path from the base.
@@ -569,7 +564,7 @@ _WILD_CHARS = frozenset("*?[]!{}")
 
 
 def iswildcard(path):
-    # type: (Text) -> bool
+    # type: (str) -> bool
     """Check if a path ends with a wildcard.
 
     Arguments:

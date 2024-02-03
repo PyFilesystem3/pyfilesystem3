@@ -7,13 +7,13 @@ from .errors import DirectoryNotEmpty, ResourceNotFound
 from .path import abspath, dirname, normpath, recursepath
 
 if typing.TYPE_CHECKING:
-    from typing import IO, List, Optional, Text, Union
+    from typing import IO, Optional, Union
 
     from .base import FS
 
 
 def remove_empty(fs, path):
-    # type: (FS, Text) -> None
+    # type: (FS, str) -> None
     """Remove all empty parents.
 
     Arguments:
@@ -52,7 +52,7 @@ def copy_file_data(src_file, dst_file, chunk_size=None):
 
 
 def get_intermediate_dirs(fs, dir_path):
-    # type: (FS, Text) -> List[Text]
+    # type: (FS, str) -> list[str]
     """Get a list of non-existing intermediate directories.
 
     Arguments:

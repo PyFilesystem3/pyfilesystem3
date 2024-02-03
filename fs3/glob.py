@@ -17,26 +17,18 @@ Counts = namedtuple("Counts", ["files", "directories", "data"])
 LineCounts = namedtuple("LineCounts", ["lines", "non_blank"])
 
 if typing.TYPE_CHECKING:
-    from typing import (
-        Iterator,
-        List,
-        Optional,
-        Pattern,
-        Text,
-        Tuple,
-        Iterable,
-        Callable,
-    )
+    from collections.abc import Callable, Iterable, Iterator
+    from typing import Optional
     from .base import FS
 
 
 _PATTERN_CACHE = LRUCache(
     1000
-)  # type: LRUCache[Tuple[Text, bool], Tuple[Optional[int], Pattern]]
+)  # type: LRUCache[tuple[str, bool], tuple[Optional[int], re.Pattern]]
 
 
 def _split_pattern_by_sep(pattern):
-    # type: (Text) -> List[Text]
+    # type: (str) -> list[str]
     """Split a glob pattern at its directory seperators (/).
 
     Takes into account escaped cases like [/].
@@ -56,7 +48,7 @@ def _split_pattern_by_sep(pattern):
 
 
 def _translate(pattern):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Translate a glob pattern without '**' to a regular expression.
 
     There is no way to quote meta-characters.
@@ -103,7 +95,7 @@ def _translate(pattern):
 
 
 def _translate_glob(pattern):
-    # type: (Text) -> Tuple[Optional[int], Text]
+    # type: (str) -> tuple[Optional[int], str]
     """Translate a glob pattern to a regular expression.
 
     There is no way to quote meta-characters.
@@ -112,7 +104,7 @@ def _translate_glob(pattern):
         pattern (str): A glob pattern.
 
     Returns:
-        Tuple[Optional[int], Text]: The first component describes the levels
+        tuple[Optional[int], str]: The first component describes the levels
             of depth this glob pattern goes to; basically the number of "/" in
             the pattern. If there is a "**" in the glob pattern, the depth is
             basically unbounded, and this component is `None` instead.
@@ -186,7 +178,7 @@ def imatch(pattern, path):
 
 
 def match_any(patterns, path):
-    # type: (Iterable[Text], Text) -> bool
+    # type: (Iterable[str], str) -> bool
     """Test if a path matches any of a list of patterns.
 
     Will return `True` if ``patterns`` is an empty list.
@@ -206,7 +198,7 @@ def match_any(patterns, path):
 
 
 def imatch_any(patterns, path):
-    # type: (Iterable[Text], Text) -> bool
+    # type: (Iterable[str], str) -> bool
     """Test if a path matches any of a list of patterns (case insensitive).
 
     Will return `True` if ``patterns`` is an empty list.
@@ -226,7 +218,7 @@ def imatch_any(patterns, path):
 
 
 def get_matcher(patterns, case_sensitive, accept_prefix=False):
-    # type: (Iterable[Text], bool, bool) -> Callable[[Text], bool]
+    # type: (Iterable[str], bool, bool) -> Callable[[str], bool]
     """Get a callable that matches paths against the given patterns.
 
     Arguments:
@@ -282,7 +274,7 @@ class Globber:
         case_sensitive=True,
         exclude_dirs=None,
     ):
-        # type: (FS, str, str, Optional[List[str]], bool, Optional[List[str]]) -> None
+        # type: (FS, str, str, Optional[list[str]], bool, Optional[list[str]]) -> None
         """Create a new Globber instance.
 
         Arguments:
@@ -316,7 +308,7 @@ class Globber:
         )
 
     def _make_iter(self, search="breadth", namespaces=None):
-        # type: (str, List[str]) -> Iterator[GlobMatch]
+        # type: (str, list[str]) -> Iterator[GlobMatch]
         try:
             levels, re_pattern = _PATTERN_CACHE[(self.pattern, self.case_sensitive)]
         except KeyError:
@@ -433,7 +425,7 @@ class BoundGlobber:
     def __call__(
         self, pattern, path="/", namespaces=None, case_sensitive=True, exclude_dirs=None
     ):
-        # type: (str, str, Optional[List[str]], bool, Optional[List[str]]) -> Globber
+        # type: (str, str, Optional[list[str]], bool, Optional[list[str]]) -> Globber
         """Match resources on the bound filesystem againsts a glob pattern.
 
         Arguments:

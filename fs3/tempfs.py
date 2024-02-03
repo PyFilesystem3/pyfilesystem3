@@ -17,7 +17,7 @@ from . import errors
 from .osfs import OSFS
 
 if typing.TYPE_CHECKING:
-    from typing import Optional, Text
+    from typing import Optional
 
 
 class TempFS(OSFS):
@@ -49,8 +49,8 @@ class TempFS(OSFS):
 
     def __init__(
         self,
-        identifier="__tempfs__",  # type: Text
-        temp_dir=None,  # type: Optional[Text]
+        identifier="__tempfs__",  # type: str
+        temp_dir=None,  # type: Optional[str]
         auto_clean=True,  # type: bool
         ignore_clean_errors=True,  # type: bool
     ):
@@ -80,11 +80,11 @@ class TempFS(OSFS):
         super(TempFS, self).__init__(self._temp_dir)
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "TempFS()"
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<tempfs '{}'>".format(self._temp_dir)
 
     def close(self):

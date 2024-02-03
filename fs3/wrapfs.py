@@ -11,20 +11,13 @@ from .info import Info
 from .path import abspath, join, normpath
 
 if typing.TYPE_CHECKING:
+    from collections.abc import Callable, Collection, Iterable, Iterator, Mapping
     from typing import (
         IO,
         Any,
         AnyStr,
         BinaryIO,
-        Callable,
-        Collection,
-        Iterable,
-        Iterator,
-        List,
-        Mapping,
         Optional,
-        Text,
-        Tuple,
         Union,
     )
 
@@ -38,7 +31,7 @@ if typing.TYPE_CHECKING:
     from .walk import BoundWalker
 
     _T = typing.TypeVar("_T", bound="FS")
-    _OpendirFactory = Callable[[_T, Text], SubFS[_T]]
+    _OpendirFactory = Callable[[_T, str], SubFS[_T]]
 
 
 _F = typing.TypeVar("_F", bound="FS", covariant=True)
@@ -54,7 +47,7 @@ class WrapFS(FS, typing.Generic[_F]):
 
     """
 
-    wrap_name = None  # type: Optional[Text]
+    wrap_name = None  # type: Optional[str]
 
     def __init__(self, wrap_fs):  # noqa: D107
         # type: (_F) -> None
@@ -62,11 +55,11 @@ class WrapFS(FS, typing.Generic[_F]):
         super(WrapFS, self).__init__()
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "{}({!r})".format(self.__class__.__name__, self._wrap_fs)
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         wraps = []
         _fs = self  # type: Union[FS, WrapFS[FS]]
         while hasattr(_fs, "_wrap_fs"):
@@ -81,7 +74,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return _str
 
     def delegate_path(self, path):
-        # type: (Text) -> Tuple[_F, Text]
+        # type: (str) -> tuple[_F, str]
         """Encode a path for proxied filesystem.
 
         Arguments:
@@ -104,7 +97,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return self._wrap_fs
 
     def appendbytes(self, path, data):
-        # type: (Text, bytes) -> None
+        # type: (str, bytes) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -112,11 +105,11 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def appendtext(
         self,
-        path,  # type: Text
-        text,  # type: Text
-        encoding="utf-8",  # type: Text
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        path,  # type: str
+        text,  # type: str
+        encoding="utf-8",  # type: str
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
         # type: (...) -> None
         self.check()
@@ -127,7 +120,7 @@ class WrapFS(FS, typing.Generic[_F]):
             )
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -138,7 +131,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return Info(raw_info)
 
     def listdir(self, path):
-        # type: (Text) -> List[Text]
+        # type: (str) -> list[str]
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -153,7 +146,7 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def makedir(
         self,
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -164,7 +157,7 @@ class WrapFS(FS, typing.Generic[_F]):
             return _fs.makedir(_path, permissions=permissions, recreate=recreate)
 
     def move(self, src_path, dst_path, overwrite=False, preserve_time=False):
-        # type: (Text, Text, bool, bool) -> None
+        # type: (str, str, bool, bool) -> None
         _fs, _src_path = self.delegate_path(src_path)
         _, _dst_path = self.delegate_path(dst_path)
         with unwrap_errors({_src_path: src_path, _dst_path: dst_path}):
@@ -173,7 +166,7 @@ class WrapFS(FS, typing.Generic[_F]):
             )
 
     def movedir(self, src_path, dst_path, create=False, preserve_time=False):
-        # type: (Text, Text, bool, bool) -> None
+        # type: (str, str, bool, bool) -> None
         _fs, _src_path = self.delegate_path(src_path)
         _, _dst_path = self.delegate_path(dst_path)
         with unwrap_errors({_src_path: src_path, _dst_path: dst_path}):
@@ -182,7 +175,7 @@ class WrapFS(FS, typing.Generic[_F]):
             )
 
     def openbin(self, path, mode="r", buffering=-1, **options):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -190,14 +183,14 @@ class WrapFS(FS, typing.Generic[_F]):
         return bin_file
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             _fs.remove(_path)
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         _path = abspath(normpath(path))
         if _path == "/":
@@ -207,7 +200,7 @@ class WrapFS(FS, typing.Generic[_F]):
             _fs.removedir(_path)
 
     def removetree(self, dir_path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         _path = abspath(normpath(dir_path))
         _delegate_fs, _delegate_path = self.delegate_path(dir_path)
@@ -227,9 +220,9 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def scandir(
         self,
-        path,  # type: Text
-        namespaces=None,  # type: Optional[Collection[Text]]
-        page=None,  # type: Optional[Tuple[int, int]]
+        path,  # type: str
+        namespaces=None,  # type: Optional[Collection[str]]
+        page=None,  # type: Optional[tuple[int, int]]
     ):
         # type: (...) -> Iterator[Info]
         self.check()
@@ -239,27 +232,27 @@ class WrapFS(FS, typing.Generic[_F]):
                 yield info
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         return _fs.setinfo(_path, info)
 
     def settimes(self, path, accessed=None, modified=None):
-        # type: (Text, Optional[datetime], Optional[datetime]) -> None
+        # type: (str, Optional[datetime], Optional[datetime]) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             _fs.settimes(_path, accessed=accessed, modified=modified)
 
     def touch(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             _fs.touch(_path)
 
     def copy(self, src_path, dst_path, overwrite=False, preserve_time=False):
-        # type: (Text, Text, bool, bool) -> None
+        # type: (str, str, bool, bool) -> None
         src_fs, _src_path = self.delegate_path(src_path)
         dst_fs, _dst_path = self.delegate_path(dst_path)
         with unwrap_errors({_src_path: src_path, _dst_path: dst_path}):
@@ -268,7 +261,7 @@ class WrapFS(FS, typing.Generic[_F]):
             copy_file(src_fs, _src_path, dst_fs, _dst_path, preserve_time=preserve_time)
 
     def copydir(self, src_path, dst_path, create=False, preserve_time=False):
-        # type: (Text, Text, bool, bool) -> None
+        # type: (str, str, bool, bool) -> None
         src_fs, _src_path = self.delegate_path(src_path)
         dst_fs, _dst_path = self.delegate_path(dst_path)
         with unwrap_errors({_src_path: src_path, _dst_path: dst_path}):
@@ -279,14 +272,14 @@ class WrapFS(FS, typing.Generic[_F]):
             copy_dir(src_fs, _src_path, dst_fs, _dst_path, preserve_time=preserve_time)
 
     def create(self, path, wipe=False):
-        # type: (Text, bool) -> bool
+        # type: (str, bool) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             return _fs.create(_path, wipe=wipe)
 
     def desc(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -294,14 +287,14 @@ class WrapFS(FS, typing.Generic[_F]):
         return desc
 
     def download(self, path, file, chunk_size=None, **options):
-        # type: (Text, BinaryIO, Optional[int], **Any) -> None
+        # type: (str, BinaryIO, Optional[int], **Any) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             _fs.download(_path, file, chunk_size=chunk_size, **options)
 
     def exists(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -310,13 +303,13 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def filterdir(
         self,
-        path,  # type: Text
-        files=None,  # type: Optional[Iterable[Text]]
-        dirs=None,  # type: Optional[Iterable[Text]]
-        exclude_dirs=None,  # type: Optional[Iterable[Text]]
-        exclude_files=None,  # type: Optional[Iterable[Text]]
-        namespaces=None,  # type: Optional[Collection[Text]]
-        page=None,  # type: Optional[Tuple[int, int]]
+        path,  # type: str
+        files=None,  # type: Optional[Iterable[str]]
+        dirs=None,  # type: Optional[Iterable[str]]
+        exclude_dirs=None,  # type: Optional[Iterable[str]]
+        exclude_files=None,  # type: Optional[Iterable[str]]
+        namespaces=None,  # type: Optional[Collection[str]]
+        page=None,  # type: Optional[tuple[int, int]]
     ):
         # type: (...) -> Iterator[Info]
         self.check()
@@ -337,7 +330,7 @@ class WrapFS(FS, typing.Generic[_F]):
                 yield info
 
     def readbytes(self, path):
-        # type: (Text) -> bytes
+        # type: (str) -> bytes
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -346,12 +339,12 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def readtext(
         self,
-        path,  # type: Text
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        path,  # type: str
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
-        # type: (...) -> Text
+        # type: (...) -> str
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -361,13 +354,13 @@ class WrapFS(FS, typing.Generic[_F]):
         return _text
 
     def getmeta(self, namespace="standard"):
-        # type: (Text) -> Mapping[Text, object]
+        # type: (str) -> Mapping[str, object]
         self.check()
         meta = self.delegate_fs().getmeta(namespace=namespace)
         return meta
 
     def getsize(self, path):
-        # type: (Text) -> int
+        # type: (str) -> int
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -375,7 +368,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return size
 
     def getsyspath(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -383,7 +376,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return sys_path
 
     def gettype(self, path):
-        # type: (Text) -> ResourceType
+        # type: (str) -> ResourceType
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -391,14 +384,14 @@ class WrapFS(FS, typing.Generic[_F]):
         return _type
 
     def geturl(self, path, purpose="download"):
-        # type: (Text, Text) -> Text
+        # type: (str, str) -> str
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             return _fs.geturl(_path, purpose=purpose)
 
     def hassyspath(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -406,7 +399,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return has_sys_path
 
     def hasurl(self, path, purpose="download"):
-        # type: (Text, Text) -> bool
+        # type: (str, str) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -414,7 +407,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return has_url
 
     def isdir(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -422,7 +415,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return _isdir
 
     def isfile(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -430,7 +423,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return _isfile
 
     def islink(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -439,7 +432,7 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def makedirs(
         self,
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -451,12 +444,12 @@ class WrapFS(FS, typing.Generic[_F]):
     # FIXME(@althonos): line_buffering is not a FS.open declared argument
     def open(
         self,
-        path,  # type: Text
-        mode="r",  # type: Text
+        path,  # type: str
+        mode="r",  # type: str
         buffering=-1,  # type: int
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
         line_buffering=False,  # type: bool
         **options  # type: Any
     ):
@@ -478,7 +471,7 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def opendir(
         self,  # type: _W
-        path,  # type: Text
+        path,  # type: str
         factory=None,  # type: Optional[_OpendirFactory]
     ):
         # type: (...) -> SubFS[_W]
@@ -491,14 +484,14 @@ class WrapFS(FS, typing.Generic[_F]):
             return factory(self, path)
 
     def writebytes(self, path, contents):
-        # type: (Text, bytes) -> None
+        # type: (str, bytes) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
             _fs.writebytes(_path, contents)
 
     def upload(self, path, file, chunk_size=None, **options):
-        # type: (Text, BinaryIO, Optional[int], **Any) -> None
+        # type: (str, BinaryIO, Optional[int], **Any) -> None
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -506,11 +499,11 @@ class WrapFS(FS, typing.Generic[_F]):
 
     def writefile(
         self,
-        path,  # type: Text
+        path,  # type: str
         file,  # type: IO[AnyStr]
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
         # type: (...) -> None
         self.check()
@@ -521,7 +514,7 @@ class WrapFS(FS, typing.Generic[_F]):
             )
 
     def validatepath(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):
@@ -530,7 +523,7 @@ class WrapFS(FS, typing.Generic[_F]):
         return path
 
     def hash(self, path, name):
-        # type: (Text, Text) -> Text
+        # type: (str, str) -> str
         self.check()
         _fs, _path = self.delegate_path(path)
         with unwrap_errors(path):

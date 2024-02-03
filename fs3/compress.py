@@ -18,18 +18,18 @@ from .time import datetime_to_epoch
 from .walk import Walker
 
 if typing.TYPE_CHECKING:
-    from typing import BinaryIO, Optional, Text, Tuple, Union
+    from typing import BinaryIO, Optional, Union
 
     from .base import FS
 
-    ZipTime = Tuple[int, int, int, int, int, int]
+    ZipTime = tuple[int, int, int, int, int, int]
 
 
 def write_zip(
     src_fs,  # type: FS
-    file,  # type: Union[Text, BinaryIO]
+    file,  # type: Union[str, BinaryIO]
     compression=zipfile.ZIP_DEFLATED,  # type: int
-    encoding="utf-8",  # type: Text
+    encoding="utf-8",  # type: str
     walker=None,  # type: Optional[Walker]
 ):
     # type: (...) -> None
@@ -99,9 +99,9 @@ def write_zip(
 
 def write_tar(
     src_fs,  # type: FS
-    file,  # type: Union[Text, BinaryIO]
-    compression=None,  # type: Optional[Text]
-    encoding="utf-8",  # type: Text
+    file,  # type: Union[str, BinaryIO]
+    compression=None,  # type: Optional[str]
+    encoding="utf-8",  # type: str
     walker=None,  # type: Optional[Walker]
 ):
     # type: (...) -> None

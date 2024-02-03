@@ -25,7 +25,8 @@ from .tools import is_thread_safe
 from .walk import Walker
 
 if typing.TYPE_CHECKING:
-    from typing import Callable, Optional, Text, Union
+    from collections.abc import Callable
+    from typing import Optional, Union
 
     from .base import FS
     from .info import Info
@@ -49,8 +50,8 @@ def _compare(info1, info2):
 
 
 def mirror(
-    src_fs,  # type: Union[FS, Text]
-    dst_fs,  # type: Union[FS, Text]
+    src_fs,  # type: Union[FS, str]
+    dst_fs,  # type: Union[FS, str]
     walker=None,  # type: Optional[Walker]
     copy_if_newer=True,  # type: bool
     workers=0,  # type: int

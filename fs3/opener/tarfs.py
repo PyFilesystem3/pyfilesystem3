@@ -8,8 +8,6 @@ from .errors import NotWriteable
 from .registry import registry
 
 if typing.TYPE_CHECKING:
-    from typing import Text
-
     from ..tarfs import TarFS  # noqa: F401
     from .parse import ParseResult
 
@@ -22,11 +20,11 @@ class TarOpener(Opener):
 
     def open_fs(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         parse_result,  # type: ParseResult
         writeable,  # type: bool
         create,  # type: bool
-        cwd,  # type: Text
+        cwd,  # type: str
     ):
         # type: (...) -> TarFS
         from ..tarfs import TarFS

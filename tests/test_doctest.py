@@ -105,9 +105,9 @@ def _load_tests(loader, tests, ignore):
 
     def setUp(self):
         warnings.simplefilter("ignore")
-        self._open_fs_mock = mock.patch.object(fs, "open_fs", new=_open_fs)
+        self._open_fs_mock = mock.patch.object(fs3, "open_fs", new=_open_fs)
         self._open_fs_mock.__enter__()
-        self._ftpfs_mock = mock.patch.object(fs.ftpfs, "FTPFS")
+        self._ftpfs_mock = mock.patch.object(fs3.ftpfs, "FTPFS")
         self._ftpfs_mock.__enter__()
 
     def tearDown(self):
@@ -116,7 +116,7 @@ def _load_tests(loader, tests, ignore):
         warnings.simplefilter(warnings.defaultaction)
 
     # recursively traverse all library submodules and load tests from them
-    packages = [None, fs]
+    packages = [None, fs3]
     for pkg in iter(packages.pop, None):
         for (_, subpkgname, subispkg) in pkgutil.walk_packages(pkg.__path__):
             # import the submodule and add it to the tests
@@ -128,7 +128,7 @@ def _load_tests(loader, tests, ignore):
             globs = dict(**module.__dict__)
             globs.update(
                 os=os,
-                fs=fs,
+                fs3=fs3,
                 my_fs=_my_fs(module.__name__),
                 open=_open,
                 # NB (@althonos): This allows using OSFS in some examples,

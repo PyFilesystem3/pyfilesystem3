@@ -22,10 +22,7 @@ from fs3.path import join
 from fs3.subfs import SubFS
 from fs3.test import FSTestCases
 
-try:
-    from pytest import mark
-except ImportError:
-    from . import mark
+from pytest import mark
 
 # Prevent socket timeouts from slowing tests too much
 socket.setdefaulttimeout(1)

@@ -14,14 +14,14 @@ See Also:
 import typing
 
 if typing.TYPE_CHECKING:
-    from typing import Iterable, SupportsInt, Text
+    from typing import Iterable, SupportsInt
 
 
 __all__ = ["traditional", "decimal", "binary"]
 
 
 def _to_str(size, suffixes, base):
-    # type: (SupportsInt, Iterable[Text], int) -> Text
+    # type: (SupportsInt, Iterable[str], int) -> str
     try:
         size = int(size)
     except ValueError:
@@ -40,7 +40,7 @@ def _to_str(size, suffixes, base):
 
 
 def traditional(size):
-    # type: (SupportsInt) -> Text
+    # type: (SupportsInt) -> str
     """Convert a filesize in to a string (powers of 1024, JDEC prefixes).
 
     In this convention, ``1024 B = 1 KB``.
@@ -66,7 +66,7 @@ def traditional(size):
 
 
 def binary(size):
-    # type: (SupportsInt) -> Text
+    # type: (SupportsInt) -> str
     """Convert a filesize in to a string (powers of 1024, IEC prefixes).
 
     In this convention, ``1024 B = 1 KiB``.
@@ -92,7 +92,7 @@ def binary(size):
 
 
 def decimal(size):
-    # type: (SupportsInt) -> Text
+    # type: (SupportsInt) -> str
     """Convert a filesize in to a string (powers of 1000, SI prefixes).
 
     In this convention, ``1000 B = 1 kB``.

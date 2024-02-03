@@ -14,7 +14,7 @@ if platform.system() != "Windows":
 
         TEST_FILENAME = b"foo\xb1bar"
         # fsdecode throws error on Windows
-        TEST_FILENAME_UNICODE = fs.fsdecode(TEST_FILENAME)
+        TEST_FILENAME_UNICODE = fs3.fsdecode(TEST_FILENAME)
 
         def setUp(self):
             dir_path = self.dir_path = tempfile.mkdtemp()

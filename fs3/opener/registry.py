@@ -13,7 +13,8 @@ from .errors import EntryPointError, UnsupportedProtocol
 from .parse import parse_fs_url
 
 if typing.TYPE_CHECKING:
-    from typing import Callable, Dict, Iterator, List, Text, Tuple, Type, Union
+    from collections.abc import Callable, Iterator
+    from typing import Union
 
     from ..base import FS
 
@@ -22,7 +23,7 @@ class Registry:
     """A registry for `Opener` instances."""
 
     def __init__(self, default_opener="osfs", load_extern=False):
-        # type: (Text, bool) -> None
+        # type: (str, bool) -> None
         """Create a registry object.
 
         Arguments:
@@ -35,14 +36,14 @@ class Registry:
         """
         self.default_opener = default_opener
         self.load_extern = load_extern
-        self._protocols = {}  # type: Dict[Text, Opener]
+        self._protocols = {}  # type: dict[str, Opener]
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<fs-registry {!r}>".format(self.protocols)
 
     def install(self, opener):
-        # type: (Union[Type[Opener], Opener, Callable[[], Opener]]) -> Opener
+        # type: (Union[type[Opener], Opener, Callable[[], Opener]]) -> Opener
         """Install an opener.
 
         Arguments:
@@ -67,7 +68,7 @@ class Registry:
 
     @property
     def protocols(self):
-        # type: () -> List[Text]
+        # type: () -> list[str]
         """`list`: the list of supported protocols."""
         _protocols = list(self._protocols)
         if self.load_extern:
@@ -75,11 +76,11 @@ class Registry:
                 entry_point.name
                 for entry_point in pkg_resources.iter_entry_points("fs.opener")
             )
-            _protocols = list(collections.OrderedDict.fromkeys(_protocols))
+            _protocols = list(collections.Ordereddict.fromkeys(_protocols))
         return _protocols
 
     def get_opener(self, protocol):
-        # type: (Text) -> Opener
+        # type: (str) -> Opener
         """Get the opener class associated to a given protocol.
 
         Arguments:
@@ -137,13 +138,13 @@ class Registry:
 
     def open(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         writeable=True,  # type: bool
         create=False,  # type: bool
-        cwd=".",  # type: Text
-        default_protocol="osfs",  # type: Text
+        cwd=".",  # type: str
+        default_protocol="osfs",  # type: str
     ):
-        # type: (...) -> Tuple[FS, Text]
+        # type: (...) -> tuple[FS, str]
         """Open a filesystem from a FS URL.
 
         Returns a tuple of a filesystem object and a path. If there is
@@ -176,11 +177,11 @@ class Registry:
 
     def open_fs(
         self,
-        fs_url,  # type: Union[FS, Text]
+        fs_url,  # type: Union[FS, str]
         writeable=False,  # type: bool
         create=False,  # type: bool
-        cwd=".",  # type: Text
-        default_protocol="osfs",  # type: Text
+        cwd=".",  # type: str
+        default_protocol="osfs",  # type: str
     ):
         # type: (...) -> FS
         """Open a filesystem from a FS URL (ignoring the path component).
@@ -226,10 +227,10 @@ class Registry:
     @contextlib.contextmanager
     def manage_fs(
         self,
-        fs_url,  # type: Union[FS, Text]
+        fs_url,  # type: Union[FS, str]
         create=False,  # type: bool
         writeable=False,  # type: bool
-        cwd=".",  # type: Text
+        cwd=".",  # type: str
     ):
         # type: (...) -> Iterator[FS]
         """Get a context manager to open and close a filesystem.
@@ -252,7 +253,7 @@ class Registry:
             utility function::
 
                 >>> def print_ls(list_fs):
-                ...     '''List a directory.'''
+                ...     '''list a directory.'''
                 ...     with manage_fs(list_fs) as fs:
                 ...         print(' '.join(fs.listdir()))
 

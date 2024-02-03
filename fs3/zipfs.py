@@ -21,16 +21,12 @@ from .time import datetime_to_epoch
 from .wrapfs import WrapFS
 
 if typing.TYPE_CHECKING:
+    from collections.abc import Collection
     from typing import (
         Any,
         BinaryIO,
-        Collection,
-        Dict,
-        List,
         Optional,
         SupportsInt,
-        Text,
-        Tuple,
         Union,
     )
 
@@ -42,7 +38,7 @@ if typing.TYPE_CHECKING:
 
 class _ZipExtFile(RawWrapper):
     def __init__(self, fs, name):  # noqa: D107
-        # type: (ReadZipFS, Text) -> None
+        # type: (ReadZipFS, str) -> None
         self._zip = _zip = fs._zip
         self._end = _zip.getinfo(name).file_size
         self._pos = 0
@@ -219,11 +215,11 @@ class ZipFS(WrapFS):
     # TODO: __new__ returning different types may be too 'magical'
     def __new__(  # type: ignore
         cls,
-        file,  # type: Union[Text, BinaryIO]
+        file,  # type: Union[str, BinaryIO]
         write=False,  # type: bool
         compression=zipfile.ZIP_DEFLATED,  # type: int
-        encoding="utf-8",  # type: Text
-        temp_fs="temp://__ziptemp__",  # type: Union[Text, FS]
+        encoding="utf-8",  # type: str
+        temp_fs="temp://__ziptemp__",  # type: Union[str, FS]
     ):
         # type: (...) -> FS
         # This magic returns a different class instance based on the
@@ -239,11 +235,11 @@ class ZipFS(WrapFS):
 
         def __init__(
             self,
-            file,  # type: Union[Text, BinaryIO]
+            file,  # type: Union[str, BinaryIO]
             write=False,  # type: bool
             compression=zipfile.ZIP_DEFLATED,  # type: int
-            encoding="utf-8",  # type: Text
-            temp_fs="temp://__ziptemp__",  # type: Text
+            encoding="utf-8",  # type: str
+            temp_fs="temp://__ziptemp__",  # type: str
         ):  # noqa: D107
             # type: (...) -> None
             pass
@@ -254,10 +250,10 @@ class WriteZipFS(WrapFS):
 
     def __init__(
         self,
-        file,  # type: Union[Text, BinaryIO]
+        file,  # type: Union[str, BinaryIO]
         compression=zipfile.ZIP_DEFLATED,  # type: int
-        encoding="utf-8",  # type: Text
-        temp_fs="temp://__ziptemp__",  # type: Union[Text, FS]
+        encoding="utf-8",  # type: str
+        temp_fs="temp://__ziptemp__",  # type: Union[str, FS]
     ):  # noqa: D107
         # type: (...) -> None
         self._file = file
@@ -269,16 +265,16 @@ class WriteZipFS(WrapFS):
         super(WriteZipFS, self).__init__(self._temp_fs)
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         t = "WriteZipFS({!r}, compression={!r}, encoding={!r}, temp_fs={!r})"
         return t.format(self._file, self.compression, self.encoding, self._temp_fs_url)
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<zipfs-write '{}'>".format(self._file)
 
     def delegate_path(self, path):
-        # type: (Text) -> Tuple[FS, Text]
+        # type: (str) -> tuple[FS, str]
         return self._temp_fs, path
 
     def delegate_fs(self):
@@ -296,9 +292,9 @@ class WriteZipFS(WrapFS):
 
     def write_zip(
         self,
-        file=None,  # type: Union[Text, BinaryIO, None]
+        file=None,  # type: Union[str, BinaryIO, None]
         compression=None,  # type: Optional[int]
-        encoding=None,  # type: Optional[Text]
+        encoding=None,  # type: Optional[str]
     ):
         # type: (...) -> None
         """Write zip to a file.
@@ -340,7 +336,7 @@ class ReadZipFS(FS):
 
     @errors.CreateFailed.catch_all
     def __init__(self, file, encoding="utf-8"):  # noqa: D107
-        # type: (Union[BinaryIO, Text], Text) -> None
+        # type: (Union[BinaryIO, str], str) -> None
         super(ReadZipFS, self).__init__()
         self._file = file
         self.encoding = encoding
@@ -348,15 +344,15 @@ class ReadZipFS(FS):
         self._directory_fs = None  # type: Optional[MemoryFS]
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "ReadZipFS({!r})".format(self._file)
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<zipfs '{}'>".format(self._file)
 
     def _path_to_zip_name(self, path):
-        # type: (Text) -> str
+        # type: (str) -> str
         """Convert a path to a zip file name."""
         path = relpath(normpath(path))
         if self._directory.isdir(path):
@@ -381,10 +377,10 @@ class ReadZipFS(FS):
             return self._directory_fs
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         _path = self.validatepath(path)
         namespaces = namespaces or ()
-        raw_info = {}  # type: Dict[Text, Dict[Text, object]]
+        raw_info = {}  # type: dict[str, dict[str, object]]
 
         if _path == "/":
             raw_info["basic"] = {"name": "", "is_dir": True}
@@ -433,18 +429,18 @@ class ReadZipFS(FS):
         return Info(raw_info)
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         self.check()
         raise errors.ResourceReadOnly(path)
 
     def listdir(self, path):
-        # type: (Text) -> List[Text]
+        # type: (str) -> list[str]
         self.check()
         return self._directory.listdir(path)
 
     def makedir(
         self,  # type: R
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -453,7 +449,7 @@ class ReadZipFS(FS):
         raise errors.ResourceReadOnly(path)
 
     def openbin(self, path, mode="r", buffering=-1, **kwargs):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         self.check()
         if "w" in mode or "+" in mode or "a" in mode:
             raise errors.ResourceReadOnly(path)
@@ -467,12 +463,12 @@ class ReadZipFS(FS):
         return _ZipExtFile(self, zip_name)  # type: ignore
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise errors.ResourceReadOnly(path)
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise errors.ResourceReadOnly(path)
 
@@ -483,7 +479,7 @@ class ReadZipFS(FS):
             self._zip.close()
 
     def readbytes(self, path):
-        # type: (Text) -> bytes
+        # type: (str) -> bytes
         self.check()
         if not self._directory.isfile(path):
             raise errors.ResourceNotFound(path)
@@ -492,7 +488,7 @@ class ReadZipFS(FS):
         return zip_bytes
 
     def geturl(self, path, purpose="download"):
-        # type: (Text, Text) -> Text
+        # type: (str, str) -> str
         if purpose == "fs" and isinstance(self._file, str):
             quoted_file = url_quote(self._file)
             quoted_path = url_quote(path)

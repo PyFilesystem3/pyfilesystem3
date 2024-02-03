@@ -18,7 +18,7 @@ from ._repr import make_repr
 from .osfs import OSFS
 
 if typing.TYPE_CHECKING:
-    from typing import Optional, Text
+    from typing import Optional
 
 
 __all__ = [
@@ -49,16 +49,16 @@ class _CopyInitMeta(abc.ABCMeta):
 class _AppFS(OSFS):
     """Abstract base class for an app FS."""
 
-    # FIXME(@althonos): replace by ClassVar[Text] once
+    # FIXME(@althonos): replace by ClassVar[str] once
     # https://github.com/python/mypy/pull/4718 is accepted
     # (subclass override will raise errors until then)
-    app_dir = None  # type: Text
+    app_dir = None  # type: str
 
     def __init__(
         self,
-        appname,  # type: Text
-        author=None,  # type: Optional[Text]
-        version=None,  # type: Optional[Text]
+        appname,  # type: str
+        author=None,  # type: Optional[str]
+        version=None,  # type: Optional[str]
         roaming=False,  # type: bool
         create=True,  # type: bool
     ):
@@ -83,7 +83,7 @@ class _AppFS(OSFS):
         )
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return make_repr(
             self.__class__.__name__,
             self.app_dirs.appname,
@@ -94,7 +94,7 @@ class _AppFS(OSFS):
         )
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<{} '{}'>".format(
             self.__class__.__name__.lower(), self.app_dirs.appname
         )

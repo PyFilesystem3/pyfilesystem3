@@ -17,24 +17,8 @@ import shutil
 import stat
 import tempfile
 
-try:
-    from os import scandir
-except ImportError:
-    try:
-        from scandir import scandir  # type: ignore
-    except ImportError:  # pragma: no cover
-        scandir = None  # type: ignore  # pragma: no cover
-
-try:
-    from os import sendfile
-except ImportError:
-    try:
-        from sendfile import sendfile  # type: ignore
-    except ImportError:
-        sendfile = None  # type: ignore  # pragma: no cover
-
 from . import errors
-from os import fsdecode, fsencode, fspath
+from os import fsdecode, fsencode, fspath, scandir, sendfile
 from ._url_tools import url_quote
 from .base import FS
 from .copy import copy_modified_time
@@ -47,19 +31,8 @@ from .path import basename, dirname
 from .permissions import Permissions
 
 if typing.TYPE_CHECKING:
-    from typing import (
-        IO,
-        Any,
-        BinaryIO,
-        Collection,
-        Dict,
-        Iterator,
-        List,
-        Optional,
-        SupportsInt,
-        Text,
-        Tuple,
-    )
+    from collections.abc import Collection, Iterator
+    from typing import IO, Any, BinaryIO, Optional, SupportsInt
 
     from .base import _OpendirFactory
     from .info import RawInfo
@@ -86,7 +59,7 @@ class OSFS(FS):
 
     def __init__(
         self,
-        root_path,  # type: Text
+        root_path,  # type: str
         create=False,  # type: bool
         create_mode=0o777,  # type: SupportsInt
         expand_vars=True,  # type: bool
@@ -184,7 +157,7 @@ class OSFS(FS):
         return fmt.format(_class_name.lower(), self.root_path)
 
     def _to_sys_path(self, path):
-        # type: (Text) -> bytes
+        # type: (str) -> bytes
         """Convert a FS path to a path on the OS."""
         sys_path = fsencode(
             os.path.join(self._root_path, path.lstrip("/").replace("/", os.sep))
@@ -193,7 +166,7 @@ class OSFS(FS):
 
     @classmethod
     def _make_details_from_stat(cls, stat_result):
-        # type: (os.stat_result) -> Dict[Text, object]
+        # type: (os.stat_result) -> dict[str, object]
         """Make a *details* info dict from an `os.stat_result` object."""
         details = {
             "_write": ["accessed", "modified"],
@@ -212,9 +185,9 @@ class OSFS(FS):
 
     @classmethod
     def _make_access_from_stat(cls, stat_result):
-        # type: (os.stat_result) -> Dict[Text, object]
+        # type: (os.stat_result) -> dict[str, object]
         """Make an *access* info dict from an `os.stat_result` object."""
-        access = {}  # type: Dict[Text, object]
+        access = {}  # type: dict[str, object]
         access["permissions"] = Permissions(mode=stat_result.st_mode).dump()
         access["gid"] = gid = stat_result.st_gid
         access["uid"] = uid = stat_result.st_uid
@@ -256,7 +229,7 @@ class OSFS(FS):
     # --------------------------------------------------------
 
     def _gettarget(self, sys_path):
-        # type: (Text) -> Optional[Text]
+        # type: (str) -> Optional[str]
         if hasattr(os, "readlink"):
             try:
                 if _WINDOWS_PLATFORM:  # pragma: no cover
@@ -268,12 +241,12 @@ class OSFS(FS):
         return None
 
     def _make_link_info(self, sys_path):
-        # type: (Text) -> Dict[Text, object]
+        # type: (str) -> dict[str, object]
         _target = self._gettarget(sys_path)
         return {"target": _target}
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         self.check()
         namespaces = namespaces or ()
         _path = self.validatepath(path)
@@ -305,7 +278,7 @@ class OSFS(FS):
         return Info(info)
 
     def listdir(self, path):
-        # type: (Text) -> List[Text]
+        # type: (str) -> list[str]
         self.check()
         _path = self.validatepath(path)
         sys_path = self._to_sys_path(_path)
@@ -316,7 +289,7 @@ class OSFS(FS):
 
     def makedir(
         self,  # type: _O
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -338,7 +311,7 @@ class OSFS(FS):
             return self.opendir(_path)
 
     def openbin(self, path, mode="r", buffering=-1, **options):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         _mode = Mode(mode)
         _mode.validate_bin()
         self.check()
@@ -353,7 +326,7 @@ class OSFS(FS):
         return binary_file  # type: ignore
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         _path = self.validatepath(path)
         sys_path = self._to_sys_path(_path)
@@ -372,7 +345,7 @@ class OSFS(FS):
                 raise
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         _path = self.validatepath(path)
         if _path == "/":
@@ -390,7 +363,7 @@ class OSFS(FS):
     if typing.TYPE_CHECKING:
 
         def opendir(self, path, factory=None):
-            # type: (_O, Text, Optional[_OpendirFactory]) -> SubFS[_O]
+            # type: (_O, str, Optional[_OpendirFactory]) -> SubFS[_O]
             pass
 
     # --- Backport of os.sendfile for Python < 3.8 -----------
@@ -429,7 +402,7 @@ class OSFS(FS):
             _sendfile_error_codes.add(errno.ENOTSUP)
 
         def copy(self, src_path, dst_path, overwrite=False, preserve_time=False):
-            # type: (Text, Text, bool, bool) -> None
+            # type: (str, str, bool, bool) -> None
             with self._lock:
                 # validate and canonicalise paths
                 _src_path, _dst_path = self._check_copy(src_path, dst_path, overwrite)
@@ -461,7 +434,7 @@ class OSFS(FS):
     else:
 
         def copy(self, src_path, dst_path, overwrite=False, preserve_time=False):
-            # type: (Text, Text, bool, bool) -> None
+            # type: (str, str, bool, bool) -> None
             with self._lock:
                 _src_path, _dst_path = self._check_copy(src_path, dst_path, overwrite)
                 shutil.copy2(self.getsyspath(_src_path), self.getsyspath(_dst_path))
@@ -471,7 +444,7 @@ class OSFS(FS):
     if scandir:
 
         def _scandir(self, path, namespaces=None):
-            # type: (Text, Optional[Collection[Text]]) -> Iterator[Info]
+            # type: (str, Optional[Collection[str]]) -> Iterator[Info]
             self.check()
             namespaces = namespaces or ()
             requires_stat = not {"details", "stat", "access"}.isdisjoint(namespaces)
@@ -528,7 +501,7 @@ class OSFS(FS):
     else:
 
         def _scandir(self, path, namespaces=None):
-            # type: (Text, Optional[Collection[Text]]) -> Iterator[Info]
+            # type: (str, Optional[Collection[str]]) -> Iterator[Info]
             self.check()
             namespaces = namespaces or ()
             _path = self.validatepath(path)
@@ -543,7 +516,7 @@ class OSFS(FS):
                             "name": _entry_name,
                             "is_dir": stat.S_ISDIR(stat_result.st_mode),
                         }
-                    }  # type: Dict[Text, Dict[Text, Any]]
+                    }  # type: dict[str, dict[str, Any]]
                     if "details" in namespaces:
                         info["details"] = self._make_details_from_stat(stat_result)
                     if "stat" in namespaces:
@@ -570,9 +543,9 @@ class OSFS(FS):
 
     def scandir(
         self,
-        path,  # type: Text
-        namespaces=None,  # type: Optional[Collection[Text]]
-        page=None,  # type: Optional[Tuple[int, int]]
+        path,  # type: str
+        namespaces=None,  # type: Optional[Collection[str]]
+        page=None,  # type: Optional[tuple[int, int]]
     ):
         # type: (...) -> Iterator[Info]
         iter_info = self._scandir(path, namespaces=namespaces)
@@ -584,12 +557,12 @@ class OSFS(FS):
     # --- Miscellaneous --------------------------------------
 
     def getsyspath(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         sys_path = os.path.join(self._root_path, path.lstrip("/").replace("/", os.sep))
         return sys_path
 
     def geturl(self, path, purpose="download"):
-        # type: (Text, Text) -> Text
+        # type: (str, str) -> str
         sys_path = self.getsyspath(path)
         if purpose == "download":
             return "file://" + sys_path
@@ -600,7 +573,7 @@ class OSFS(FS):
             raise NoURL(path, purpose)
 
     def gettype(self, path):
-        # type: (Text) -> ResourceType
+        # type: (str) -> ResourceType
         self.check()
         sys_path = self._to_sys_path(path)
         with convert_os_errors("gettype", path):
@@ -609,7 +582,7 @@ class OSFS(FS):
         return resource_type
 
     def islink(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         _path = self.validatepath(path)
         sys_path = self._to_sys_path(_path)
@@ -620,12 +593,12 @@ class OSFS(FS):
 
     def open(
         self,
-        path,  # type: Text
-        mode="r",  # type: Text
+        path,  # type: str
+        mode="r",  # type: str
         buffering=-1,  # type: int
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
         line_buffering=False,  # type: bool
         **options  # type: Any
     ):
@@ -650,7 +623,7 @@ class OSFS(FS):
             )
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         self.check()
         _path = self.validatepath(path)
         sys_path = self._to_sys_path(_path)
@@ -668,7 +641,7 @@ class OSFS(FS):
                         os.utime(sys_path, (accessed, modified))
 
     def validatepath(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         """Check path may be encoded, in addition to usual checks."""
         try:
             fsencode(path)

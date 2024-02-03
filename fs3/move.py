@@ -10,14 +10,14 @@ from .osfs import OSFS
 from .path import frombase
 
 if typing.TYPE_CHECKING:
-    from typing import Text, Union
+    from typing import Union
 
     from .base import FS
 
 
 def move_fs(
-    src_fs,  # type: Union[Text, FS]
-    dst_fs,  # type:Union[Text, FS]
+    src_fs,  # type: Union[str, FS]
+    dst_fs,  # type:Union[str, FS]
     workers=0,  # type: int
     preserve_time=False,  # type: bool
 ):
@@ -37,10 +37,10 @@ def move_fs(
 
 
 def move_file(
-    src_fs,  # type: Union[Text, FS]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[Text, FS]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[str, FS]
+    src_path,  # type: str
+    dst_fs,  # type: Union[str, FS]
+    dst_path,  # type: str
     preserve_time=False,  # type: bool
     cleanup_dst_on_error=True,  # type: bool
 ):
@@ -111,10 +111,10 @@ def move_file(
 
 
 def move_dir(
-    src_fs,  # type: Union[Text, FS]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[Text, FS]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[str, FS]
+    src_path,  # type: str
+    dst_fs,  # type: Union[str, FS]
+    dst_path,  # type: str
     workers=0,  # type: int
     preserve_time=False,  # type: bool
 ):

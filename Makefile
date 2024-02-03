@@ -17,11 +17,11 @@ clean: cleandist cleandocs
 
 .PHONY: test
 test:
-	nosetests --with-coverage --cover-package=fs3 -a "!slow" tests
+	python3 -m unittest tests
 
 .PHONY: slowtest
 slowtest:
-	nosetests --with-coverage --cover-erase --cover-package=fs3 tests
+	python3 -m unittest tests
 
 .PHONY: testall
 testall:

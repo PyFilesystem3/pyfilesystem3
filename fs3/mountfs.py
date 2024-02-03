@@ -9,19 +9,8 @@ from .mode import validate_open_mode, validate_openbin_mode
 from .path import abspath, forcedir, normpath
 
 if typing.TYPE_CHECKING:
-    from typing import (
-        IO,
-        Any,
-        BinaryIO,
-        Collection,
-        Iterator,
-        List,
-        MutableSequence,
-        Optional,
-        Text,
-        Tuple,
-        Union,
-    )
+    from collections.abc import Collection, Iterator, MutableSequence
+    from typing import IO, Any, BinaryIO, Optional, Union
 
     from .enums import ResourceType
     from .info import Info, RawInfo
@@ -58,7 +47,7 @@ class MountFS(FS):
         super(MountFS, self).__init__()
         self.auto_close = auto_close
         self.default_fs = MemoryFS()  # type: FS
-        self.mounts = []  # type: MutableSequence[Tuple[Text, FS]]
+        self.mounts = []  # type: MutableSequence[tuple[str, FS]]
 
     def __repr__(self):
         # type: () -> str
@@ -69,7 +58,7 @@ class MountFS(FS):
         return "<mountfs>"
 
     def _delegate(self, path):
-        # type: (Text) -> Tuple[FS, Text]
+        # type: (str) -> tuple[FS, str]
         """Get the delegate FS for a given path.
 
         Arguments:
@@ -91,7 +80,7 @@ class MountFS(FS):
         return self.default_fs, path
 
     def mount(self, path, fs):
-        # type: (Text, Union[FS, Text]) -> None
+        # type: (str, Union[FS, str]) -> None
         """Mounts a host FS object on a given path.
 
         Arguments:
@@ -129,7 +118,7 @@ class MountFS(FS):
         super(MountFS, self).close()
 
     def desc(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         if not self.exists(path):
             raise errors.ResourceNotFound(path)
         fs, delegate_path = self._delegate(path)
@@ -138,38 +127,38 @@ class MountFS(FS):
         return "{path} on {fs}".format(fs=fs, path=delegate_path)
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         self.check()
         fs, _path = self._delegate(path)
         return fs.getinfo(_path, namespaces=namespaces)
 
     def listdir(self, path):
-        # type: (Text) -> List[Text]
+        # type: (str) -> list[str]
         self.check()
         fs, _path = self._delegate(path)
         return fs.listdir(_path)
 
     def makedir(self, path, permissions=None, recreate=False):
-        # type: (Text, Optional[Permissions], bool) -> SubFS[FS]
+        # type: (str, Optional[Permissions], bool) -> SubFS[FS]
         self.check()
         fs, _path = self._delegate(path)
         return fs.makedir(_path, permissions=permissions, recreate=recreate)
 
     def openbin(self, path, mode="r", buffering=-1, **kwargs):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         validate_openbin_mode(mode)
         self.check()
         fs, _path = self._delegate(path)
         return fs.openbin(_path, mode=mode, buffering=-1, **kwargs)
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         fs, _path = self._delegate(path)
         return fs.remove(_path)
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         path = normpath(path)
         if path in ("", "/"):
@@ -178,75 +167,75 @@ class MountFS(FS):
         return fs.removedir(_path)
 
     def readbytes(self, path):
-        # type: (Text) -> bytes
+        # type: (str) -> bytes
         self.check()
         fs, _path = self._delegate(path)
         return fs.readbytes(_path)
 
     def download(self, path, file, chunk_size=None, **options):
-        # type: (Text, BinaryIO, Optional[int], **Any) -> None
+        # type: (str, BinaryIO, Optional[int], **Any) -> None
         fs, _path = self._delegate(path)
         return fs.download(_path, file, chunk_size=chunk_size, **options)
 
     def readtext(
         self,
-        path,  # type: Text
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        path,  # type: str
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
-        # type: (...) -> Text
+        # type: (...) -> str
         self.check()
         fs, _path = self._delegate(path)
         return fs.readtext(_path, encoding=encoding, errors=errors, newline=newline)
 
     def getsize(self, path):
-        # type: (Text) -> int
+        # type: (str) -> int
         self.check()
         fs, _path = self._delegate(path)
         return fs.getsize(_path)
 
     def getsyspath(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         self.check()
         fs, _path = self._delegate(path)
         return fs.getsyspath(_path)
 
     def gettype(self, path):
-        # type: (Text) -> ResourceType
+        # type: (str) -> ResourceType
         self.check()
         fs, _path = self._delegate(path)
         return fs.gettype(_path)
 
     def geturl(self, path, purpose="download"):
-        # type: (Text, Text) -> Text
+        # type: (str, str) -> str
         self.check()
         fs, _path = self._delegate(path)
         return fs.geturl(_path, purpose=purpose)
 
     def hasurl(self, path, purpose="download"):
-        # type: (Text, Text) -> bool
+        # type: (str, str) -> bool
         self.check()
         fs, _path = self._delegate(path)
         return fs.hasurl(_path, purpose=purpose)
 
     def isdir(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         fs, _path = self._delegate(path)
         return fs.isdir(_path)
 
     def isfile(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         self.check()
         fs, _path = self._delegate(path)
         return fs.isfile(_path)
 
     def scandir(
         self,
-        path,  # type: Text
-        namespaces=None,  # type: Optional[Collection[Text]]
-        page=None,  # type: Optional[Tuple[int, int]]
+        path,  # type: str
+        namespaces=None,  # type: Optional[Collection[str]]
+        page=None,  # type: Optional[tuple[int, int]]
     ):
         # type: (...) -> Iterator[Info]
         self.check()
@@ -254,13 +243,13 @@ class MountFS(FS):
         return fs.scandir(_path, namespaces=namespaces, page=page)
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         self.check()
         fs, _path = self._delegate(path)
         return fs.setinfo(_path, info)
 
     def validatepath(self, path):
-        # type: (Text) -> Text
+        # type: (str) -> str
         self.check()
         fs, _path = self._delegate(path)
         fs.validatepath(_path)
@@ -269,12 +258,12 @@ class MountFS(FS):
 
     def open(
         self,
-        path,  # type: Text
-        mode="r",  # type: Text
+        path,  # type: str
+        mode="r",  # type: str
         buffering=-1,  # type: int
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
         **options  # type: Any
     ):
         # type: (...) -> IO
@@ -292,24 +281,24 @@ class MountFS(FS):
         )
 
     def upload(self, path, file, chunk_size=None, **options):
-        # type: (Text, BinaryIO, Optional[int], **Any) -> None
+        # type: (str, BinaryIO, Optional[int], **Any) -> None
         self.check()
         fs, _path = self._delegate(path)
         return fs.upload(_path, file, chunk_size=chunk_size, **options)
 
     def writebytes(self, path, contents):
-        # type: (Text, bytes) -> None
+        # type: (str, bytes) -> None
         self.check()
         fs, _path = self._delegate(path)
         return fs.writebytes(_path, contents)
 
     def writetext(
         self,
-        path,  # type: Text
-        contents,  # type: Text
-        encoding="utf-8",  # type: Text
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        path,  # type: str
+        contents,  # type: str
+        encoding="utf-8",  # type: str
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
         # type: (...) -> None
         fs, _path = self._delegate(path)

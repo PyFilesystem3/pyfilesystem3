@@ -13,7 +13,7 @@ import typing
 import functools
 
 if typing.TYPE_CHECKING:
-    from typing import Optional, Text
+    from typing import Optional
 
 
 __all__ = [
@@ -56,7 +56,7 @@ class MissingInfoNamespace(AttributeError):
     """An expected namespace is missing."""
 
     def __init__(self, namespace):  # noqa: D107
-        # type: (Text) -> None
+        # type: (str) -> None
         self.namespace = namespace
         msg = "namespace '{}' is required for this attribute"
         super(MissingInfoNamespace, self).__init__(msg.format(namespace))
@@ -71,18 +71,18 @@ class FSError(Exception):
     default_message = "Unspecified error"
 
     def __init__(self, msg=None):  # noqa: D107
-        # type: (Optional[Text]) -> None
+        # type: (Optional[str]) -> None
         self._msg = msg or self.default_message
         super(FSError, self).__init__()
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         """Return the error message."""
         msg = self._msg.format(**self.__dict__)
         return msg
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         msg = self._msg.format(**self.__dict__)
         return "{}({!r})".format(self.__class__.__name__, msg)
 
@@ -109,7 +109,7 @@ class CreateFailed(FSError):
     default_message = "unable to create filesystem, {details}"
 
     def __init__(self, msg=None, exc=None):  # noqa: D107
-        # type: (Optional[Text], Optional[Exception]) -> None
+        # type: (Optional[str], Optional[Exception]) -> None
         self._msg = msg or self.default_message
         self.details = "" if exc is None else str(exc)
         self.exc = exc
@@ -137,7 +137,7 @@ class PathError(FSError):
     default_message = "path '{path}' is invalid"
 
     def __init__(self, path, msg=None, exc=None):  # noqa: D107
-        # type: (Text, Optional[Text], Optional[Exception]) -> None
+        # type: (str, Optional[str], Optional[Exception]) -> None
         self.path = path
         self.exc = exc
         super(PathError, self).__init__(msg=msg)
@@ -158,7 +158,7 @@ class NoURL(PathError):
     default_message = "path '{path}' has no '{purpose}' URL"
 
     def __init__(self, path, purpose, msg=None):  # noqa: D107
-        # type: (Text, Text, Optional[Text]) -> None
+        # type: (str, str, Optional[str]) -> None
         self.purpose = purpose
         super(NoURL, self).__init__(path, msg=msg)
 
@@ -185,9 +185,9 @@ class OperationFailed(FSError):
 
     def __init__(
         self,
-        path=None,  # type: Optional[Text]
+        path=None,  # type: Optional[str]
         exc=None,  # type: Optional[Exception]
-        msg=None,  # type: Optional[Text]
+        msg=None,  # type: Optional[str]
     ):  # noqa: D107
         # type: (...) -> None
         self.path = path
@@ -252,7 +252,7 @@ class ResourceError(FSError):
     default_message = "failed on path {path}"
 
     def __init__(self, path, exc=None, msg=None):  # noqa: D107
-        # type: (Text, Optional[Exception], Optional[Text]) -> None
+        # type: (str, Optional[Exception], Optional[str]) -> None
         self.path = path
         self.exc = exc
         super(ResourceError, self).__init__(msg=msg)
@@ -335,7 +335,7 @@ class IllegalBackReference(ValueError):
     """
 
     def __init__(self, path):  # noqa: D107
-        # type: (Text) -> None
+        # type: (str) -> None
         self.path = path
         msg = ("path '{path}' contains back-references outside of filesystem").format(
             path=path
@@ -361,7 +361,7 @@ class PatternError(ValueError):
     default_message = "pattern '{pattern}' is invalid at position {position}"
 
     def __init__(self, pattern, position, exc=None, msg=None):  # noqa: D107
-        # type: (Text, int, Optional[Exception], Optional[Text]) -> None
+        # type: (str, int, Optional[Exception], Optional[str]) -> None
         self.pattern = pattern
         self.position = position
         self.exc = exc

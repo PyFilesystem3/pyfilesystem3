@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, unquote
 from .errors import ParseError
 
 if typing.TYPE_CHECKING:
-    from typing import Optional, Text
+    from typing import Optional
 
 
 class ParseResult(
@@ -54,7 +54,7 @@ _RE_FS_URL = re.compile(
 
 
 def parse_fs_url(fs_url):
-    # type: (Text) -> ParseResult
+    # type: (str) -> ParseResult
     """Parse a Filesystem URL and return a `ParseResult`.
 
     Arguments:
@@ -73,8 +73,8 @@ def parse_fs_url(fs_url):
 
     fs_name, credentials, url1, url2, path = match.groups()
     if not credentials:
-        username = None  # type: Optional[Text]
-        password = None  # type: Optional[Text]
+        username = None  # type: Optional[str]
+        password = None  # type: Optional[str]
         url = url2
     else:
         username, _, password = credentials.partition(":")

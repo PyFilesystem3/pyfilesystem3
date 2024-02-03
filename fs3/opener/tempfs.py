@@ -7,8 +7,6 @@ from .base import Opener
 from .registry import registry
 
 if typing.TYPE_CHECKING:
-    from typing import Text
-
     from ..tempfs import TempFS  # noqa: F401
     from .parse import ParseResult
 
@@ -21,11 +19,11 @@ class TempOpener(Opener):
 
     def open_fs(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         parse_result,  # type: ParseResult
         writeable,  # type: bool
         create,  # type: bool
-        cwd,  # type: Text
+        cwd,  # type: str
     ):
         # type: (...) -> TempFS
         from ..tempfs import TempFS

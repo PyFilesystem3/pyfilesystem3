@@ -21,15 +21,11 @@ from .permissions import Permissions
 from .wrapfs import WrapFS
 
 if typing.TYPE_CHECKING:
+    from collections.abc import Collection
     from typing import (
         Any,
         BinaryIO,
-        Collection,
-        Dict,
-        List,
         Optional,
-        Text,
-        Tuple,
         Union,
     )
 
@@ -45,7 +41,7 @@ __all__ = ["TarFS", "WriteTarFS", "ReadTarFS"]
 
 
 def _get_member_info(member, encoding):
-    # type: (TarInfo, Text) -> Dict[Text, object]
+    # type: (TarInfo, str) -> dict[str, object]
     # NOTE(@althonos): TarInfo.get_info is neither in the doc nor
     #     in the `tarfile` stub, and yet it exists and is public !
     return member.get_info()  # type: ignore
@@ -103,16 +99,16 @@ class TarFS(WrapFS):
 
     def __new__(  # type: ignore
         cls,
-        file,  # type: Union[Text, BinaryIO]
+        file,  # type: Union[str, BinaryIO]
         write=False,  # type: bool
-        compression=None,  # type: Optional[Text]
-        encoding="utf-8",  # type: Text
-        temp_fs="temp://__tartemp__",  # type: Union[Text, FS]
+        compression=None,  # type: Optional[str]
+        encoding="utf-8",  # type: str
+        temp_fs="temp://__tartemp__",  # type: Union[str, FS]
     ):
         # type: (...) -> FS
         if isinstance(file, (str, bytes)):
             file = os.path.expanduser(file)
-            filename = file  # type: Text
+            filename = file  # type: str
         else:
             filename = getattr(file, "name", "")
 
@@ -134,11 +130,11 @@ class TarFS(WrapFS):
 
         def __init__(
             self,
-            file,  # type: Union[Text, BinaryIO]
+            file,  # type: Union[str, BinaryIO]
             write=False,  # type: bool
-            compression=None,  # type: Optional[Text]
-            encoding="utf-8",  # type: Text
-            temp_fs="temp://__tartemp__",  # type: Text
+            compression=None,  # type: Optional[str]
+            encoding="utf-8",  # type: str
+            temp_fs="temp://__tartemp__",  # type: str
         ):  # noqa: D107
             # type: (...) -> None
             pass
@@ -149,13 +145,13 @@ class WriteTarFS(WrapFS):
 
     def __init__(
         self,
-        file,  # type: Union[Text, BinaryIO]
-        compression=None,  # type: Optional[Text]
-        encoding="utf-8",  # type: Text
-        temp_fs="temp://__tartemp__",  # type: Union[Text, FS]
+        file,  # type: Union[str, BinaryIO]
+        compression=None,  # type: Optional[str]
+        encoding="utf-8",  # type: str
+        temp_fs="temp://__tartemp__",  # type: Union[str, FS]
     ):  # noqa: D107
         # type: (...) -> None
-        self._file = file  # type: Union[Text, BinaryIO]
+        self._file = file  # type: Union[str, BinaryIO]
         self.compression = compression
         self.encoding = encoding
         self._temp_fs_url = temp_fs
@@ -164,16 +160,16 @@ class WriteTarFS(WrapFS):
         super(WriteTarFS, self).__init__(self._temp_fs)
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         t = "WriteTarFS({!r}, compression={!r}, encoding={!r}, temp_fs={!r})"
         return t.format(self._file, self.compression, self.encoding, self._temp_fs_url)
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<TarFS-write '{}'>".format(self._file)
 
     def delegate_path(self, path):
-        # type: (Text) -> Tuple[FS, Text]
+        # type: (str) -> tuple[FS, str]
         return self._temp_fs, path
 
     def delegate_fs(self):
@@ -191,9 +187,9 @@ class WriteTarFS(WrapFS):
 
     def write_tar(
         self,
-        file=None,  # type: Union[Text, BinaryIO, None]
-        compression=None,  # type: Optional[Text]
-        encoding=None,  # type: Optional[Text]
+        file=None,  # type: Union[str, BinaryIO, None]
+        compression=None,  # type: Optional[str]
+        encoding=None,  # type: Optional[str]
     ):
         # type: (...) -> None
         """Write tar to a file.
@@ -247,7 +243,7 @@ class ReadTarFS(FS):
 
     @errors.CreateFailed.catch_all
     def __init__(self, file, encoding="utf-8"):  # noqa: D107
-        # type: (Union[Text, BinaryIO], Text) -> None
+        # type: (Union[str, BinaryIO], str) -> None
         super(ReadTarFS, self).__init__()
         self._file = file
         self.encoding = encoding
@@ -282,26 +278,26 @@ class ReadTarFS(FS):
         return self._directory_cache
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "ReadTarFS({!r})".format(self._file)
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<TarFS '{}'>".format(self._file)
 
     def _encode(self, s):
-        # type: (Text) -> str
+        # type: (str) -> str
         return s
 
     def _decode(self, s):
-        # type: (str) -> Text
+        # type: (str) -> str
         return s
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         _path = relpath(self.validatepath(path))
         namespaces = namespaces or ()
-        raw_info = {}  # type: Dict[Text, Dict[Text, object]]
+        raw_info = {}  # type: dict[str, dict[str, object]]
 
         if not _path:
             raw_info["basic"] = {"name": "", "is_dir": True}
@@ -366,12 +362,12 @@ class ReadTarFS(FS):
             return False
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         self.check()
         raise errors.ResourceReadOnly(path)
 
     def listdir(self, path):
-        # type: (Text) -> List[Text]
+        # type: (str) -> list[str]
         _path = relpath(self.validatepath(path))
 
         if not self.gettype(path) is ResourceType.directory:
@@ -385,7 +381,7 @@ class ReadTarFS(FS):
 
     def makedir(
         self,  # type: T
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -394,7 +390,7 @@ class ReadTarFS(FS):
         raise errors.ResourceReadOnly(path)
 
     def openbin(self, path, mode="r", buffering=-1, **options):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         _path = relpath(self.validatepath(path))
 
         if "w" in mode or "+" in mode or "a" in mode:
@@ -412,12 +408,12 @@ class ReadTarFS(FS):
         return rw  # type: ignore
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise errors.ResourceReadOnly(path)
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise errors.ResourceReadOnly(path)
 
@@ -432,7 +428,7 @@ class ReadTarFS(FS):
         return self._tar.closed  # type: ignore
 
     def geturl(self, path, purpose="download"):
-        # type: (Text, Text) -> Text
+        # type: (str, str) -> str
         if purpose == "fs" and isinstance(self._file, str):
             quoted_file = url_quote(self._file)
             quoted_path = url_quote(path)

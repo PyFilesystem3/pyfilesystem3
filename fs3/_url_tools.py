@@ -1,17 +1,12 @@
-import typing
-
 import platform
 import re
 import urllib.request
-
-if typing.TYPE_CHECKING:
-    from typing import Text
 
 _WINDOWS_PLATFORM = platform.system() == "Windows"
 
 
 def url_quote(path_snippet):
-    # type: (Text) -> Text
+    # type: (str) -> str
     """Quote a URL without quoting the Windows drive letter, if any.
 
     On Windows, it will separate drive letter and quote Windows
@@ -32,7 +27,7 @@ def url_quote(path_snippet):
 
 
 def _has_drive_letter(path_snippet):
-    # type: (Text) -> bool
+    # type: (str) -> bool
     """Check whether a path contains a drive letter.
 
     Arguments:

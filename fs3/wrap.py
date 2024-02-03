@@ -19,17 +19,12 @@ from .path import abspath, normpath, split
 from .wrapfs import WrapFS
 
 if typing.TYPE_CHECKING:
+    from collections.abc import Collection, Iterator, Mapping
     from typing import (
         IO,
         Any,
         BinaryIO,
-        Collection,
-        Dict,
-        Iterator,
-        Mapping,
         Optional,
-        Text,
-        Tuple,
     )
 
     from datetime import datetime
@@ -96,7 +91,7 @@ class WrapCachedDir(WrapFS[_F], typing.Generic[_F]):
     # we are already storing the totality of the required metadata.
     #
     # A possible solution would be to replaced the cached with a
-    #     Dict[Text, Dict[Text, Dict[Text, Info]]]
+    #     dict[str, dict[str, dict[str, Info]]]
     #           ^           ^         ^     ^-- the actual info object
     #           |           |         \-- the path of the directory entry
     #           |           \-- the namespace of the info
@@ -110,13 +105,13 @@ class WrapCachedDir(WrapFS[_F], typing.Generic[_F]):
     def __init__(self, wrap_fs):  # noqa: D107
         # type: (_F) -> None
         super(WrapCachedDir, self).__init__(wrap_fs)
-        self._cache = {}  # type: Dict[Tuple[Text, frozenset], Dict[Text, Info]]
+        self._cache = {}  # type: dict[tuple[str, frozenset], dict[str, Info]]
 
     def scandir(
         self,
-        path,  # type: Text
-        namespaces=None,  # type: Optional[Collection[Text]]
-        page=None,  # type: Optional[Tuple[int, int]]
+        path,  # type: str
+        namespaces=None,  # type: Optional[Collection[str]]
+        page=None,  # type: Optional[tuple[int, int]]
     ):
         # type: (...) -> Iterator[Info]
         _path = abspath(normpath(path))
@@ -129,7 +124,7 @@ class WrapCachedDir(WrapFS[_F], typing.Generic[_F]):
         return gen_scandir
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         _path = abspath(normpath(path))
         if _path == "/":
             return Info({"basic": {"name": "", "is_dir": True}})
@@ -147,14 +142,14 @@ class WrapCachedDir(WrapFS[_F], typing.Generic[_F]):
         return info
 
     def isdir(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         try:
             return self.getinfo(path).is_dir
         except ResourceNotFound:
             return False
 
     def isfile(self, path):
-        # type: (Text) -> bool
+        # type: (str) -> bool
         try:
             return not self.getinfo(path).is_dir
         except ResourceNotFound:
@@ -172,17 +167,17 @@ class WrapReadOnly(WrapFS[_F], typing.Generic[_F]):
     wrap_name = "read-only"
 
     def appendbytes(self, path, data):
-        # type: (Text, bytes) -> None
+        # type: (str, bytes) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def appendtext(
         self,
-        path,  # type: Text
-        text,  # type: Text
-        encoding="utf-8",  # type: Text
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        path,  # type: str
+        text,  # type: str
+        encoding="utf-8",  # type: str
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
         # type: (...) -> None
         self.check()
@@ -190,7 +185,7 @@ class WrapReadOnly(WrapFS[_F], typing.Generic[_F]):
 
     def makedir(
         self,  # type: _W
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -199,67 +194,67 @@ class WrapReadOnly(WrapFS[_F], typing.Generic[_F]):
         raise ResourceReadOnly(path)
 
     def move(self, src_path, dst_path, overwrite=False, preserve_time=False):
-        # type: (Text, Text, bool, bool) -> None
+        # type: (str, str, bool, bool) -> None
         self.check()
         raise ResourceReadOnly(dst_path)
 
     def openbin(self, path, mode="r", buffering=-1, **options):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         self.check()
         if check_writable(mode):
             raise ResourceReadOnly(path)
         return self._wrap_fs.openbin(path, mode=mode, buffering=-1, **options)
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def removetree(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def writetext(
         self,
-        path,  # type: Text
-        contents,  # type: Text
-        encoding="utf-8",  # type: Text
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        path,  # type: str
+        contents,  # type: str
+        encoding="utf-8",  # type: str
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
         # type: (...) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def settimes(self, path, accessed=None, modified=None):
-        # type: (Text, Optional[datetime], Optional[datetime]) -> None
+        # type: (str, Optional[datetime], Optional[datetime]) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def copy(self, src_path, dst_path, overwrite=False, preserve_time=False):
-        # type: (Text, Text, bool, bool) -> None
+        # type: (str, str, bool, bool) -> None
         self.check()
         raise ResourceReadOnly(dst_path)
 
     def create(self, path, wipe=False):
-        # type: (Text, bool) -> bool
+        # type: (str, bool) -> bool
         self.check()
         raise ResourceReadOnly(path)
 
     def makedirs(
         self,  # type: _W
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -269,12 +264,12 @@ class WrapReadOnly(WrapFS[_F], typing.Generic[_F]):
 
     def open(
         self,
-        path,  # type: Text
-        mode="r",  # type: Text
+        path,  # type: str
+        mode="r",  # type: str
         buffering=-1,  # type: int
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
         line_buffering=False,  # type: bool
         **options  # type: Any
     ):
@@ -294,34 +289,34 @@ class WrapReadOnly(WrapFS[_F], typing.Generic[_F]):
         )
 
     def writebytes(self, path, contents):
-        # type: (Text, bytes) -> None
+        # type: (str, bytes) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def upload(self, path, file, chunk_size=None, **options):
-        # type: (Text, BinaryIO, Optional[int], **Any) -> None
+        # type: (str, BinaryIO, Optional[int], **Any) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def writefile(
         self,
-        path,  # type: Text
+        path,  # type: str
         file,  # type: IO
-        encoding=None,  # type: Optional[Text]
-        errors=None,  # type: Optional[Text]
-        newline="",  # type: Text
+        encoding=None,  # type: Optional[str]
+        errors=None,  # type: Optional[str]
+        newline="",  # type: str
     ):
         # type: (...) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def touch(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         self.check()
         raise ResourceReadOnly(path)
 
     def getmeta(self, namespace="standard"):
-        # type: (Text) -> Mapping[Text, object]
+        # type: (str) -> Mapping[str, object]
         self.check()
         meta = dict(self.delegate_fs().getmeta(namespace=namespace))
         meta.update(read_only=True, supports_rename=False)

@@ -10,7 +10,8 @@ from io import SEEK_CUR, SEEK_SET
 from .mode import Mode
 
 if typing.TYPE_CHECKING:
-    from typing import IO, Any, Iterable, Iterator, List, Optional, Text, Union
+    from collections.abc import Iterable, Iterator
+    from typing import IO, Any, Optional, Union
 
     import mmap
     from io import RawIOBase
@@ -20,7 +21,7 @@ class RawWrapper(io.RawIOBase):
     """Convert a Python 2 style file-like object in to a IO object."""
 
     def __init__(self, f, mode=None, name=None):  # noqa: D107
-        # type: (IO[bytes], Optional[Text], Optional[Text]) -> None
+        # type: (IO[bytes], Optional[str], Optional[str]) -> None
         self._f = f
         self.mode = mode or getattr(f, "mode", None)
         self.name = name
@@ -130,7 +131,7 @@ class RawWrapper(io.RawIOBase):
         return self._f.readline(-1 if limit is None else limit)
 
     def readlines(self, hint=None):
-        # type: (Optional[int]) -> List[bytes]
+        # type: (Optional[int]) -> list[bytes]
         return self._f.readlines(-1 if hint is None else hint)
 
     def writelines(self, lines):
@@ -147,13 +148,13 @@ class RawWrapper(io.RawIOBase):
 
 @typing.no_type_check
 def make_stream(
-    name,  # type: Text
+    name,  # type: str
     bin_file,  # type: RawIOBase
-    mode="r",  # type: Text
+    mode="r",  # type: str
     buffering=-1,  # type: int
-    encoding=None,  # type: Optional[Text]
-    errors=None,  # type: Optional[Text]
-    newline="",  # type: Optional[Text]
+    encoding=None,  # type: Optional[str]
+    errors=None,  # type: Optional[str]
+    newline="",  # type: Optional[str]
     line_buffering=False,  # type: bool
     **kwargs  # type: Any
 ):
@@ -188,7 +189,7 @@ def make_stream(
             )
 
     if not binary:
-        io_object = io.TextIOWrapper(
+        io_object = io.strIOWrapper(
             io_object,
             encoding=encoding,
             errors=errors,

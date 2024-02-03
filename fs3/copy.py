@@ -12,16 +12,17 @@ from .tools import is_thread_safe
 from .walk import Walker
 
 if typing.TYPE_CHECKING:
-    from typing import Callable, Optional, Text, Union
+    from collections.abc import Callable
+    from typing import Optional, Union
 
     from .base import FS
 
-    _OnCopy = Callable[[FS, Text, FS, Text], object]
+    _OnCopy = Callable[[FS, str, FS, str], object]
 
 
 def copy_fs(
-    src_fs,  # type: Union[FS, Text]
-    dst_fs,  # type: Union[FS, Text]
+    src_fs,  # type: Union[FS, str]
+    dst_fs,  # type: Union[FS, str]
     walker=None,  # type: Optional[Walker]
     on_copy=None,  # type: Optional[_OnCopy]
     workers=0,  # type: int
@@ -51,8 +52,8 @@ def copy_fs(
 
 
 def copy_fs_if_newer(
-    src_fs,  # type: Union[FS, Text]
-    dst_fs,  # type: Union[FS, Text]
+    src_fs,  # type: Union[FS, str]
+    dst_fs,  # type: Union[FS, str]
     walker=None,  # type: Optional[Walker]
     on_copy=None,  # type: Optional[_OnCopy]
     workers=0,  # type: int
@@ -74,9 +75,9 @@ def copy_fs_if_newer(
 
 
 def copy_fs_if(
-    src_fs,  # type: Union[FS, Text]
-    dst_fs,  # type: Union[FS, Text]
-    condition="always",  # type: Text
+    src_fs,  # type: Union[FS, str]
+    dst_fs,  # type: Union[FS, str]
+    condition="always",  # type: str
     walker=None,  # type: Optional[Walker]
     on_copy=None,  # type: Optional[_OnCopy]
     workers=0,  # type: int
@@ -119,10 +120,10 @@ def copy_fs_if(
 
 
 def copy_file(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
     preserve_time=False,  # type: bool
 ):
     # type: (...) -> None
@@ -145,10 +146,10 @@ def copy_file(
 
 
 def copy_file_if_newer(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
     preserve_time=False,  # type: bool
 ):
     # type: (...) -> bool
@@ -168,11 +169,11 @@ def copy_file_if_newer(
 
 
 def copy_file_if(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
-    condition,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
+    condition,  # type: str
     preserve_time=False,  # type: bool
 ):
     # type: (...) -> bool
@@ -231,9 +232,9 @@ def copy_file_if(
 
 def copy_file_internal(
     src_fs,  # type: FS
-    src_path,  # type: Text
+    src_path,  # type: str
     dst_fs,  # type: FS
-    dst_path,  # type: Text
+    dst_path,  # type: str
     preserve_time=False,  # type: bool
     lock=False,  # type: bool
 ):
@@ -284,11 +285,11 @@ def copy_file_internal(
 
 
 def copy_structure(
-    src_fs,  # type: Union[FS, Text]
-    dst_fs,  # type: Union[FS, Text]
+    src_fs,  # type: Union[FS, str]
+    dst_fs,  # type: Union[FS, str]
     walker=None,  # type: Optional[Walker]
-    src_root="/",  # type: Text
-    dst_root="/",  # type: Text
+    src_root="/",  # type: str
+    dst_root="/",  # type: str
 ):
     # type: (...) -> None
     """Copy directories (but not files) from ``src_fs`` to ``dst_fs``.
@@ -323,10 +324,10 @@ def copy_structure(
 
 
 def copy_dir(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
     walker=None,  # type: Optional[Walker]
     on_copy=None,  # type: Optional[_OnCopy]
     workers=0,  # type: int
@@ -366,10 +367,10 @@ def copy_dir(
 
 
 def copy_dir_if_newer(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
     walker=None,  # type: Optional[Walker]
     on_copy=None,  # type: Optional[_OnCopy]
     workers=0,  # type: int
@@ -399,11 +400,11 @@ def copy_dir_if_newer(
 
 
 def copy_dir_if(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
-    condition,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
+    condition,  # type: str
     walker=None,  # type: Optional[Walker]
     on_copy=None,  # type: Optional[_OnCopy]
     workers=0,  # type: int
@@ -462,10 +463,10 @@ def copy_dir_if(
 
 def _copy_is_necessary(
     src_fs,  # type: FS
-    src_path,  # type: Text
+    src_path,  # type: str
     dst_fs,  # type: FS
-    dst_path,  # type: Text
-    condition,  # type: Text
+    dst_path,  # type: str
+    condition,  # type: str
 ):
     # type: (...) -> bool
 
@@ -509,10 +510,10 @@ def _copy_is_necessary(
 
 
 def copy_modified_time(
-    src_fs,  # type: Union[FS, Text]
-    src_path,  # type: Text
-    dst_fs,  # type: Union[FS, Text]
-    dst_path,  # type: Text
+    src_fs,  # type: Union[FS, str]
+    src_path,  # type: str
+    dst_fs,  # type: Union[FS, str]
+    dst_path,  # type: str
 ):
     # type: (...) -> None
     """Copy modified time metadata from one file to another.

@@ -8,7 +8,7 @@ from .errors import OpenerError
 from .registry import registry
 
 if typing.TYPE_CHECKING:
-    from typing import Text, Union
+    from typing import Union
 
     from ..appfs import _AppFS
     from ..subfs import SubFS
@@ -24,11 +24,11 @@ class AppFSOpener(Opener):
 
     def open_fs(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         parse_result,  # type: ParseResult
         writeable,  # type: bool
         create,  # type: bool
-        cwd,  # type: Text
+        cwd,  # type: str
     ):
         # type: (...) -> Union[_AppFS, SubFS[_AppFS]]
 

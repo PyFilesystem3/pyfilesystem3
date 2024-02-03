@@ -7,8 +7,6 @@ from .base import Opener
 from .registry import registry
 
 if typing.TYPE_CHECKING:
-    from typing import Text
-
     from ..osfs import OSFS  # noqa: F401
     from .parse import ParseResult
 
@@ -21,11 +19,11 @@ class OSFSOpener(Opener):
 
     def open_fs(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         parse_result,  # type: ParseResult
         writeable,  # type: bool
         create,  # type: bool
-        cwd,  # type: Text
+        cwd,  # type: str
     ):
         # type: (...) -> OSFS
         from os.path import abspath, expanduser, join, normpath

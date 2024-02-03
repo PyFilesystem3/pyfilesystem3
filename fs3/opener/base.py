@@ -7,8 +7,6 @@ import typing
 import abc
 
 if typing.TYPE_CHECKING:
-    from typing import List, Text
-
     from ..base import FS
     from .parse import ParseResult
 
@@ -21,20 +19,20 @@ class Opener:
 
     """
 
-    protocols = []  # type: List[Text]
+    protocols = []  # type: list[str]
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "<opener {!r}>".format(self.protocols)
 
     @abc.abstractmethod
     def open_fs(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         parse_result,  # type: ParseResult
         writeable,  # type: bool
         create,  # type: bool
-        cwd,  # type: Text
+        cwd,  # type: str
     ):
         # type: (...) -> FS
         """Open a filesystem object from a FS URL.

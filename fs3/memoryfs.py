@@ -18,20 +18,8 @@ from .mode import Mode
 from .path import isbase, iteratepath, normpath, split
 
 if typing.TYPE_CHECKING:
-    from typing import (
-        Any,
-        BinaryIO,
-        Collection,
-        Dict,
-        Iterable,
-        Iterator,
-        List,
-        Optional,
-        SupportsInt,
-        Text,
-        Tuple,
-        Union,
-    )
+    from collections.abc import Collection, Iterable, Iterator, MutableMapping, MutableSequence
+    from typing import Any, BinaryIO, Optional, SupportsInt, Union
 
     import array
     import mmap
@@ -46,7 +34,7 @@ if typing.TYPE_CHECKING:
 
 class _MemoryFile(io.RawIOBase):
     def __init__(self, path, memory_fs, mode, dir_entry):
-        # type: (Text, MemoryFS, Text, _DirEntry) -> None
+        # type: (str, MemoryFS, str, _DirEntry) -> None
         super(_MemoryFile, self).__init__()
         self._path = path
         self._memory_fs = memory_fs
@@ -76,7 +64,7 @@ class _MemoryFile(io.RawIOBase):
 
     @property
     def mode(self):
-        # type: () -> Text
+        # type: () -> str
         return self._mode.to_platform_bin()
 
     @contextlib.contextmanager
@@ -102,7 +90,7 @@ class _MemoryFile(io.RawIOBase):
         pass
 
     def __iter__(self):
-        # type: () -> typing.Iterator[bytes]
+        # type: () -> Iterator[bytes]
         self._bytes_io.seek(self.pos)
         for line in self._bytes_io:
             yield line
@@ -151,7 +139,7 @@ class _MemoryFile(io.RawIOBase):
             return self._bytes_io.readinto(buffer)
 
     def readlines(self, hint=-1):
-        # type: (int) -> List[bytes]
+        # type: (int) -> list[bytes]
         if not self._mode.reading:
             raise IOError("File not open for reading")
         with self._seek_lock():
@@ -205,11 +193,11 @@ class _MemoryFile(io.RawIOBase):
 
 class _DirEntry:
     def __init__(self, resource_type, name):
-        # type: (ResourceType, Text) -> None
+        # type: (ResourceType, str) -> None
         self.resource_type = resource_type
         self.name = name
-        self._dir = OrderedDict()  # type: typing.MutableMapping[Text, _DirEntry]
-        self._open_files = []  # type: typing.MutableSequence[_MemoryFile]
+        self._dir = OrderedDict()  # type: MutableMapping[str, _DirEntry]
+        self._open_files = []  # type: MutableSequence[_MemoryFile]
         self._bytes_file = None  # type: Optional[io.BytesIO]
         self.lock = RLock()
 
@@ -244,30 +232,30 @@ class _DirEntry:
 
     @typing.overload
     def get_entry(self, name, default):  # noqa: F811
-        # type: (Text, _DirEntry) -> _DirEntry
+        # type: (str, _DirEntry) -> _DirEntry
         pass
 
     @typing.overload
     def get_entry(self, name):  # noqa: F811
-        # type: (Text) -> Optional[_DirEntry]
+        # type: (str) -> Optional[_DirEntry]
         pass
 
     @typing.overload
     def get_entry(self, name, default):  # noqa: F811
-        # type: (Text, None) -> Optional[_DirEntry]
+        # type: (str, None) -> Optional[_DirEntry]
         pass
 
     def get_entry(self, name, default=None):  # noqa: F811
-        # type: (Text, Optional[_DirEntry]) -> Optional[_DirEntry]
+        # type: (str, Optional[_DirEntry]) -> Optional[_DirEntry]
         assert self.is_dir, "must be a directory"
         return self._dir.get(name, default)
 
     def set_entry(self, name, dir_entry):
-        # type: (Text, _DirEntry) -> None
+        # type: (str, _DirEntry) -> None
         self._dir[name] = dir_entry
 
     def remove_entry(self, name):
-        # type: (Text) -> None
+        # type: (str) -> None
         del self._dir[name]
 
     def clear(self):
@@ -283,7 +271,7 @@ class _DirEntry:
         return len(self._dir)
 
     def list(self):
-        # type: () -> List[Text]
+        # type: () -> list[str]
         return list(self._dir.keys())
 
     def add_open_file(self, memory_file):
@@ -295,7 +283,7 @@ class _DirEntry:
         self._open_files.remove(memory_file)
 
     def to_info(self, namespaces=None):
-        # type: (Optional[Collection[Text]]) -> Info
+        # type: (Optional[Collection[str]]) -> Info
         namespaces = namespaces or ()
         info = {"basic": {"name": self.name, "is_dir": self.is_dir}}
         if "details" in namespaces:
@@ -339,7 +327,7 @@ class MemoryFS(FS):
         "thread_safe": True,
         "unicode_paths": True,
         "virtual": False,
-    }  # type: Dict[Text, Union[Text, int, bool, None]]
+    }  # type: dict[str, Union[str, int, bool, None]]
 
     def __init__(self):
         # type: () -> None
@@ -357,11 +345,11 @@ class MemoryFS(FS):
         return "<memfs>"
 
     def _make_dir_entry(self, resource_type, name):
-        # type: (ResourceType, Text) -> _DirEntry
+        # type: (ResourceType, str) -> _DirEntry
         return _DirEntry(resource_type, name)
 
     def _get_dir_entry(self, dir_path):
-        # type: (Text) -> Optional[_DirEntry]
+        # type: (str) -> Optional[_DirEntry]
         """Get a directory entry, or `None` if one doesn't exist."""
         with self._lock:
             dir_path = normpath(dir_path)
@@ -381,7 +369,7 @@ class MemoryFS(FS):
         return super(MemoryFS, self).close()
 
     def getinfo(self, path, namespaces=None):
-        # type: (Text, Optional[Collection[Text]]) -> Info
+        # type: (str, Optional[Collection[str]]) -> Info
         _path = self.validatepath(path)
         dir_entry = self._get_dir_entry(_path)
         if dir_entry is None:
@@ -389,7 +377,7 @@ class MemoryFS(FS):
         return dir_entry.to_info(namespaces=namespaces)
 
     def listdir(self, path):
-        # type: (Text) -> List[Text]
+        # type: (str) -> list[str]
         self.check()
         _path = self.validatepath(path)
         with self._lock:
@@ -405,12 +393,12 @@ class MemoryFS(FS):
     if typing.TYPE_CHECKING:
 
         def opendir(self, path, factory=None):
-            # type: (_M, Text, Optional[_OpendirFactory]) -> SubFS[_M]
+            # type: (_M, str, Optional[_OpendirFactory]) -> SubFS[_M]
             pass
 
     def makedir(
         self,  # type: _M
-        path,  # type: Text
+        path,  # type: str
         permissions=None,  # type: Optional[Permissions]
         recreate=False,  # type: bool
     ):
@@ -507,7 +495,7 @@ class MemoryFS(FS):
                 copy_modified_time(self, src_path, self, dst_path)
 
     def openbin(self, path, mode="r", buffering=-1, **options):
-        # type: (Text, Text, int, **Any) -> BinaryIO
+        # type: (str, str, int, **Any) -> BinaryIO
         _mode = Mode(mode)
         _mode.validate_bin()
         _path = self.validatepath(path)
@@ -554,7 +542,7 @@ class MemoryFS(FS):
             return mem_file  # type: ignore
 
     def remove(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         _path = self.validatepath(path)
 
         with self._lock:
@@ -571,7 +559,7 @@ class MemoryFS(FS):
             parent_dir_entry.remove_entry(file_name)
 
     def removedir(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         # make sure we are not removing root
         _path = self.validatepath(path)
         if _path == "/":
@@ -586,7 +574,7 @@ class MemoryFS(FS):
         self.removetree(_path)
 
     def removetree(self, path):
-        # type: (Text) -> None
+        # type: (str) -> None
         _path = self.validatepath(path)
 
         with self._lock:
@@ -609,9 +597,9 @@ class MemoryFS(FS):
 
     def scandir(
         self,
-        path,  # type: Text
-        namespaces=None,  # type: Optional[Collection[Text]]
-        page=None,  # type: Optional[Tuple[int, int]]
+        path,  # type: str
+        namespaces=None,  # type: Optional[Collection[str]]
+        page=None,  # type: Optional[tuple[int, int]]
     ):
         # type: (...) -> Iterator[Info]
         self.check()
@@ -634,7 +622,7 @@ class MemoryFS(FS):
                 yield entry.to_info(namespaces=namespaces)
 
     def setinfo(self, path, info):
-        # type: (Text, RawInfo) -> None
+        # type: (str, RawInfo) -> None
         _path = self.validatepath(path)
         with self._lock:
             dir_path, file_name = split(_path)

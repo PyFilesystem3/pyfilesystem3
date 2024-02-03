@@ -6,8 +6,6 @@ from .path import abspath, join, normpath, relpath
 from .wrapfs import WrapFS
 
 if typing.TYPE_CHECKING:
-    from typing import Text, Tuple
-
     from .base import FS  # noqa: F401
 
 
@@ -24,18 +22,18 @@ class SubFS(WrapFS[_F], typing.Generic[_F]):
     """
 
     def __init__(self, parent_fs, path):  # noqa: D107
-        # type: (_F, Text) -> None
-        super(SubFS, self).__init__(parent_fs)
+        # type: (_F, str) -> None
+        super().__init__(parent_fs)
         self._sub_dir = abspath(normpath(path))
 
     def __repr__(self):
-        # type: () -> Text
+        # type: () -> str
         return "{}({!r}, {!r})".format(
             self.__class__.__name__, self._wrap_fs, self._sub_dir
         )
 
     def __str__(self):
-        # type: () -> Text
+        # type: () -> str
         return "{parent}{dir}".format(parent=self._wrap_fs, dir=self._sub_dir)
 
     def delegate_fs(self):
@@ -43,7 +41,7 @@ class SubFS(WrapFS[_F], typing.Generic[_F]):
         return self._wrap_fs
 
     def delegate_path(self, path):
-        # type: (Text) -> Tuple[_F, Text]
+        # type: (str) -> tuple[_F, str]
         _path = join(self._sub_dir, relpath(normpath(path)))
         return self._wrap_fs, _path
 

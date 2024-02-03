@@ -8,7 +8,7 @@ from .base import Opener
 from .registry import registry
 
 if typing.TYPE_CHECKING:
-    from typing import Text, Union
+    from typing import Union
 
     from ..ftpfs import FTPFS  # noqa: F401
     from ..subfs import SubFS
@@ -24,11 +24,11 @@ class FTPOpener(Opener):
     @CreateFailed.catch_all
     def open_fs(
         self,
-        fs_url,  # type: Text
+        fs_url,  # type: str
         parse_result,  # type: ParseResult
         writeable,  # type: bool
         create,  # type: bool
-        cwd,  # type: Text
+        cwd,  # type: str
     ):
         # type: (...) -> Union[FTPFS, SubFS[FTPFS]]
         from ..ftpfs import FTPFS

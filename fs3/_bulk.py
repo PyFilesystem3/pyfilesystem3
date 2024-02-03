@@ -14,7 +14,7 @@ from .errors import BulkCopyFailed
 from .tools import copy_file_data
 
 if typing.TYPE_CHECKING:
-    from typing import IO, List, Optional, Text, Tuple, Type
+    from typing import IO, Optional, Type
 
     from types import TracebackType
 
@@ -81,10 +81,10 @@ class Copier:
             raise ValueError("num_workers must be >= 0")
         self.num_workers = num_workers
         self.preserve_time = preserve_time
-        self.all_tasks = []  # type: List[Tuple[FS, Text, FS, Text]]
+        self.all_tasks = []  # type: list[tuple[FS, str, FS, str]]
         self.queue = None  # type: Optional[Queue[_Task]]
-        self.workers = []  # type: List[_Worker]
-        self.errors = []  # type: List[Exception]
+        self.workers = []  # type: list[_Worker]
+        self.errors = []  # type: list[Exception]
         self.running = False
 
     def start(self):
@@ -135,7 +135,7 @@ class Copier:
             raise BulkCopyFailed(self.errors)
 
     def copy(self, src_fs, src_path, dst_fs, dst_path, preserve_time=False):
-        # type: (FS, Text, FS, Text, bool) -> None
+        # type: (FS, str, FS, str, bool) -> None
         """Copy a file from one fs to another."""
         if self.queue is None:
             # This should be the most performant for a single-thread

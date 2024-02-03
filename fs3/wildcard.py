@@ -9,14 +9,15 @@ from functools import partial
 from .lrucache import LRUCache
 
 if typing.TYPE_CHECKING:
-    from typing import Callable, Iterable, Pattern, Text, Tuple
+    from collections.abc import Callable, Iterable
+    from typing import Pattern
 
 
-_PATTERN_CACHE = LRUCache(1000)  # type: LRUCache[Tuple[Text, bool], Pattern]
+_PATTERN_CACHE = LRUCache(1000)  # type: LRUCache[tuple[str, bool], Pattern]
 
 
 def match(pattern, name):
-    # type: (Text, Text) -> bool
+    # type: (str, str) -> bool
     """Test whether a name matches a wildcard pattern.
 
     Arguments:
@@ -36,7 +37,7 @@ def match(pattern, name):
 
 
 def imatch(pattern, name):
-    # type: (Text, Text) -> bool
+    # type: (str, str) -> bool
     """Test whether a name matches a wildcard pattern (case insensitive).
 
     Arguments:
@@ -56,7 +57,7 @@ def imatch(pattern, name):
 
 
 def match_any(patterns, name):
-    # type: (Iterable[Text], Text) -> bool
+    # type: (Iterable[str], str) -> bool
     """Test if a name matches any of a list of patterns.
 
     Will return `True` if ``patterns`` is an empty list.
@@ -76,7 +77,7 @@ def match_any(patterns, name):
 
 
 def imatch_any(patterns, name):
-    # type: (Iterable[Text], Text) -> bool
+    # type: (Iterable[str], str) -> bool
     """Test if a name matches any of a list of patterns (case insensitive).
 
     Will return `True` if ``patterns`` is an empty list.
@@ -96,7 +97,7 @@ def imatch_any(patterns, name):
 
 
 def get_matcher(patterns, case_sensitive):
-    # type: (Iterable[Text], bool) -> Callable[[Text], bool]
+    # type: (Iterable[str], bool) -> Callable[[str], bool]
     """Get a callable that matches names against the given patterns.
 
     Arguments:
@@ -127,7 +128,7 @@ def get_matcher(patterns, case_sensitive):
 
 
 def _translate(pattern, case_sensitive=True):
-    # type: (Text, bool) -> Text
+    # type: (str, bool) -> str
     """Translate a wildcard pattern to a regular expression.
 
     There is no way to quote meta-characters.
