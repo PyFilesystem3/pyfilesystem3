@@ -1,10 +1,8 @@
-from __future__ import unicode_literals
-
 import posixpath
 import unittest
 
-from fs import memoryfs
-from fs.test import UNICODE_TEXT, FSTestCases
+from fs3 import memoryfs
+from fs3.test import UNICODE_TEXT, FSTestCases
 
 try:
     # Only supported on Python 3.4+

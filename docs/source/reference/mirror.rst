@@ -1,5 +1,5 @@
-fs.mirror
-=========
+fs3.mirror
+==========
 
-.. automodule:: fs.mirror
+.. automodule:: fs3.mirror
    :members: mirror

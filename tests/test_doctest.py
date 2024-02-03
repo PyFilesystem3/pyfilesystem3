@@ -11,18 +11,12 @@ import types
 import unittest
 import warnings
 from pprint import pprint
+from unittest import mock
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
-import six
-
-import fs
-import fs.opener.parse
-from fs.memoryfs import MemoryFS
-from fs.subfs import ClosingSubFS
+import fs3
+import fs3.opener.parse
+from fs3.memoryfs import MemoryFS
+from fs3.subfs import ClosingSubFS
 
 # --- Mocks ------------------------------------------------------------------
 
@@ -108,8 +102,6 @@ def _load_tests(loader, tests, ignore):
     # NB (@althonos): we only test docstrings on Python 3 because it's
     # extremely hard to maintain compatibility for both versions without
     # extensively hacking `doctest` and `unittest`.
-    if six.PY2:
-        return tests
 
     def setUp(self):
         warnings.simplefilter("ignore")
@@ -142,7 +134,7 @@ def _load_tests(loader, tests, ignore):
                 # NB (@althonos): This allows using OSFS in some examples,
                 # while not actually opening the real filesystem
                 OSFS=lambda path: MemoryFS(),
-                # NB (@althonos): This is for compatibility in `fs.registry`
+                # NB (@althonos): This is for compatibility in `fs3.registry`
                 print_list=lambda path: None,
                 pprint=pprint,
                 time=time,

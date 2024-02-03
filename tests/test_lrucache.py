@@ -1,8 +1,6 @@
-from __future__ import unicode_literals
-
 import unittest
 
-from fs import lrucache
+from fs3 import lrucache
 
 
 class TestLRUCache(unittest.TestCase):

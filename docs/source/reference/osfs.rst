@@ -1,5 +1,5 @@
 OS Filesystem
 =============
 
-.. automodule:: fs.osfs
+.. automodule:: fs3.osfs
     :members:

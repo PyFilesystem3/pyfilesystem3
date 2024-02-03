@@ -9,7 +9,7 @@ Usage:
 
 import sys
 
-from fs import open_fs
+from fs3 import open_fs
 
 with open_fs(sys.argv[1]) as fs:
     count = fs.glob("**/*.pyc").remove()

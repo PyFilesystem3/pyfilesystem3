@@ -1,14 +1,11 @@
-from __future__ import unicode_literals
-
 import os
 import platform
 import shutil
-import six
 import tempfile
 import unittest
 
-import fs
-from fs.osfs import OSFS
+import fs3
+from fs3.osfs import OSFS
 
 if platform.system() != "Windows":
 
@@ -21,14 +18,10 @@ if platform.system() != "Windows":
 
         def setUp(self):
             dir_path = self.dir_path = tempfile.mkdtemp()
-            if six.PY2:
-                with open(os.path.join(dir_path, self.TEST_FILENAME), "wb") as f:
-                    f.write(b"baz")
-            else:
-                with open(
-                    os.path.join(dir_path, self.TEST_FILENAME_UNICODE), "wb"
-                ) as f:
-                    f.write(b"baz")
+            with open(
+                os.path.join(dir_path, self.TEST_FILENAME_UNICODE), "wb"
+            ) as f:
+                f.write(b"baz")
 
         def tearDown(self):
             shutil.rmtree(self.dir_path)
@@ -53,5 +46,5 @@ if platform.system() != "Windows":
         def test_scandir(self):
             with OSFS(self.dir_path) as test_fs:
                 for info in test_fs.scandir("/"):
-                    self.assertIsInstance(info.name, six.text_type)
+                    self.assertIsInstance(info.name, str)
                     self.assertEqual(info.name, self.TEST_FILENAME_UNICODE)

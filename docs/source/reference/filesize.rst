@@ -1,5 +1,5 @@
-fs.filesize
-===========
+fs3.filesize
+============
 
-.. automodule:: fs.filesize
+.. automodule:: fs3.filesize
    :members:

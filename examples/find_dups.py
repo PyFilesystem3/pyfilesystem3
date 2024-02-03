@@ -11,7 +11,7 @@ import sys
 
 from collections import defaultdict
 
-from fs import open_fs
+from fs3 import open_fs
 
 hashes = defaultdict(list)
 with open_fs(sys.argv[1]) as fs:
@@ -24,4 +24,3 @@ for paths in hashes.values():
         for path in paths:
             print(path)
         print()
-

@@ -20,7 +20,7 @@ and resources respectively::
 We can combine these filesystems in to a single filesystem with the
 following code::
 
-    from fs.mountfs import MountFS
+    from fs3.mountfs import MountFS
     combined_fs = MountFS()
     combined_fs.mount('config', config_fs)
     combined_fs.mount('resources', resources_fs)
@@ -43,8 +43,8 @@ Now both filesystems may be accessed with the same path structure::
     print(combined_fs.gettext('/config/defaults.cfg'))
     read_jpg(combined_fs.open('/resources/images/logo.jpg', 'rb')
 
-.. autoclass:: fs.mountfs.MountFS
+.. autoclass:: fs3.mountfs.MountFS
    :members:
 
-.. autoexception:: fs.mountfs.MountError
+.. autoexception:: fs3.mountfs.MountError
    :show-inheritance:

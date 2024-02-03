@@ -1,5 +1,5 @@
-fs.info
-=======
+fs3.info
+========
 
-.. automodule:: fs.info
+.. automodule:: fs3.info
     :members:

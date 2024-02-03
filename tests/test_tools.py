@@ -1,10 +1,8 @@
-from __future__ import unicode_literals
-
 import unittest
 
-from fs import tools
-from fs.mode import validate_open_mode, validate_openbin_mode
-from fs.opener import open_fs
+from fs3 import tools
+from fs3.mode import validate_open_mode, validate_openbin_mode
+from fs3.opener import open_fs
 
 
 class TestTools(unittest.TestCase):

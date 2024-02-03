@@ -1,5 +1,5 @@
 App Filesystems
 ===============
 
-.. automodule:: fs.appfs
+.. automodule:: fs3.appfs
     :members:

@@ -17,11 +17,11 @@ clean: cleandist cleandocs
 
 .PHONY: test
 test:
-	nosetests --with-coverage --cover-package=fs -a "!slow" tests
+	nosetests --with-coverage --cover-package=fs3 -a "!slow" tests
 
 .PHONY: slowtest
 slowtest:
-	nosetests --with-coverage --cover-erase --cover-package=fs tests
+	nosetests --with-coverage --cover-erase --cover-package=fs3 tests
 
 .PHONY: testall
 testall:
@@ -34,4 +34,4 @@ docs:
 
 .PHONY: typecheck
 typecheck:
-	mypy -p fs --config setup.cfg
+	mypy -p fs3 --config setup.cfg

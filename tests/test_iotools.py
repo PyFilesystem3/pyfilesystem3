@@ -1,11 +1,8 @@
-from __future__ import unicode_literals
-
 import io
-import six
 import unittest
 
-from fs import iotools, tempfs
-from fs.test import UNICODE_TEXT
+from fs3 import iotools, tempfs
+from fs3.test import UNICODE_TEXT
 
 
 class TestIOTools(unittest.TestCase):
@@ -32,7 +29,7 @@ class TestIOTools(unittest.TestCase):
             with iotools.make_stream("text.txt", f, "rt") as f2:
                 repr(f2)
                 text = f2.read()
-                self.assertIsInstance(text, six.text_type)
+                self.assertIsInstance(text, str)
 
     def test_readinto(self):
 

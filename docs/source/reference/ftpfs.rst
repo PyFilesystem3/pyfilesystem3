@@ -1,5 +1,5 @@
 FTP Filesystem
 ==============
 
-.. automodule:: fs.ftpfs
+.. automodule:: fs3.ftpfs
     :members:

@@ -1,9 +1,7 @@
-from __future__ import unicode_literals
-
 import os
 
-from fs import errors
-from fs.tempfs import TempFS
+from fs3 import errors
+from fs3.tempfs import TempFS
 
 from .test_osfs import TestOSFS
 

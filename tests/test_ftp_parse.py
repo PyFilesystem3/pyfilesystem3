@@ -1,10 +1,8 @@
-from __future__ import unicode_literals
-
 import textwrap
 import time
 import unittest
 
-from fs import _ftp_parse as ftp_parse
+from fs3 import _ftp_parse as ftp_parse
 
 try:
     from unittest import mock

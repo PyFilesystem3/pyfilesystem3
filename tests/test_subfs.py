@@ -1,14 +1,12 @@
-from __future__ import unicode_literals
-
 import os
 import shutil
 import tempfile
 import unittest
 
-from fs import osfs
-from fs.memoryfs import MemoryFS
-from fs.path import relpath
-from fs.subfs import SubFS
+from fs3 import osfs
+from fs3.memoryfs import MemoryFS
+from fs3.path import relpath
+from fs3.subfs import SubFS
 
 from .test_osfs import TestOSFS
 

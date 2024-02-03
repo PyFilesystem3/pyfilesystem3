@@ -1,11 +1,9 @@
-from __future__ import unicode_literals
-
 import re
 import unittest
 
 from parameterized import parameterized
 
-from fs import glob, open_fs
+from fs3 import glob, open_fs
 
 
 class TestGlob(unittest.TestCase):
@@ -15,7 +13,7 @@ class TestGlob(unittest.TestCase):
         fs.touch("bar.py")
         fs.touch("baz.py")
         fs.makedirs("egg")
-        fs.writetext("egg/foo.py", "from fs import open_fs")
+        fs.writetext("egg/foo.py", "from fs3 import open_fs")
         fs.touch("egg/foo.pyc")
         fs.makedirs("a/b/c/").writetext("foo.py", "import fs")
         repr(fs.glob)

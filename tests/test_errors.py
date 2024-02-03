@@ -1,23 +1,20 @@
-from __future__ import unicode_literals
-
 import multiprocessing
 import unittest
-from six import text_type
 
-from fs import errors
-from fs.errors import CreateFailed
+from fs3 import errors
+from fs3.errors import CreateFailed
 
 
 class TestErrors(unittest.TestCase):
     def test_str(self):
         err = errors.FSError("oh dear")
         repr(err)
-        self.assertEqual(text_type(err), "oh dear")
+        self.assertEqual(str(err), "oh dear")
 
     def test_unsupported(self):
         err = errors.Unsupported("stuff")
         repr(err)
-        self.assertEqual(text_type(err), "not supported")
+        self.assertEqual(str(err), "not supported")
 
     def test_raise_in_multiprocessing(self):
         # Without the __reduce__ methods in FSError subclasses, this test will hang forever.

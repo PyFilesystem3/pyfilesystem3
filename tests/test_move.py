@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import unittest
 
 try:
@@ -9,11 +7,11 @@ except ImportError:
 
 from parameterized import parameterized, parameterized_class
 
-import fs.move
-from fs import open_fs
-from fs.errors import FSError, ResourceReadOnly
-from fs.path import join
-from fs.wrap import read_only
+import fs3.move
+from fs3 import open_fs
+from fs3.errors import FSError, ResourceReadOnly
+from fs3.path import join
+from fs3.wrap import read_only
 
 
 @parameterized_class(("preserve_time",), [(True,), (False,)])

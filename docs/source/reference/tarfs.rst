@@ -1,6 +1,6 @@
 Tar Filesystem
 ==============
 
-.. automodule:: fs.tarfs
+.. automodule:: fs3.tarfs
     :members:
     :member-order: bysource

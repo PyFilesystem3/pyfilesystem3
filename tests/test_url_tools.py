@@ -1,11 +1,9 @@
 # coding: utf-8
 """Test url tools. """
-from __future__ import unicode_literals
-
 import platform
 import unittest
 
-from fs._url_tools import url_quote
+from fs3._url_tools import url_quote
 
 
 class TestBase(unittest.TestCase):

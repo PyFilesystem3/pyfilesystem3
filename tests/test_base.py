@@ -1,11 +1,9 @@
 """Test (abstract) base FS class."""
 
-from __future__ import unicode_literals
-
 import unittest
 
-from fs import errors
-from fs.base import FS
+from fs3 import errors
+from fs3.base import FS
 
 
 class DummyFS(FS):

@@ -1,6 +1,6 @@
-fs.errors
-=========
+fs3.errors
+==========
 
-.. automodule:: fs.errors
+.. automodule:: fs3.errors
     :members:
     :show-inheritance:

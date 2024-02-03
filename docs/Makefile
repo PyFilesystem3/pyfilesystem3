@@ -9,7 +9,7 @@ BUILDDIR      = build
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
-	$(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don\'t have Sphinx installed, grab it from http://sphinx-doc.org/)
+	$(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the '$(SPHINXBUILD)' executable. Alternatively you can add the directory with the executable to your PATH. If you don\'t have Sphinx installed, grab it from https://sphinx-doc.org/)
 endif
 
 # Internal variables.
@@ -96,9 +96,9 @@ qthelp:
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
 	      ".qhcp project file in $(BUILDDIR)/qthelp, like this:"
-	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/PyFilesystem2.qhcp"
+	@echo "# qcollectiongenerator $(BUILDDIR)/qthelp/PyFilesystem3.qhcp"
 	@echo "To view the help file:"
-	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/PyFilesystem2.qhc"
+	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/PyFilesystem3.qhc"
 
 .PHONY: applehelp
 applehelp:
@@ -115,8 +115,8 @@ devhelp:
 	@echo
 	@echo "Build finished."
 	@echo "To view the help file:"
-	@echo "# mkdir -p $$HOME/.local/share/devhelp/PyFilesystem2"
-	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/PyFilesystem2"
+	@echo "# mkdir -p $$HOME/.local/share/devhelp/PyFilesystem3"
+	@echo "# ln -s $(BUILDDIR)/devhelp $$HOME/.local/share/devhelp/PyFilesystem3"
 	@echo "# devhelp"
 
 .PHONY: epub

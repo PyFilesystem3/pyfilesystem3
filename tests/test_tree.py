@@ -1,10 +1,8 @@
-from __future__ import print_function, unicode_literals
-
 import io
 import unittest
 
-from fs import tree
-from fs.memoryfs import MemoryFS
+from fs3 import tree
+from fs3.memoryfs import MemoryFS
 
 
 class TestInfo(unittest.TestCase):

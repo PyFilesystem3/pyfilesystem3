@@ -1,9 +1,6 @@
-from __future__ import print_function, unicode_literals
-
 import unittest
-from six import text_type
 
-from fs.permissions import Permissions, make_mode
+from fs3.permissions import Permissions, make_mode
 
 
 class TestPermissions(unittest.TestCase):
@@ -128,6 +125,6 @@ class TestPermissions(unittest.TestCase):
 
     def test_mode_set(self):
         p = Permissions(user="r")
-        self.assertEqual(text_type(p), "r--------")
+        self.assertEqual(str(p), "r--------")
         p.mode = 0o700
-        self.assertEqual(text_type(p), "rwx------")
+        self.assertEqual(str(p), "rwx------")

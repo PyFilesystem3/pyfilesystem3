@@ -1,5 +1,5 @@
-fs.wrap
-=======
+fs3.wrap
+========
 
-.. automodule:: fs.wrap
+.. automodule:: fs3.wrap
     :members:

@@ -1,11 +1,9 @@
-from __future__ import unicode_literals
-
 import unittest
 
-from fs.memoryfs import MemoryFS
-from fs.mountfs import MountError, MountFS
-from fs.tempfs import TempFS
-from fs.test import FSTestCases
+from fs3.memoryfs import MemoryFS
+from fs3.mountfs import MountError, MountFS
+from fs3.tempfs import TempFS
+from fs3.test import FSTestCases
 
 
 class TestMountFS(FSTestCases, unittest.TestCase):

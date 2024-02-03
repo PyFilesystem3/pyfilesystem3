@@ -1,5 +1,5 @@
-fs.move
-=======
+fs3.move
+========
 
-.. automodule:: fs.move
+.. automodule:: fs3.move
     :members:

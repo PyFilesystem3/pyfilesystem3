@@ -1,6 +1,6 @@
 Zip Filesystem
 ==============
 
-.. automodule:: fs.zipfs
+.. automodule:: fs3.zipfs
     :members:
     :member-order: bysource

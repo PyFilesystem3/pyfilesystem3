@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import calendar
 import datetime
 import errno
@@ -9,11 +7,11 @@ import tempfile
 import unittest
 from parameterized import parameterized
 
-import fs.copy
-from fs import open_fs
+import fs3.copy
+from fs3 import open_fs
 
 
-def _create_sandbox_dir(prefix="pyfilesystem2_sandbox_", home=None):
+def _create_sandbox_dir(prefix="pyfilesystem3_sandbox_", home=None):
     if home is None:
         return tempfile.mkdtemp(prefix=prefix)
     else:
@@ -51,14 +49,7 @@ def _delay_file_utime(filepath, delta_sec):
 
 
 def mkdirp(path):
-    # os.makedirs(path, exist_ok=True) only for python3.?
-    try:
-        os.makedirs(path)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else:
-            raise
+    os.makedirs(path, exist_ok=True)
 
 
 class TestCopySimple(unittest.TestCase):
@@ -75,7 +66,7 @@ class TestCopySimple(unittest.TestCase):
         src_file2_info = src_fs.getinfo("foo/bar/baz.txt", namespaces)
 
         dst_fs = open_fs("mem://")
-        fs.copy.copy_fs(src_fs, dst_fs, workers=workers, preserve_time=True)
+        fs3.copy.copy_fs(src_fs, dst_fs, workers=workers, preserve_time=True)
 
         self.assertTrue(dst_fs.isdir("foo/empty"))
         self.assertTrue(dst_fs.isdir("foo/bar"))
@@ -90,7 +81,7 @@ class TestCopySimple(unittest.TestCase):
         src_fs = open_fs("mem://")
         dst_fs = open_fs("mem://")
         with self.assertRaises(ValueError):
-            fs.copy.copy_fs(src_fs, dst_fs, workers=-1)
+            fs3.copy.copy_fs(src_fs, dst_fs, workers=-1)
 
     def test_copy_dir0(self):
         namespaces = ("details", "modified")
@@ -103,7 +94,7 @@ class TestCopySimple(unittest.TestCase):
         src_file2_info = src_fs.getinfo("foo/bar/baz.txt", namespaces)
 
         with open_fs("mem://") as dst_fs:
-            fs.copy.copy_dir(src_fs, "/foo", dst_fs, "/", workers=0, preserve_time=True)
+            fs3.copy.copy_dir(src_fs, "/foo", dst_fs, "/", workers=0, preserve_time=True)
             self.assertTrue(dst_fs.isdir("bar"))
             self.assertTrue(dst_fs.isdir("empty"))
             self.assertTrue(dst_fs.isfile("bar/baz.txt"))
@@ -123,7 +114,7 @@ class TestCopySimple(unittest.TestCase):
         src_file2_info = src_fs.getinfo("foo/bar/baz.txt", namespaces)
 
         with open_fs("mem://") as dst_fs:
-            fs.copy.copy_dir(
+            fs3.copy.copy_dir(
                 src_fs, "/foo", dst_fs, "/", workers=workers, preserve_time=True
             )
             self.assertTrue(dst_fs.isdir("bar"))
@@ -145,7 +136,7 @@ class TestCopySimple(unittest.TestCase):
             src_fs.makedirs("dir2/dir3").writebytes("egg", data4)
             for workers in (0, 1, 2, 4):
                 with open_fs("temp://") as dst_fs:
-                    fs.copy.copy_fs(src_fs, dst_fs, workers=workers)
+                    fs3.copy.copy_fs(src_fs, dst_fs, workers=workers)
                     self.assertEqual(dst_fs.readbytes("foo"), data1)
                     self.assertEqual(dst_fs.readbytes("bar"), data2)
                     self.assertEqual(dst_fs.readbytes("dir1/baz"), data3)
@@ -161,7 +152,7 @@ class TestCopySimple(unittest.TestCase):
             on_copy_calls.append(args)
 
         dst_fs = open_fs("mem://")
-        fs.copy.copy_dir(src_fs, "/", dst_fs, "/", on_copy=on_copy)
+        fs3.copy.copy_dir(src_fs, "/", dst_fs, "/", on_copy=on_copy)
         self.assertEqual(on_copy_calls, [(src_fs, "/baz.txt", dst_fs, "/baz.txt")])
 
 
@@ -176,7 +167,7 @@ class TestCopyIfNewer(unittest.TestCase):
             "foo2/exists", datetime.datetime.utcnow() + datetime.timedelta(hours=1)
         )
         self.assertTrue(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs,
                 "foo1/test1.txt",
                 src_fs,
@@ -185,7 +176,7 @@ class TestCopyIfNewer(unittest.TestCase):
             )
         )
         self.assertFalse(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs, "foo1/test1.txt", src_fs, "foo2/exists", self.copy_if_condition
             )
         )
@@ -210,7 +201,7 @@ class TestCopyIfNewer(unittest.TestCase):
 
             self.assertTrue(dst_fs.exists("/file1.txt"))
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -231,7 +222,7 @@ class TestCopyIfNewer(unittest.TestCase):
             src_fs = open_fs("osfs://" + src_dir)
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -259,7 +250,7 @@ class TestCopyIfNewer(unittest.TestCase):
 
             self.assertTrue(dst_fs.exists("/file1.txt"))
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -300,7 +291,7 @@ class TestCopyIfNewer(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_fs_if(
+            fs3.copy.copy_fs_if(
                 src_fs, dst_fs, on_copy=on_copy, condition=self.copy_if_condition
             )
 
@@ -343,7 +334,7 @@ class TestCopyIfNewer(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs,
                 "/",
                 dst_fs,
@@ -376,7 +367,7 @@ class TestCopyIfNewer(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs, "/src", src_fs, "/dst", on_copy=on_copy, condition="newer"
             )
 
@@ -400,7 +391,7 @@ class TestCopyIfNewer(unittest.TestCase):
             dst_dir = _create_sandbox_dir()
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            fs.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
+            fs3.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
 
             self.assertTrue(dst_fs.isdir("bar"))
             self.assertTrue(dst_fs.isdir("empty"))
@@ -421,7 +412,7 @@ class TestCopyIfOlder(unittest.TestCase):
             "foo2/exists", datetime.datetime.utcnow() - datetime.timedelta(hours=1)
         )
         self.assertTrue(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs,
                 "foo1/test1.txt",
                 src_fs,
@@ -430,7 +421,7 @@ class TestCopyIfOlder(unittest.TestCase):
             )
         )
         self.assertFalse(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs, "foo1/test1.txt", src_fs, "foo2/exists", self.copy_if_condition
             )
         )
@@ -455,7 +446,7 @@ class TestCopyIfOlder(unittest.TestCase):
 
             self.assertTrue(dst_fs.exists("/file1.txt"))
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -476,7 +467,7 @@ class TestCopyIfOlder(unittest.TestCase):
             src_fs = open_fs("osfs://" + src_dir)
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -504,7 +495,7 @@ class TestCopyIfOlder(unittest.TestCase):
 
             self.assertTrue(dst_fs.exists("/file1.txt"))
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -545,7 +536,7 @@ class TestCopyIfOlder(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_fs_if(
+            fs3.copy.copy_fs_if(
                 src_fs, dst_fs, on_copy=on_copy, condition=self.copy_if_condition
             )
 
@@ -588,7 +579,7 @@ class TestCopyIfOlder(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs,
                 "/",
                 dst_fs,
@@ -621,7 +612,7 @@ class TestCopyIfOlder(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs, "/src", src_fs, "/dst", on_copy=on_copy, condition="newer"
             )
 
@@ -645,7 +636,7 @@ class TestCopyIfOlder(unittest.TestCase):
             dst_dir = _create_sandbox_dir()
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            fs.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
+            fs3.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
 
             self.assertTrue(dst_fs.isdir("bar"))
             self.assertTrue(dst_fs.isdir("empty"))
@@ -663,7 +654,7 @@ class TestCopyIfExists(unittest.TestCase):
         src_fs.makedir("foo2").touch("exists")
         src_fs.makedir("foo1").touch("test1.txt")
         self.assertFalse(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs,
                 "foo1/test1.txt",
                 src_fs,
@@ -672,7 +663,7 @@ class TestCopyIfExists(unittest.TestCase):
             )
         )
         self.assertTrue(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs, "foo1/test1.txt", src_fs, "foo2/exists", self.copy_if_condition
             )
         )
@@ -689,7 +680,7 @@ class TestCopyIfExists(unittest.TestCase):
             src_fs = open_fs("osfs://" + src_dir)
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -714,7 +705,7 @@ class TestCopyIfExists(unittest.TestCase):
 
             self.assertTrue(dst_fs.exists("/file1.txt"))
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -745,7 +736,7 @@ class TestCopyIfExists(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_fs_if(
+            fs3.copy.copy_fs_if(
                 src_fs, dst_fs, on_copy=on_copy, condition=self.copy_if_condition
             )
 
@@ -782,7 +773,7 @@ class TestCopyIfExists(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs,
                 "/",
                 dst_fs,
@@ -815,7 +806,7 @@ class TestCopyIfExists(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs, "/src", src_fs, "/dst", on_copy=on_copy, condition="newer"
             )
 
@@ -839,7 +830,7 @@ class TestCopyIfExists(unittest.TestCase):
             dst_dir = _create_sandbox_dir()
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            fs.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
+            fs3.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
 
             self.assertTrue(dst_fs.isdir("bar"))
             self.assertTrue(dst_fs.isdir("empty"))
@@ -857,7 +848,7 @@ class TestCopyIfNotExists(unittest.TestCase):
         src_fs.makedir("foo2").touch("exists")
         src_fs.makedir("foo1").touch("test1.txt")
         self.assertTrue(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs,
                 "foo1/test1.txt",
                 src_fs,
@@ -866,7 +857,7 @@ class TestCopyIfNotExists(unittest.TestCase):
             )
         )
         self.assertFalse(
-            fs.copy.copy_file_if(
+            fs3.copy.copy_file_if(
                 src_fs, "foo1/test1.txt", src_fs, "foo2/exists", self.copy_if_condition
             )
         )
@@ -883,7 +874,7 @@ class TestCopyIfNotExists(unittest.TestCase):
             src_fs = open_fs("osfs://" + src_dir)
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -908,7 +899,7 @@ class TestCopyIfNotExists(unittest.TestCase):
 
             self.assertTrue(dst_fs.exists("/file1.txt"))
 
-            copied = fs.copy.copy_file_if(
+            copied = fs3.copy.copy_file_if(
                 src_fs, "/file1.txt", dst_fs, "/file1.txt", self.copy_if_condition
             )
 
@@ -940,7 +931,7 @@ class TestCopyIfNotExists(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_fs_if(
+            fs3.copy.copy_fs_if(
                 src_fs, dst_fs, on_copy=on_copy, condition=self.copy_if_condition
             )
 
@@ -977,7 +968,7 @@ class TestCopyIfNotExists(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs,
                 "/",
                 dst_fs,
@@ -1011,7 +1002,7 @@ class TestCopyIfNotExists(unittest.TestCase):
             def on_copy(src_fs, src_path, dst_fs, dst_path):
                 copied.append(dst_path)
 
-            fs.copy.copy_dir_if(
+            fs3.copy.copy_dir_if(
                 src_fs, "/src", src_fs, "/dst", on_copy=on_copy, condition="newer"
             )
 
@@ -1035,7 +1026,7 @@ class TestCopyIfNotExists(unittest.TestCase):
             dst_dir = _create_sandbox_dir()
             dst_fs = open_fs("osfs://" + dst_dir)
 
-            fs.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
+            fs3.copy.copy_dir_if(src_fs, "/foo", dst_fs, "/", condition="newer")
 
             self.assertTrue(dst_fs.isdir("bar"))
             self.assertTrue(dst_fs.isdir("empty"))

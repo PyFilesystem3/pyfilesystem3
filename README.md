@@ -1,31 +1,30 @@
-# PyFilesystem2
+# PyFilesystem3
 
 Python's Filesystem abstraction layer.
 
-[![PyPI version](https://img.shields.io/pypi/v/fs)](https://pypi.org/project/fs/)
-[![PyPI](https://img.shields.io/pypi/pyversions/fs.svg)](https://pypi.org/project/fs/)
-[![Downloads](https://pepy.tech/badge/fs/month)](https://pepy.tech/project/fs/)
-[![Build Status](https://img.shields.io/github/workflow/status/PyFilesystem/pyfilesystem2/Test/master?logo=github&cacheSeconds=600)](https://github.com/PyFilesystem/pyfilesystem2/actions?query=branch%3Amaster)
-[![Windows Build Status](https://img.shields.io/appveyor/build/willmcgugan/pyfilesystem2/master?logo=appveyor&cacheSeconds=600)](https://ci.appveyor.com/project/willmcgugan/pyfilesystem2)
-[![Coverage Status](https://img.shields.io/coveralls/github/PyFilesystem/pyfilesystem2/master?cacheSeconds=600)](https://coveralls.io/github/PyFilesystem/pyfilesystem2)
-[![Codacy Badge](https://img.shields.io/codacy/grade/30ad6445427349218425d93886ade9ee/master?logo=codacy)](https://www.codacy.com/app/will-mcgugan/pyfilesystem2?utm_source=github.com&utm_medium=referral&utm_content=PyFilesystem/pyfilesystem2&utm_campaign=Badge_Grade)
-[![Docs](https://img.shields.io/readthedocs/pyfilesystem2?maxAge=3600)](http://pyfilesystem2.readthedocs.io/en/stable/?badge=stable)
+[![PyPI version](https://img.shields.io/pypi/v/pyfilesystem3)](https://pypi.org/project/pyfilesystem3/)
+[![PyPI](https://img.shields.io/pypi/pyversions/pyfilesystem3.svg)](https://pypi.org/project/pyfilesystem3/)
+[![Downloads](https://pepy.tech/badge/pyfilesystem3/month)](https://pepy.tech/project/pyfilesystem3/)
+[![Build Status](https://img.shields.io/github/workflow/status/jevinskie/pyfilesystem3/Test/main?logo=github&cacheSeconds=600)](https://github.com/jevinskie/pyfilesystem3/actions?query=branch%3Amain)
+[![Windows Build Status](https://img.shields.io/appveyor/build/jevinskie/pyfilesystem3/main?logo=appveyor&cacheSeconds=600)](https://ci.appveyor.com/project/jevinskie/pyfilesystem3)
+[![Coverage Status](https://img.shields.io/coveralls/github/jevinskie/pyfilesystem3/main?cacheSeconds=600)](https://coveralls.io/github/jevinskie/pyfilesystem3)
+[![Codacy Badge](https://img.shields.io/codacy/grade/30ad6445427349218425d93886ade9ee/main?logo=codacy)](https://www.codacy.com/app/jevinskie/pyfilesystem3?utm_source=github.com&utm_medium=referral&utm_content=jevinskie/pyfilesystem3&utm_campaign=Badge_Grade)
+[![Docs](https://img.shields.io/readthedocs/pyfilesystem3?maxAge=3600)](https://pyfilesystem3.readthedocs.io/en/latest/?badge=latest)
 
 ## Documentation
 
-- [Wiki](https://www.pyfilesystem.org)
 - [API Documentation](https://docs.pyfilesystem.org/)
-- [GitHub Repository](https://github.com/PyFilesystem/pyfilesystem2)
+- [GitHub Repository](https://github.com/jevinskie/pyfilesystem3)
 - [Blog](https://www.willmcgugan.com/tag/fs/)
 
 ## Introduction
 
-Think of PyFilesystem's `FS` objects as the next logical step to
+Think of PyFilesystem3's `FS` objects as the next logical step to
 Python's `file` objects. In the same way that file objects abstract a
 single file, FS objects abstract an entire filesystem.
 
 Let's look at a simple piece of code as an example. The following
-function uses the PyFilesystem API to count the number of non-blank
+function uses the PyFilesystem3 API to count the number of non-blank
 lines of Python code in a directory. It works _recursively_, so it will
 find `.py` files in all sub-directories.
 
@@ -42,7 +41,7 @@ def count_python_loc(fs):
 We can call `count_python_loc` as follows:
 
 ```python
-from fs import open_fs
+from fs3 import open_fs
 projects_fs = open_fs('~/projects')
 print(count_python_loc(projects_fs))
 ```
@@ -83,7 +82,7 @@ def count_py_loc(path):
     return count
 ```
 
-This version is similar to the PyFilesystem code above, but would only
+This version is similar to the PyFilesystem3 code above, but would only
 work with the OS filesystem. Any other filesystem would require an
 entirely different API, and you would likely have to re-implement the
 directory walking functionality of `os.walk`.
@@ -96,11 +95,12 @@ The following developers have contributed code and their time to this projects:
 - [Martin Larralde](https://github.com/althonos)
 - [Giampaolo Cimino](https://github.com/gpcimino)
 - [Geoff Jukes](https://github.com/geoffjukes)
+- [Jevin Sweval (@jevinskie)](https://github.com/jevinskie)
 
-See [CONTRIBUTORS.md](https://github.com/PyFilesystem/pyfilesystem2/blob/master/CONTRIBUTORS.md)
+See [CONTRIBUTORS.md](https://github.com/jevinskie/pyfilesystem3/blob/main/CONTRIBUTORS.md)
 for a full list of contributors.
 
-PyFilesystem2 owes a massive debt of gratitude to the following
+PyFilesystem2, and thus PyFilesystem3, owes a massive debt of gratitude to the following
 developers who contributed code and ideas to the original version.
 
 - Ryan Kelly
@@ -112,4 +112,4 @@ missing here.
 
 ## Support
 
-If commercial support is required, please contact [Will McGugan](mailto:willmcgugan@gmail.com).
+If commercial support is required, please contact [Jevin Sweval @ binaryexplorations.com](mailto:jevin@binaryexplorations.com).

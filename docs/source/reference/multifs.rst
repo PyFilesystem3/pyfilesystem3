@@ -30,8 +30,8 @@ And we want to create a single filesystem that will load a file from
 do that::
 
 
-    from fs.osfs import OSFS
-    from fs.multifs import MultiFS
+    from fs3.osfs import OSFS
+    from fs3.multifs import MultiFS
 
     theme_fs = MultiFS()
     theme_fs.add_fs('templates', OSFS('templates'))
@@ -51,5 +51,5 @@ directories::
     `-- theme.html
 
 
-.. autoclass:: fs.multifs.MultiFS
+.. autoclass:: fs3.multifs.MultiFS
     :members:

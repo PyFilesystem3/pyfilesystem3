@@ -8,8 +8,8 @@ Usage:
 
 import sys
 
-from fs import open_fs
-from fs.filesize import traditional
+from fs3 import open_fs
+from fs3.filesize import traditional
 
 fs_url = sys.argv[1]
 count = 0

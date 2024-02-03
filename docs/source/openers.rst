@@ -3,7 +3,7 @@
 FS URLs
 =======
 
-PyFilesystem can open a filesystem via an *FS URL*, which is similar to a URL you might enter in to a browser. FS URLs are useful if you want to specify a filesystem dynamically, such as in a conf file or from the command line.
+PyFilesystem3 can open a filesystem via an *FS URL*, which is similar to a URL you might enter in to a browser. FS URLs are useful if you want to specify a filesystem dynamically, such as in a conf file or from the command line.
 
 Format
 ------
@@ -28,7 +28,7 @@ Here are a few examples::
     ftp://will:daffodil@ftp.example.org/private
 
 
-If ``<type>`` is not specified then it is assumed to be an :class:`~fs.osfs.OSFS`, i.e. the following FS URLs are equivalent::
+If ``<type>`` is not specified then it is assumed to be an :class:`~fs3.osfs.OSFS`, i.e. the following FS URLs are equivalent::
 
     osfs://~/projects
     ~/projects
@@ -52,28 +52,28 @@ Query strings are used to provide additional filesystem-specific information use
 Opening FS URLS
 ---------------
 
-To open a filesysem with a FS URL, you can use :meth:`~fs.opener.registry.Registry.open_fs`, which may be imported and used as follows::
+To open a filesysem with a FS URL, you can use :meth:`~fs3.opener.registry.Registry.open_fs`, which may be imported and used as follows::
 
-    from fs import open_fs
+    from fs3 import open_fs
     projects_fs = open_fs('osfs://~/projects')
 
 
 Manually registering Openers
 ----------------------------
 
-The ``fs.opener`` registry uses an entry point to install external openers
-(see :ref:`extension`), and it does so once, when you import `fs` for the first
-time. In some rare cases where entry points are not available (for instance,
-when running an embedded interpreter) or when extensions are installed *after*
-the interpreter has started (for instance in a notebook, see
-`PyFilesystem2#485 <https://github.com/PyFilesystem/pyfilesystem2/issues/485>`_).
+The ``fs3.opener`` registry uses an entry point to install external openers
+(see :ref:`extension`), and it does so once, when you import `fs3` for the
+first time. In some rare cases where entry points are not available (for
+instance, when running an embedded interpreter) or when extensions are
+installed *after* the interpreter has started (for instance in a notebook,
+see `PyFilesystem2#485 <https://github.com/PyFilesystem/pyfilesystem2/issues/485>`_).
 
 However, a new opener can be installed manually at any time with the
-`fs.opener.registry.install` method. For instance, here's how the opener for
+`fs3.opener.registry.install` method. For instance, here's how the opener for
 the `s3fs <https://github.com/PyFilesystem/s3fs>`_ extension can be added to
 the registry::
 
-    import fs.opener
+    import fs3.opener
     from fs_s3fs.opener import S3FSOpener
 
     fs.opener.registry.install(S3FSOpener)

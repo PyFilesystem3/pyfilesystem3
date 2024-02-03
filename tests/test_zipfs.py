@@ -1,21 +1,19 @@
 # -*- encoding: UTF-8
-from __future__ import unicode_literals
-
 import sys
 
+import io
 import os
-import six
 import tempfile
 import unittest
 import zipfile
 
-from fs import zipfs
-from fs.compress import write_zip
-from fs.enums import Seek
-from fs.errors import NoURL
-from fs.opener import open_fs
-from fs.opener.errors import NotWriteable
-from fs.test import FSTestCases
+from fs3 import zipfs
+from fs3.compress import write_zip
+from fs3.enums import Seek
+from fs3.errors import NoURL
+from fs3.opener import open_fs
+from fs3.opener.errors import NotWriteable
+from fs3.test import FSTestCases
 
 from .test_archives import ArchiveTestCases
 
@@ -36,7 +34,7 @@ class TestWriteReadZipFS(unittest.TestCase):
         with zipfs.ZipFS(self._temp_path) as zip_fs:
             paths = list(zip_fs.walk.files())
             for path in paths:
-                self.assertIsInstance(path, six.text_type)
+                self.assertIsInstance(path, str)
                 with zip_fs.openbin(path) as f:
                     f.read()
 
@@ -177,7 +175,7 @@ class TestReadZipFS(ArchiveTestCases, unittest.TestCase):
         self.assertEqual(self.fs.geturl(test_file, purpose="fs"), expected)
 
     def test_geturl_for_fs_but_file_is_binaryio(self):
-        self.fs._file = six.BytesIO()
+        self.fs._file = io.BytesIO()
         self.assertRaises(NoURL, self.fs.geturl, "test", "fs")
 
     def test_geturl_for_download(self):

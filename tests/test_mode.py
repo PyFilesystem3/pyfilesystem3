@@ -1,9 +1,6 @@
-from __future__ import unicode_literals
-
 import unittest
-from six import text_type
 
-from fs.mode import Mode, check_readable, check_writable
+from fs3.mode import Mode, check_readable, check_writable
 
 
 class TestMode(unittest.TestCase):
@@ -37,7 +34,7 @@ class TestMode(unittest.TestCase):
 
         mode = Mode("w")
         repr(mode)
-        self.assertEqual(text_type(mode), "w")
+        self.assertEqual(str(mode), "w")
         self.assertTrue(mode.create)
         self.assertFalse(mode.reading)
         self.assertTrue(mode.writing)

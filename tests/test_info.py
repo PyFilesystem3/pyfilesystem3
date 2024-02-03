@@ -1,17 +1,10 @@
-from __future__ import unicode_literals
-
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 
-from fs.enums import ResourceType
-from fs.info import Info
-from fs.permissions import Permissions
-from fs.time import datetime_to_epoch
-
-try:
-    from datetime import timezone
-except ImportError:
-    from fs._tzcompat import timezone  # type: ignore
+from fs3.enums import ResourceType
+from fs3.info import Info
+from fs3.permissions import Permissions
+from fs3.time import datetime_to_epoch
 
 
 class TestInfo(unittest.TestCase):

@@ -1,6 +1,6 @@
-fs.enums
-========
+fs3.enums
+=========
 
-.. automodule:: fs.enums
+.. automodule:: fs3.enums
    :members: ResourceType, Seek
    :member-order: bysource

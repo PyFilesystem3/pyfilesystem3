@@ -1,6 +1,4 @@
 # coding: utf-8
-from __future__ import absolute_import, print_function, unicode_literals
-
 import calendar
 import datetime
 import os
@@ -11,22 +9,18 @@ import tempfile
 import time
 import unittest
 import uuid
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from io import BytesIO
+from unittest import mock
 
 from ftplib import error_perm, error_temp
 from pyftpdlib.authorizers import DummyAuthorizer
-from six import BytesIO, text_type
 
-from fs import errors
-from fs.ftpfs import FTPFS, ftp_errors
-from fs.opener import open_fs
-from fs.path import join
-from fs.subfs import SubFS
-from fs.test import FSTestCases
+from fs3 import errors
+from fs3.ftpfs import FTPFS, ftp_errors
+from fs3.opener import open_fs
+from fs3.path import join
+from fs3.subfs import SubFS
+from fs3.test import FSTestCases
 
 try:
     from pytest import mark
@@ -151,7 +145,7 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
         super(TestFTPFS, cls).setUpClass()
 
         cls._temp_dir = tempfile.mkdtemp("ftpfs2tests")
-        cls._temp_path = os.path.join(cls._temp_dir, text_type(uuid.uuid4()))
+        cls._temp_path = os.path.join(cls._temp_dir, str(uuid.uuid4()))
         os.mkdir(cls._temp_path)
 
         cls.server = ThreadedTestFTPd()
@@ -341,7 +335,7 @@ class TestAnonFTPFS(FSTestCases, unittest.TestCase):
         super(TestAnonFTPFS, cls).setUpClass()
 
         cls._temp_dir = tempfile.mkdtemp("ftpfs2tests")
-        cls._temp_path = os.path.join(cls._temp_dir, text_type(uuid.uuid4()))
+        cls._temp_path = os.path.join(cls._temp_dir, str(uuid.uuid4()))
         os.mkdir(cls._temp_path)
 
         cls.server = ThreadedTestFTPd()

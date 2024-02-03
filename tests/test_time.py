@@ -1,14 +1,7 @@
-from __future__ import print_function, unicode_literals
-
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 
-from fs.time import datetime_to_epoch, epoch_to_datetime
-
-try:
-    from datetime import timezone
-except ImportError:
-    from fs._tzcompat import timezone  # type: ignore
+from fs3.time import datetime_to_epoch, epoch_to_datetime
 
 
 class TestEpoch(unittest.TestCase):

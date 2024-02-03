@@ -1,5 +1,5 @@
-fs.compress
-===========
+fs3.compress
+============
 
-.. automodule:: fs.compress
+.. automodule:: fs3.compress
     :members:

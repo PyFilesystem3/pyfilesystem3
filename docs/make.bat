@@ -67,7 +67,7 @@ if errorlevel 9009 (
 	echo.may add the Sphinx directory to PATH.
 	echo.
 	echo.If you don't have Sphinx installed, grab it from
-	echo.http://sphinx-doc.org/
+	echo.https://sphinx-doc.org/
 	exit /b 1
 )
 
@@ -129,9 +129,9 @@ if "%1" == "qthelp" (
 	echo.
 	echo.Build finished; now you can run "qcollectiongenerator" with the ^
 .qhcp project file in %BUILDDIR%/qthelp, like this:
-	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\PyFilesystem2.qhcp
+	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\PyFilesystem3.qhcp
 	echo.To view the help file:
-	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\PyFilesystem2.ghc
+	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\PyFilesystem3.ghc
 	goto end
 )
 

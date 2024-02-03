@@ -2,19 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](https://keepachangelog.com/)
+and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [3.0.0a1] - 2024-02-02
 
-## Unreleased
+## Fork and Breaking Changes
 
+- Upstream development has been stalled for about two years. I, ([@jevinskie](https://github.com/jevinskie)), want to revive
+ development - to vigorously collaborate, review and accept PRs and to make regular releases for improvements like new features, bug fixes, support for new Python versions, and tracking new dependency releases. As part of this effort, Python 2 support is drooped and there will be an initial focus of getting CI/CD working smoothly to enable fixing of any longstanding issues and then future improvements.
+- Now called "PyFilesystem3" (its PyPi home is [pyfilesystem3](https://pypi.org/project/pyfilesystem3/) and is installable via `pip3 install pyfilesystem3`) while the package/namespace is renamed to `fs3` from `fs` to avoid clashing. Please note that there is a [`fs3` PyPi package](https://pypi.org/project/fs3/) that also uses the `fs3` namespace but this is just an empty skeleton project with only one 0.0.1 release.
+- The new repository lives at [jevinksie/pyfilesystem3](https://github.com/jevinskie/pyfilesystem3).
+ The old repo can be found at [PyFilesystem/pyfilesystem2](https://github.com/PyFilesystem/pyfilesystem2).
+- Dropped compatibility for EoL CPython 2.7, 3.5, 3.6, and 3.7 and PyPy 2.7, 3.6 (EoL), and 3.7 (EoL).
+- Added support for CPython 3.11, and 3.12 and PyPy 3.9 and 3.10.
+- Many thanks to the original authors and maintainers [Will McGugan (@willmcgugan)](https://github.com/willmcgugan), [Martin Larralde (@althonos)](https://github.com/althonos), [Thomas Feldmann (@tfeldmann)](https://github.com/tfeldmann), and all the other various contributers.
+- This is intended to be a friendly fork. If upstream PyFilesystem2 wishes to resume development and releases, I, (@jevinskie), am more than happy to work with them to upstream the changes here and let `fs` be the canonical "Python Virtual Filesystem library" once again.
 
 ### Added
 
+#### Pre-fork
 - Added `filter_glob` and `exclude_glob` parameters to `fs.walk.Walker`.
   Closes [#459](https://github.com/PyFilesystem/pyfilesystem2/issues/459).
 
 ### Fixed
+
+#### Pre-fork
+
 - Elaborated documentation of `filter_dirs` and `exclude_dirs` in `fs.walk.Walker`.
   Closes [#371](https://github.com/PyFilesystem/pyfilesystem2/issues/371).
 - Fixes a backward incompatibility where `fs.move.move_file` raises `DestinationExists`
@@ -30,7 +44,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   in the Python standard library in Python version 3.7 and later
   ([#527](https://github.com/PyFilesystem/pyfilesystem2/pull/527)).
 - Mark `fs.zipfs.ReadZipFS` as a case-sensitive filesystem
-  ([#527](https://github.com/PyFilesystem/pyfilesystem2/pull/527)). 
+  ([#527](https://github.com/PyFilesystem/pyfilesystem2/pull/527)).
 - Optimized moving files between filesystems with syspaths.
   ([#523](https://github.com/PyFilesystem/pyfilesystem2/pull/523)).
 - Fixed `fs.move.move_file` to clean up the copy on the destination in case of errors.
@@ -56,7 +70,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   ([#510](https://github.com/PyFilesystem/pyfilesystem2/pull/510)).
   Closes [#509](https://github.com/PyFilesystem/pyfilesystem2/issues/509).
 - Make `WrapFS.move` and `WrapFS.movedir` use the delegate FS methods instead
-  of `fs.move` functions, which was causing optimized implementation of 
+  of `fs.move` functions, which was causing optimized implementation of
   `movedir` to be always skipped.
   ([#511](https://github.com/PyFilesystem/pyfilesystem2/pull/511)).
 

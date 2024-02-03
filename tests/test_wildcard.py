@@ -1,10 +1,8 @@
 """Test f2s.fnmatch."""
 
-from __future__ import unicode_literals
-
 import unittest
 
-from fs import wildcard
+from fs3 import wildcard
 
 
 class TestFNMatch(unittest.TestCase):

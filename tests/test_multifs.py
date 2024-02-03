@@ -1,11 +1,9 @@
-from __future__ import unicode_literals
-
 import unittest
 
-from fs import errors
-from fs.memoryfs import MemoryFS
-from fs.multifs import MultiFS
-from fs.test import FSTestCases
+from fs3 import errors
+from fs3.memoryfs import MemoryFS
+from fs3.multifs import MultiFS
+from fs3.test import FSTestCases
 
 
 class TestMultiFS(FSTestCases, unittest.TestCase):

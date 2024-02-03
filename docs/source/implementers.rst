@@ -3,22 +3,22 @@
 Implementing Filesystems
 ========================
 
-With a little care, you can implement a PyFilesystem interface for any filesystem, which will allow it to work interchangeably with any of the built-in FS classes and tools.
+With a little care, you can implement a PyFilesystem3 interface for any filesystem, which will allow it to work interchangeably with any of the built-in FS classes and tools.
 
-To create a PyFilesystem interface, derive a class from :class:`~fs.base.FS` and implement the :ref:`essential-methods`. This should give you a working FS class.
+To create a PyFilesystem3 interface, derive a class from :class:`~fs3.base.FS` and implement the :ref:`essential-methods`. This should give you a working FS class.
 
-Take care to copy the method signatures *exactly*, including default values. It is also essential that you follow the same logic with regards to exceptions, and only raise exceptions in :mod:`~fs.errors`.
+Take care to copy the method signatures *exactly*, including default values. It is also essential that you follow the same logic with regards to exceptions, and only raise exceptions in :mod:`~fs3.errors`.
 
 Constructor
 -----------
 
-There are no particular requirements regarding how a PyFilesystem class is constructed, but be sure to call the base class ``__init__`` method with no parameters.
+There are no particular requirements regarding how a PyFilesystem3 class is constructed, but be sure to call the base class ``__init__`` method with no parameters.
 
 
 Thread Safety
 -------------
 
-All Filesystems should be *thread-safe*. The simplest way to achieve that is by using the ``_lock`` attribute supplied by the :class:`~fs.base.FS` constructor. This is a ``RLock`` object from the standard library, which you can use as a context manager, so methods you implement will start something like this::
+All Filesystems should be *thread-safe*. The simplest way to achieve that is by using the ``_lock`` attribute supplied by the :class:`~fs3.base.FS` constructor. This is a ``RLock`` object from the standard library, which you can use as a context manager, so methods you implement will start something like this::
 
     with self._lock:
         do_something()
@@ -28,9 +28,9 @@ You aren't *required* to use ``_lock``. Just as long as calling methods on the F
 Python Versions
 ---------------
 
-PyFilesystem supports Python2.7 and Python3.X. The differences between the two major Python versions are largely managed by the ``six`` library.
+PyFilesystem3 supports non-EoLed CPython 3.x and PyPy 3.x versions. At this time, that is CPython 3.8, 3.9, 3.10, 3.11, and 3.12 and PyPy 3.9 and 3.10.
 
-You aren't obligated to support the same versions of Python that PyFilesystem itself supports, but it is recommended if your project is for general use.
+You aren't obligated to support the same versions of Python that PyFilesystem3 itself supports, but it is recommended if your project is for general use.
 
 
 Testing Filesystems
@@ -41,7 +41,7 @@ To test your implementation, you can borrow the test suite used to test the buil
 Here's the simplest possible example to test a filesystem class called ``MyFS``::
 
     import unittest
-    from fs.test import FSTestCases
+    from fs3.test import FSTestCases
 
     class TestMyFS(FSTestCases, unittest.TestCase):
 
@@ -68,69 +68,69 @@ You may also want to override some of the methods in the test suite for more tar
 Essential Methods
 -----------------
 
-The following methods MUST be implemented in a PyFilesystem interface.
+The following methods MUST be implemented in a PyFilesystem3 interface.
 
-* :meth:`~fs.base.FS.getinfo` Get info regarding a file or directory.
-* :meth:`~fs.base.FS.listdir` Get a list of resources in a directory.
-* :meth:`~fs.base.FS.makedir` Make a directory.
-* :meth:`~fs.base.FS.openbin` Open a binary file.
-* :meth:`~fs.base.FS.remove` Remove a file.
-* :meth:`~fs.base.FS.removedir` Remove a directory.
-* :meth:`~fs.base.FS.setinfo` Set resource information.
+* :meth:`~fs3.base.FS.getinfo` Get info regarding a file or directory.
+* :meth:`~fs3.base.FS.listdir` Get a list of resources in a directory.
+* :meth:`~fs3.base.FS.makedir` Make a directory.
+* :meth:`~fs3.base.FS.openbin` Open a binary file.
+* :meth:`~fs3.base.FS.remove` Remove a file.
+* :meth:`~fs3.base.FS.removedir` Remove a directory.
+* :meth:`~fs3.base.FS.setinfo` Set resource information.
 
 .. _non-essential-methods:
 
 Non - Essential Methods
 -----------------------
 
-The following methods MAY be implemented in a PyFilesystem interface.
+The following methods MAY be implemented in a PyFilesystem3 interface.
 
 These methods have a default implementation in the base class, but may be overridden if you can supply a more optimal version.
 
 Exactly which methods you should implement depends on how and where the data is stored. For network filesystems, a good candidate to implement, is the ``scandir`` method which would otherwise call a combination of ``listdir`` and ``getinfo`` for each file.
 
-In the general case, it is a good idea to look at how these methods are implemented in :class:`~fs.base.FS`, and only write a custom version if it would be more efficient than the default.
+In the general case, it is a good idea to look at how these methods are implemented in :class:`~fs3.base.FS`, and only write a custom version if it would be more efficient than the default.
 
-* :meth:`~fs.base.FS.appendbytes`
-* :meth:`~fs.base.FS.appendtext`
-* :meth:`~fs.base.FS.close`
-* :meth:`~fs.base.FS.copy`
-* :meth:`~fs.base.FS.copydir`
-* :meth:`~fs.base.FS.create`
-* :meth:`~fs.base.FS.desc`
-* :meth:`~fs.base.FS.download`
-* :meth:`~fs.base.FS.exists`
-* :meth:`~fs.base.FS.filterdir`
-* :meth:`~fs.base.FS.getmeta`
-* :meth:`~fs.base.FS.getospath`
-* :meth:`~fs.base.FS.getsize`
-* :meth:`~fs.base.FS.getsyspath`
-* :meth:`~fs.base.FS.gettype`
-* :meth:`~fs.base.FS.geturl`
-* :meth:`~fs.base.FS.hassyspath`
-* :meth:`~fs.base.FS.hasurl`
-* :meth:`~fs.base.FS.isclosed`
-* :meth:`~fs.base.FS.isempty`
-* :meth:`~fs.base.FS.isdir`
-* :meth:`~fs.base.FS.isfile`
-* :meth:`~fs.base.FS.islink`
-* :meth:`~fs.base.FS.lock`
-* :meth:`~fs.base.FS.makedirs`
-* :meth:`~fs.base.FS.move`
-* :meth:`~fs.base.FS.movedir`
-* :meth:`~fs.base.FS.open`
-* :meth:`~fs.base.FS.opendir`
-* :meth:`~fs.base.FS.readbytes`
-* :meth:`~fs.base.FS.readtext`
-* :meth:`~fs.base.FS.removetree`
-* :meth:`~fs.base.FS.scandir`
-* :meth:`~fs.base.FS.settimes`
-* :meth:`~fs.base.FS.touch`
-* :meth:`~fs.base.FS.upload`
-* :meth:`~fs.base.FS.validatepath`
-* :meth:`~fs.base.FS.writebytes`
-* :meth:`~fs.base.FS.writefile`
-* :meth:`~fs.base.FS.writetext`
+* :meth:`~fs3.base.FS.appendbytes`
+* :meth:`~fs3.base.FS.appendtext`
+* :meth:`~fs3.base.FS.close`
+* :meth:`~fs3.base.FS.copy`
+* :meth:`~fs3.base.FS.copydir`
+* :meth:`~fs3.base.FS.create`
+* :meth:`~fs3.base.FS.desc`
+* :meth:`~fs3.base.FS.download`
+* :meth:`~fs3.base.FS.exists`
+* :meth:`~fs3.base.FS.filterdir`
+* :meth:`~fs3.base.FS.getmeta`
+* :meth:`~fs3.base.FS.getospath`
+* :meth:`~fs3.base.FS.getsize`
+* :meth:`~fs3.base.FS.getsyspath`
+* :meth:`~fs3.base.FS.gettype`
+* :meth:`~fs3.base.FS.geturl`
+* :meth:`~fs3.base.FS.hassyspath`
+* :meth:`~fs3.base.FS.hasurl`
+* :meth:`~fs3.base.FS.isclosed`
+* :meth:`~fs3.base.FS.isempty`
+* :meth:`~fs3.base.FS.isdir`
+* :meth:`~fs3.base.FS.isfile`
+* :meth:`~fs3.base.FS.islink`
+* :meth:`~fs3.base.FS.lock`
+* :meth:`~fs3.base.FS.makedirs`
+* :meth:`~fs3.base.FS.move`
+* :meth:`~fs3.base.FS.movedir`
+* :meth:`~fs3.base.FS.open`
+* :meth:`~fs3.base.FS.opendir`
+* :meth:`~fs3.base.FS.readbytes`
+* :meth:`~fs3.base.FS.readtext`
+* :meth:`~fs3.base.FS.removetree`
+* :meth:`~fs3.base.FS.scandir`
+* :meth:`~fs3.base.FS.settimes`
+* :meth:`~fs3.base.FS.touch`
+* :meth:`~fs3.base.FS.upload`
+* :meth:`~fs3.base.FS.validatepath`
+* :meth:`~fs3.base.FS.writebytes`
+* :meth:`~fs3.base.FS.writefile`
+* :meth:`~fs3.base.FS.writetext`
 
 .. _helper-methods:
 
@@ -141,9 +141,9 @@ These methods SHOULD NOT be implemented.
 
 Implementing these is highly unlikely to be worthwhile.
 
-* :meth:`~fs.base.FS.check`
-* :meth:`~fs.base.FS.getbasic`
-* :meth:`~fs.base.FS.getdetails`
-* :meth:`~fs.base.FS.hash`
-* :meth:`~fs.base.FS.match`
-* :meth:`~fs.base.FS.tree`
+* :meth:`~fs3.base.FS.check`
+* :meth:`~fs3.base.FS.getbasic`
+* :meth:`~fs3.base.FS.getdetails`
+* :meth:`~fs3.base.FS.hash`
+* :meth:`~fs3.base.FS.match`
+* :meth:`~fs3.base.FS.tree`

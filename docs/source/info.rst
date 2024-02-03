@@ -8,16 +8,16 @@ name, type, size, etc., and potentially other less-common information
 associated with a file or directory.
 
 You can retrieve resource info for a single resource by calling
-:meth:`~fs.base.FS.getinfo`, or by calling  :meth:`~fs.base.FS.scandir`
+:meth:`~fs3.base.FS.getinfo`, or by calling  :meth:`~fs3.base.FS.scandir`
 which returns an iterator of resource information for the contents of
-a directory. Additionally, :meth:`~fs.base.FS.filterdir` can filter the
+a directory. Additionally, :meth:`~fs3.base.FS.filterdir` can filter the
 resources in a directory by type and wildcard.
 
 Here's an example of retrieving file information::
 
-    >>> from fs.osfs import OSFS
+    >>> from fs3.osfs import OSFS
     >>> fs = OSFS('.')
-    >>> fs.writetext('example.txt', 'Hello, World!')
+    >>> fs3.writetext('example.txt', 'Hello, World!')
     >>> info = fs.getinfo('example.txt', namespaces=['details'])
     >>> info.name
     'example.txt'
@@ -29,8 +29,8 @@ Here's an example of retrieving file information::
 Info Objects
 ------------
 
-PyFilesystem exposes the resource information via properties of
-:class:`~fs.info.Info` objects.
+PyFilesystem3 exposes the resource information via properties of
+:class:`~fs3.info.Info` objects.
 
 
 Namespaces
@@ -40,7 +40,7 @@ All resource information is contained within one of a number of
 potential *namespaces*, which are logical key/value groups.
 
 You can specify which namespace(s) you are interested in with the
-`namespaces` argument to :meth:`~fs.base.FS.getinfo`. For example, the
+`namespaces` argument to :meth:`~fs3.base.FS.getinfo`. For example, the
 following retrieves the ``details`` and ``access`` namespaces for a
 file::
 
@@ -65,7 +65,7 @@ is_dir          bool                A boolean that indicates if the resource
 =============== =================== ===========================================
 
 The keys in this namespace can generally be retrieved very quickly. In
-the case of :class:`~fs.osfs.OSFS` the namespace can be retrieved without
+the case of :class:`~fs3.osfs.OSFS` the namespace can be retrieved without
 a potentially expensive system call.
 
 Details Namespace
@@ -88,13 +88,13 @@ size             int                 Number of bytes used to store the
                                      the overhead (in bytes) used to store
                                      the directory entry.
 type             ResourceType        Resource type, one of the values
-                                     defined in :class:`~fs.enums.ResourceType`.
+                                     defined in :class:`~fs3.enums.ResourceType`.
 ================ =================== ==========================================
 
 The time values (``accessed_time``, ``created_time`` etc.) may be
 ``None`` if the filesystem doesn't store that information. The ``size``
 and ``type`` keys are guaranteed to be available, although ``type`` may
-be :attr:`~fs.enums.ResourceType.unknown` if the filesystem is unable to
+be :attr:`~fs3.enums.ResourceType.unknown` if the filesystem is unable to
 retrieve the resource type.
 
 Access Namespace
@@ -109,7 +109,7 @@ Name             type                Description
 gid              int                 The group ID.
 group            str                 The group name.
 permissions      Permissions         An instance of
-                                     :class:`~fs.permissions.Permissions`,
+                                     :class:`~fs3.permissions.Permissions`,
                                      which contains the permissions for the
                                      resource.
 uid              int                 The user ID.
@@ -117,7 +117,7 @@ user             str                 The user name of the owner.
 ================ =================== ==========================================
 
 This namespace is optional, as not all filesystems have a concept of
-ownership or permissions. It is supported by :class:`~fs.osfs.OSFS`. Some
+ownership or permissions. It is supported by :class:`~fs3.osfs.OSFS`. Some
 values may be ``None`` if they aren't supported by the filesystem.
 
 Stat Namespace
@@ -125,7 +125,7 @@ Stat Namespace
 
 The ``stat`` namespace contains information reported by a call to
 `os.stat <https://docs.python.org/3.5/library/stat.html>`_. This
-namespace is supported by :class:`~fs.osfs.OSFS` and potentially other
+namespace is supported by :class:`~fs3.osfs.OSFS` and potentially other
 filesystems which map directly to the OS filesystem. Most other
 filesystems will not support this namespace.
 
@@ -135,7 +135,7 @@ LStat Namespace
 
 The ``lstat`` namespace contains information reported by a call to
 `os.lstat <https://docs.python.org/3.5/library/stat.html>`_. This
-namespace is supported by :class:`~fs.osfs.OSFS` and potentially other
+namespace is supported by :class:`~fs3.osfs.OSFS` and potentially other
 filesystems which map directly to the OS filesystem. Most other
 filesystems will not support this namespace.
 
@@ -162,7 +162,7 @@ documentation for the specific filesystem for information on what
 namespaces are supported.
 
 You can retrieve such implementation specific resource information
-with the :meth:`~fs.info.Info.get` method.
+with the :meth:`~fs3.info.Info.get` method.
 
 .. note::
 
@@ -176,7 +176,7 @@ Missing Namespaces
 Some attributes on the Info objects require that a given namespace be
 present. If you attempt to reference them without the namespace being
 present (because you didn't request it, or the filesystem doesn't
-support it) then a :class:`~fs.errors.MissingInfoNamespace` exception
+support it) then a :class:`~fs3.errors.MissingInfoNamespace` exception
 will be thrown. Here's how you might handle such exceptions::
 
     try:
@@ -186,18 +186,18 @@ will be thrown. Here's how you might handle such exceptions::
         pass
 
 If you prefer a *look before you leap* approach, you can use use the
-:meth:`~fs.info.Info.has_namespace` method. Here's an example::
+:meth:`~fs3.info.Info.has_namespace` method. Here's an example::
 
 
      if info.has_namespace('access'):
          print('user is {}'.format(info.user))
 
-See :class:`~fs.info.Info` for details regarding info attributes.
+See :class:`~fs3.info.Info` for details regarding info attributes.
 
 Raw Info
 --------
 
-The :class:`~fs.info.Info` class is a wrapper around a simple data
+The :class:`~fs3.info.Info` class is a wrapper around a simple data
 structure containing the *raw* info. You can access this raw info with
 the ``info.raw`` property.
 
@@ -239,5 +239,4 @@ Because of this requirement, times are stored as
 `epoch times <https://en.wikipedia.org/wiki/Unix_time>`_. The Info object
 will convert these to datetime objects from the standard library.
 Additionally, the Info object will convert permissions from a list of
-strings in to a :class:`~fs.permissions.Permissions` objects.
-
+strings in to a :class:`~fs3.permissions.Permissions` objects.

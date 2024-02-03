@@ -1,5 +1,5 @@
-fs.base
-=======
+fs3.base
+========
 
-.. automodule:: fs.base
+.. automodule:: fs3.base
     :members: FS

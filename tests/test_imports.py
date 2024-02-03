@@ -9,7 +9,7 @@ class TestImports(unittest.TestCase):
         restore_fs = sys.modules.pop("fs")
         sys.modules.pop("fs.path")
         try:
-            import fs
+            import fs3
 
             fs.path
             fs.Seek

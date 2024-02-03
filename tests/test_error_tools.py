@@ -1,10 +1,8 @@
-from __future__ import unicode_literals
-
 import errno
 import unittest
 
-import fs.errors
-from fs.error_tools import convert_os_errors
+import fs3.errors
+from fs3.error_tools import convert_os_errors
 
 
 class TestErrorTools(unittest.TestCase):

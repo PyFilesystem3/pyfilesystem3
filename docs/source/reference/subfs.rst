@@ -1,6 +1,6 @@
 Sub Filesystem
 ==============
 
-.. automodule:: fs.subfs
+.. automodule:: fs3.subfs
     :members:
     :member-order: bysource

@@ -1,9 +1,7 @@
-from __future__ import unicode_literals
-
 import unittest
 
-from fs._bulk import Copier, _Task
-from fs.errors import BulkCopyFailed
+from fs3._bulk import Copier, _Task
+from fs3.errors import BulkCopyFailed
 
 
 class BrokenTask(_Task):

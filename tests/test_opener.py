@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import sys
 
 import os
@@ -8,13 +6,13 @@ import shutil
 import tempfile
 import unittest
 
-from fs import open_fs, opener
-from fs.appfs import UserDataFS
-from fs.memoryfs import MemoryFS
-from fs.opener import errors, registry
-from fs.opener.parse import ParseResult
-from fs.opener.registry import Registry
-from fs.osfs import OSFS
+from fs3 import open_fs, opener
+from fs3.appfs import UserDataFS
+from fs3.memoryfs import MemoryFS
+from fs3.opener import errors, registry
+from fs3.opener.parse import ParseResult
+from fs3.opener.registry import Registry
+from fs3.osfs import OSFS
 
 try:
     from unittest import mock
@@ -141,7 +139,7 @@ class TestRegistry(unittest.TestCase):
             )
 
     def test_entry_point_type_error(self):
-        class NotAnOpener(object):
+        class NotAnOpener:
             pass
 
         entry_point = mock.MagicMock()

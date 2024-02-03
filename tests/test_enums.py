@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from fs import enums
+from fs3 import enums
 
 
 class TestEnums(unittest.TestCase):

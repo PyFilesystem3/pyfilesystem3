@@ -1,5 +1,5 @@
-fs.walk
-=======
+fs3.walk
+========
 
-.. automodule:: fs.walk
+.. automodule:: fs3.walk
     :members:

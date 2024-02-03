@@ -1,10 +1,7 @@
-from __future__ import unicode_literals
-
 import unittest
-from six import text_type
 
-from fs import wrapfs
-from fs.opener import open_fs
+from fs3 import wrapfs
+from fs3.opener import open_fs
 
 
 class WrappedFS(wrapfs.WrapFS):
@@ -25,5 +22,5 @@ class TestWrapFS(unittest.TestCase):
         self.assertEqual(repr(self.fs), "WrappedFS(MemoryFS())")
 
     def test_str(self):
-        self.assertEqual(text_type(self.fs), "<memfs>(test)")
-        self.assertEqual(text_type(wrapfs.WrapFS(open_fs("mem://"))), "<memfs>")
+        self.assertEqual(str(self.fs), "<memfs>(test)")
+        self.assertEqual(str(wrapfs.WrapFS(open_fs("mem://"))), "<memfs>")

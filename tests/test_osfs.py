@@ -1,6 +1,4 @@
 # coding: utf-8
-from __future__ import unicode_literals
-
 import sys
 
 import errno
@@ -11,16 +9,11 @@ import tempfile
 import time
 import unittest
 import warnings
-from six import text_type
+from unittest import mock
 
-from fs import errors, open_fs, osfs
-from fs.path import dirname, relpath
-from fs.test import FSTestCases
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from fs3 import errors, open_fs, osfs
+from fs3.path import dirname, relpath
+from fs3.test import FSTestCases
 
 
 class TestOSFS(FSTestCases, unittest.TestCase):
@@ -75,12 +68,12 @@ class TestOSFS(FSTestCases, unittest.TestCase):
         self.assertIsInstance(data, bytes)
 
     def assert_text(self, path, contents):
-        assert isinstance(contents, text_type)
+        assert isinstance(contents, str)
         _path = self._get_real_path(path)
         with io.open(_path, "rt", encoding="utf-8") as f:
             data = f.read()
         self.assertEqual(data, contents)
-        self.assertIsInstance(data, text_type)
+        self.assertIsInstance(data, str)
 
     def test_not_exists(self):
         with self.assertRaises(errors.CreateFailed):

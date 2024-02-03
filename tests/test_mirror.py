@@ -1,10 +1,8 @@
-from __future__ import unicode_literals
-
 import unittest
 from parameterized import parameterized_class
 
-from fs import open_fs
-from fs.mirror import mirror
+from fs3 import open_fs
+from fs3.mirror import mirror
 
 
 @parameterized_class(("WORKERS",), [(0,), (1,), (2,), (4,)])

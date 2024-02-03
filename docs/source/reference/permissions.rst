@@ -1,5 +1,5 @@
-fs.permissions
-==============
+fs3.permissions
+===============
 
-.. automodule:: fs.permissions
+.. automodule:: fs3.permissions
     :members:

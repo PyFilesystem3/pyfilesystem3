@@ -1,5 +1,5 @@
-fs.tools
-========
+fs3.tools
+=========
 
-.. automodule:: fs.tools
+.. automodule:: fs3.tools
     :members:

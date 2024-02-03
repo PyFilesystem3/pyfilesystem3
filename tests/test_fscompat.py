@@ -1,12 +1,9 @@
-from __future__ import unicode_literals
-
-import six
 import unittest
 
-from fs._fscompat import fsdecode, fsencode, fspath
+from os import fsdecode, fsencode, fspath
 
 
-class PathMock(object):
+class PathMock:
     def __init__(self, path):
         self._path = path
 
@@ -14,7 +11,7 @@ class PathMock(object):
         return self._path
 
 
-class BrokenPathMock(object):
+class BrokenPathMock:
     def __init__(self, path):
         self._path = path
 
@@ -54,8 +51,8 @@ class TestFSCompact(unittest.TestCase):
 
     def test_fsdecode(self):
         decode_text = fsdecode(b"foo")
-        assert isinstance(decode_text, six.text_type)
+        assert isinstance(decode_text, str)
         decode_text = fsdecode("foo")
-        assert isinstance(decode_text, six.text_type)
+        assert isinstance(decode_text, str)
         with self.assertRaises(TypeError):
             fsdecode(5)

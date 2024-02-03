@@ -1,25 +1,25 @@
-fs.opener
-=========
+fs3.opener
+==========
 
 Open filesystems from a URL.
 
-fs.opener.base
---------------
-.. automodule:: fs.opener.base
-    :members:
-
-fs.opener.parse
+fs3.opener.base
 ---------------
-.. automodule:: fs.opener.parse
+.. automodule:: fs3.opener.base
     :members:
 
-fs.opener.registry
-------------------
-.. automodule:: fs.opener.registry
-    :members:
-
-fs.opener.errors
+fs3.opener.parse
 ----------------
-.. automodule:: fs.opener.errors
+.. automodule:: fs3.opener.parse
+    :members:
+
+fs3.opener.registry
+-------------------
+.. automodule:: fs3.opener.registry
+    :members:
+
+fs3.opener.errors
+-----------------
+.. automodule:: fs3.opener.errors
     :members:
     :show-inheritance:

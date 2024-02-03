@@ -1,5 +1,5 @@
-fs.path
-=======
+fs3.path
+========
 
-.. automodule:: fs.path
+.. automodule:: fs3.path
     :members:

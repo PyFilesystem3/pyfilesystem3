@@ -1,5 +1,5 @@
-fs.tree
-=======
+fs3.tree
+========
 
-.. automodule:: fs.tree
+.. automodule:: fs3.tree
     :members:

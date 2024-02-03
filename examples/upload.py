@@ -16,7 +16,7 @@ import sys
 
 import os
 
-from fs import open_fs
+from fs3 import open_fs
 
 _, file_path, fs_url = sys.argv
 filename = os.path.basename(file_path)

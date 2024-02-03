@@ -1,5 +1,5 @@
-fs.wildcard
-===========
+fs3.wildcard
+============
 
-.. automodule:: fs.wildcard
+.. automodule:: fs3.wildcard
     :members:

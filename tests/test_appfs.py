@@ -1,7 +1,4 @@
-from __future__ import unicode_literals
-
 import shutil
-import six
 import tempfile
 import unittest
 
@@ -10,11 +7,11 @@ try:
 except ImportError:
     import mock
 
-import fs.test
-from fs import appfs
+import fs3.test
+from fs3 import appfs
 
 
-class _TestAppFS(fs.test.FSTestCases):
+class _TestAppFS(fs3.test.FSTestCases):
 
     AppFS = None
 
@@ -36,25 +33,13 @@ class _TestAppFS(fs.test.FSTestCases):
         ):
             return self.AppFS("fstest", "willmcgugan", "1.0")
 
-    if six.PY2:
-
-        def test_repr(self):
-            self.assertEqual(
-                repr(self.fs),
-                "{}(u'fstest', author=u'willmcgugan', version=u'1.0')".format(
-                    self.AppFS.__name__
-                ),
-            )
-
-    else:
-
-        def test_repr(self):
-            self.assertEqual(
-                repr(self.fs),
-                "{}('fstest', author='willmcgugan', version='1.0')".format(
-                    self.AppFS.__name__
-                ),
-            )
+    def test_repr(self):
+        self.assertEqual(
+            repr(self.fs),
+            "{}('fstest', author='willmcgugan', version='1.0')".format(
+                self.AppFS.__name__
+            ),
+        )
 
     def test_str(self):
         self.assertEqual(

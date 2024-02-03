@@ -1,9 +1,7 @@
-from __future__ import unicode_literals
-
 import unittest
 import warnings
 
-from fs.base import _new_name
+from fs3.base import _new_name
 
 
 class TestNewNameDecorator(unittest.TestCase):

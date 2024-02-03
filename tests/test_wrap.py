@@ -1,34 +1,27 @@
-from __future__ import unicode_literals
-
+import io
 import operator
 import unittest
+from unittest import mock
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
-import six
-
-import fs.copy
-import fs.errors
-import fs.mirror
-import fs.move
-import fs.wrap
-from fs import open_fs
-from fs.info import Info
+import fs3.copy
+import fs3.errors
+import fs3.mirror
+import fs3.move
+import fs3.wrap
+from fs3 import open_fs
+from fs3.info import Info
 
 
 class TestWrapReadOnly(unittest.TestCase):
     def setUp(self):
         self.fs = open_fs("mem://")
-        self.ro = fs.wrap.read_only(self.fs)
+        self.ro = fs3.wrap.read_only(self.fs)
 
     def tearDown(self):
         self.fs.close()
 
     def assertReadOnly(self, func, *args, **kwargs):
-        self.assertRaises(fs.errors.ResourceReadOnly, func, *args, **kwargs)
+        self.assertRaises(fs3.errors.ResourceReadOnly, func, *args, **kwargs)
 
     def test_open_w(self):
         self.assertReadOnly(self.ro.open, "foo", "w")
@@ -82,10 +75,10 @@ class TestWrapReadOnly(unittest.TestCase):
         self.assertReadOnly(self.ro.touch, "foo")
 
     def test_upload(self):
-        self.assertReadOnly(self.ro.upload, "foo", six.BytesIO())
+        self.assertReadOnly(self.ro.upload, "foo", io.BytesIO())
 
     def test_writefile(self):
-        self.assertReadOnly(self.ro.writefile, "foo", six.StringIO())
+        self.assertReadOnly(self.ro.writefile, "foo", io.StringIO())
 
     def test_openbin_r(self):
         self.fs.writebytes("file", b"read me")

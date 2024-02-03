@@ -1,5 +1,3 @@
-from __future__ import absolute_import, print_function, unicode_literals
-
 """
   fstests.test_path:  testcases for the fs path functions
 
@@ -8,7 +6,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import unittest
 
-from fs.path import (
+from fs3.path import (
     abspath,
     basename,
     combine,

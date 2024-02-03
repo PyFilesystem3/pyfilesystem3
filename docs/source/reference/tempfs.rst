@@ -1,5 +1,5 @@
 Temporary Filesystem
 ====================
 
-.. automodule:: fs.tempfs
+.. automodule:: fs3.tempfs
     :members:

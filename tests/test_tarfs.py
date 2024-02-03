@@ -1,20 +1,17 @@
 # -*- encoding: UTF-8
-from __future__ import unicode_literals
-
 import io
 import os
-import six
 import tarfile
 import tempfile
 import unittest
 
-from fs import tarfs
-from fs.compress import write_tar
-from fs.enums import ResourceType
-from fs.errors import NoURL
-from fs.opener import open_fs
-from fs.opener.errors import NotWriteable
-from fs.test import FSTestCases
+from fs3 import tarfs
+from fs3.compress import write_tar
+from fs3.enums import ResourceType
+from fs3.errors import NoURL
+from fs3.opener import open_fs
+from fs3.opener.errors import NotWriteable
+from fs3.test import FSTestCases
 
 from .test_archives import ArchiveTestCases
 
@@ -40,7 +37,7 @@ class TestWriteReadTarFS(unittest.TestCase):
         with tarfs.TarFS(self._temp_path) as tar_fs:
             paths = list(tar_fs.walk.files())
             for path in paths:
-                self.assertIsInstance(path, six.text_type)
+                self.assertIsInstance(path, str)
                 with tar_fs.openbin(path) as f:
                     f.read()
 
@@ -74,7 +71,7 @@ class TestWriteTarFSToFileobj(FSTestCases, unittest.TestCase):
     """
 
     def make_fs(self):
-        _tar_file = six.BytesIO()
+        _tar_file = io.BytesIO()
         fs = tarfs.TarFS(_tar_file, write=True)
         fs._tar_file = _tar_file
         return fs
@@ -99,7 +96,6 @@ class TestWriteGZippedTarFS(FSTestCases, unittest.TestCase):
 
 
 @mark.slow
-@unittest.skipIf(six.PY2, "Python2 does not support LZMA")
 class TestWriteXZippedTarFS(FSTestCases, unittest.TestCase):
     def make_fs(self):
         fh, _tar_file = tempfile.mkstemp()
@@ -208,7 +204,7 @@ class TestReadTarFS(ArchiveTestCases, unittest.TestCase):
             self.assertEqual(self.fs.geturl(test_file, purpose="fs"), expected)
 
     def test_geturl_for_fs_but_file_is_binaryio(self):
-        self.fs._file = six.BytesIO()
+        self.fs._file = io.BytesIO()
         self.assertRaises(NoURL, self.fs.geturl, "test", "fs")
 
     def test_geturl_for_download(self):

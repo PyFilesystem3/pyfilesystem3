@@ -1,5 +1,5 @@
-fs.mode
-=======
+fs3.mode
+========
 
-.. automodule:: fs.mode
+.. automodule:: fs3.mode
     :members:

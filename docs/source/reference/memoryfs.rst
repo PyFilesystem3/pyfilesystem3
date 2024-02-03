@@ -1,5 +1,5 @@
 Memory Filesystem
 =================
 
-.. automodule:: fs.memoryfs
+.. automodule:: fs3.memoryfs
     :members:
