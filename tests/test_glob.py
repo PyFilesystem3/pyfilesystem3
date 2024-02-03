@@ -15,7 +15,7 @@ class TestGlob(unittest.TestCase):
         fs.makedirs("egg")
         fs.writetext("egg/foo.py", "from fs3 import open_fs")
         fs.touch("egg/foo.pyc")
-        fs.makedirs("a/b/c/").writetext("foo.py", "import fs")
+        fs.makedirs("a/b/c/").writetext("foo.py", "import fs3")
         repr(fs.glob)
 
     @parameterized.expand(
@@ -57,12 +57,12 @@ class TestGlob(unittest.TestCase):
     def test_count_2dir(self):
         globber = glob.BoundGlobber(self.fs)
         counts = globber("*/*.py").count()
-        self.assertEqual(counts, glob.Counts(files=1, directories=0, data=22))
+        self.assertEqual(counts, glob.Counts(files=1, directories=0, data=23))
 
     def test_count_recurse_dir(self):
         globber = glob.BoundGlobber(self.fs)
         counts = globber("**/*.py").count()
-        self.assertEqual(counts, glob.Counts(files=5, directories=0, data=43))
+        self.assertEqual(counts, glob.Counts(files=5, directories=0, data=45))
 
     def test_count_lines(self):
         globber = glob.BoundGlobber(self.fs)
@@ -77,7 +77,7 @@ class TestGlob(unittest.TestCase):
     def test_count_all(self):
         globber = glob.BoundGlobber(self.fs)
         counts = globber("**").count()
-        self.assertEqual(counts, glob.Counts(files=6, directories=4, data=43))
+        self.assertEqual(counts, glob.Counts(files=6, directories=4, data=45))
         counts = globber("**/").count()
         self.assertEqual(counts, glob.Counts(files=0, directories=4, data=0))
 
