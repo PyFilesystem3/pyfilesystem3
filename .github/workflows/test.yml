@@ -28,8 +28,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Update pip
       run: python3 -m pip install -U pip wheel setuptools
-    - name: Install tox
-      run: python3 -m pip install tox tox-gh-actions
+    - name: Install tox and pytest
+      run: python3 -m pip install tox tox-gh-actions pytest
     - name: Test with tox
       run: python3 -m tox
     - name: Store partial coverage reports
