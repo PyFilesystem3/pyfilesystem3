@@ -23,7 +23,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Update pip
@@ -33,7 +33,7 @@ jobs:
     - name: Test with tox
       run: python3 -m tox
     - name: Store partial coverage reports
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: coverage
         path: .coverage.*
@@ -44,10 +44,10 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Setup Python 3.9
+    - name: Setup Python 3.11
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.11'
     - name: Install coverage package
       run: python3 -m pip install -U coverage
     - name: Download partial coverage reports
