@@ -842,7 +842,7 @@ class FTPFS(FS):
             with ftp_errors(self, path):
                 cmd = (
                     "MFMT "
-                    + datetime.datetime.utcfromtimestamp(mtime).strftime("%Y%m%d%H%M%S")
+                    + datetime.datetime.fromtimestamp(mtime, datetime.UTC).strftime("%Y%m%d%H%M%S")
                     + " "
                     + _encode(path, self.ftp.encoding)
                 )

@@ -11,6 +11,7 @@ import unittest
 import uuid
 from io import BytesIO
 from unittest import mock
+import logging
 
 from ftplib import error_perm, error_temp
 from pyftpdlib.authorizers import DummyAuthorizer
@@ -137,7 +138,10 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        from pyftpdlib.test import ThreadedTestFTPd
+        from pyftpdlib.test import ThreadedTestFTPd, configure_logging
+        configure_logging()
+        logger = logging.getLogger('pyftpdlib')
+        logger.setLevel(logging.DEBUG)
 
         super(TestFTPFS, cls).setUpClass()
 
@@ -147,6 +151,7 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
 
         cls.server = ThreadedTestFTPd()
         cls.server.shutdown_after = -1
+        cls.server.handler.use_gmt_times = False
         cls.server.handler.authorizer = DummyAuthorizer()
         cls.server.handler.authorizer.add_user(
             cls.user, cls.pasw, cls._temp_path, perm="elradfmwT"
@@ -215,7 +220,7 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
         self.fs.create("bar")
         original_modified = self.fs.getinfo("bar", ("details",)).modified
         new_modified = original_modified - datetime.timedelta(hours=1)
-        new_modified_stamp = calendar.timegm(new_modified.timetuple())
+        new_modified_stamp = int(new_modified.timestamp())
         self.fs.setinfo("bar", {"details": {"modified": new_modified_stamp}})
         new_modified_get = self.fs.getinfo("bar", ("details",)).modified
         if original_modified.microsecond == 0 or new_modified_get.microsecond == 0:
@@ -231,7 +236,7 @@ class TestFTPFS(FSTestCases, unittest.TestCase):
         self.assertEqual(self.fs.host, self.server.host)
 
     def test_connection_error(self):
-        fs = FTPFS("ftp.not.a.chance", timeout=1)
+        fs = FTPFS("ftp.not.a.chance.invalid.", timeout=1)
         with self.assertRaises(errors.RemoteConnectionError):
             fs.listdir("/")
 
@@ -320,14 +325,17 @@ class TestFTPFSNoMLSD(TestFTPFS):
 
 
 @mark.slow
-@unittest.skipIf(platform.python_implementation() == "PyPy", "ftp unreliable with PyPy")
+# @unittest.skipIf(platform.python_implementation() == "PyPy", "ftp unreliable with PyPy")
 class TestAnonFTPFS(FSTestCases, unittest.TestCase):
     user = "anonymous"
     pasw = ""
 
     @classmethod
     def setUpClass(cls):
-        from pyftpdlib.test import ThreadedTestFTPd
+        from pyftpdlib.test import ThreadedTestFTPd, configure_logging
+        configure_logging()
+        logger = logging.getLogger('pyftpdlib')
+        logger.setLevel(logging.DEBUG)
 
         super(TestAnonFTPFS, cls).setUpClass()
 
@@ -337,6 +345,7 @@ class TestAnonFTPFS(FSTestCases, unittest.TestCase):
 
         cls.server = ThreadedTestFTPd()
         cls.server.shutdown_after = -1
+        cls.server.handler.use_gmt_times = False
         cls.server.handler.authorizer = DummyAuthorizer()
         cls.server.handler.authorizer.add_anonymous(cls._temp_path, perm="elradfmw")
         cls.server.start()
